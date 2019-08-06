@@ -17,13 +17,13 @@ include_once 'ulf_free_course_request.form_alterations.inc';
 function ulf_free_course_request_menu() {
   $items = array();
 
-  $items['admin/settings/custom/free_course_request/requests'] = array(
+  $items['admin/config/system/free_course_request/requests'] = array(
     'title' => 'Financing requests',
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'weight' => -10,
   );
 
-  $items['admin/settings/custom/free_course_request/config'] = array(
+  $items['admin/config/system/free_course_request/config'] = array(
     'title' => 'Config / Help texts',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('ulf_free_course_request_form_backend'),
