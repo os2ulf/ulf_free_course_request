@@ -64,8 +64,16 @@ function ulf_free_course_request_theme_registry_alter(&$theme_registry) {
   }
 }
 
+/**
+ * Create notification on entity creation.
+ *
+ * @param $entity
+ * @param $type
+ */
 function ulf_free_course_request_entity_insert($entity, $type) {
-  $wrapper = entity_metadata_wrapper('entityform', $entity);
-  _rfc_notify($wrapper, 'on_submit_user');
-  _rfc_notify($wrapper, 'on_submit_admin');
+  if ($type == 'entityform') {
+    $wrapper = entity_metadata_wrapper($type, $entity);
+    _rfc_notify($wrapper, 'on_submit_user');
+    _rfc_notify($wrapper, 'on_submit_admin');
+  }
 }

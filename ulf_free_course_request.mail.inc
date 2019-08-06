@@ -14,7 +14,7 @@
  */
 function _rfc_notify(EntityMetadataWrapper $wrapper, $action) {
   $entity_form_id = $wrapper->entityform_id->value();
-  if (empty($entity_form_id )) {
+  if (empty($entity_form_id)) {
     return;
   }
 

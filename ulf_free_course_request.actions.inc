@@ -73,6 +73,7 @@ function ulf_free_course_request_action_info() {
  *   The entity to act on.
  */
 function _rfc_change_status_accepted($entity) {
+  $a =1;
   _rfc_change_entity($entity, 'accepted');
 }
 
@@ -83,6 +84,7 @@ function _rfc_change_status_accepted($entity) {
  *   The entity to act on.
  */
 function _rfc_accept($entity) {
+  $a =1;
   _rfc_change_entity($entity, 'accepted_mail');
 }
 
@@ -93,6 +95,7 @@ function _rfc_accept($entity) {
  *   The entity to act on.
  */
 function _rfc_change_status_refused($entity) {
+  $a =1;
   _rfc_change_entity($entity, 'refused');
 }
 
@@ -103,6 +106,7 @@ function _rfc_change_status_refused($entity) {
  *   The entity to act on.
  */
 function _rfc_refuse($entity) {
+  $a =1;
   _rfc_change_entity($entity, 'refused_mail');
 }
 
@@ -113,6 +117,7 @@ function _rfc_refuse($entity) {
  *   The entity to act on.
  */
 function _rfc_close($entity) {
+  $a =1;
   _rfc_change_entity($entity, 'closed');
 }
 
