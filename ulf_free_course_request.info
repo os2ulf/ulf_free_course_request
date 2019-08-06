@@ -11,6 +11,7 @@ dependencies[] = field_group
 dependencies[] = html5_tools
 dependencies[] = list
 dependencies[] = number
+dependencies[] = secure_permissions (>1.6)
 dependencies[] = strongarm
 dependencies[] = views_data_export
 features[ctools][] = field_group:field_group:1
