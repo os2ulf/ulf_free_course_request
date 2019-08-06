@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Code for Ulf free course request mail handling.
+ */
 
 /**
  * Add the different cases in which to send mail.
@@ -9,6 +13,11 @@
  *   The action related to the mail.
  */
 function _rfc_notify(EntityMetadataWrapper $wrapper, $action) {
+  $entity_form_id = $wrapper->entityform_id->value();
+  if (empty($entity_form_id )) {
+    return;
+  }
+
   global $language;
   // Set fallback email
   $to = variable_get('site_mail');
@@ -96,6 +105,12 @@ function ulf_free_course_request_mail($key, &$message, $params) {
  *   The values of the submitted form grouped into a string.
  */
 function _rfc_build_mail_confirmation(EntityMetadataWrapper $wrapper) {
+  $application = '';
+  $entity_form_id = $wrapper->entityform_id->value();
+  if (empty($entity_form_id )) {
+    return $application;
+  }
+
   global $language;
   $translation_lang = array('langcode' => $language->language);
 
@@ -107,7 +122,7 @@ function _rfc_build_mail_confirmation(EntityMetadataWrapper $wrapper) {
   $provider_id = $wrapper->field_rfc_provider->value();
   $provider_wrapper = entity_metadata_wrapper('user', $provider_id);
 
-  $application = '<h3>';
+  $application .= '<h3>';
   $application .= t('Financing application details', array(), $translation_lang);
   $application .= ':</h3>';
 
@@ -179,6 +194,12 @@ function _rfc_build_mail_confirmation(EntityMetadataWrapper $wrapper) {
  *   The values of the submitted form grouped into a string.
  */
 function _rfc_build_mail_followup(EntityMetadataWrapper $wrapper) {
+  $application = '';
+  $entity_form_id = $wrapper->entityform_id->value();
+  if (empty($entity_form_id )) {
+    return $application;
+  }
+
   // Status values info.
   $field_status_info = list_allowed_values(field_info_field('field_rfc_status'));
 
@@ -194,7 +215,7 @@ function _rfc_build_mail_followup(EntityMetadataWrapper $wrapper) {
   $provider_wrapper = entity_metadata_wrapper('user', $provider_id);
 
 
-  $application = '<h3>';
+  $application .= '<h3>';
   $application .= t('Financing application details', array(), $translation_lang);
   $application .= ':</h3>';
 
