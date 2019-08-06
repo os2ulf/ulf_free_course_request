@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * @file
+ * Holds update and install hooks for ulf_free_course_request
+ */
+function ulf_free_course_request_install () {
+  // Chosen contrib module is a dependency that will be enabled with this module.
+  // We configure it as part of this modules installation.
+  // Use chosen only for frontend displays.
+  variable_set('chosen_include', 1);
+  variable_set('chosen_minimum_single', 1);
+}

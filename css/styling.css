@@ -1,0 +1,109 @@
+.page-eform-submit-free-course-request h1{
+  margin: 0 8px;
+}
+
+.fcr-form {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.fcr-form label {
+  display: block;
+}
+
+.fcr-form fieldset,
+.fcr-form .form-submit {
+  margin-top: 1em;
+}
+
+.fcr-form .description {
+  font-size: 0.9em;
+  margin-top: .5em;
+}
+
+.fcr-form .user-message--wrapper {
+  -ms-flex: 0 1 45%; /* IE 10 */
+  flex: 0 1 45%;
+  order: 2;
+}
+
+.fcr-form .user-message {
+  background: lightgrey;
+  box-sizing: border-box;
+  display: block;
+  padding: 1em;
+  margin: 1em 0;
+  border-radius: .5em;
+  width: 100%;
+}
+
+.fcr-form > .entityform {
+  -ms-flex: 0 1 45%; /* IE 10 */
+  flex: 0 1 45%;
+  order: 1;
+}
+
+@media screen and (max-width: 860px) {
+  .fcr-form > .user-message--wrapper {
+    -ms-flex: 0 1 100%; /* IE 10 */
+    flex: 0 1 100%;
+    order: 1;
+  }
+}
+
+@media screen and (max-width: 860px) {
+  .fcr-form > .entityform {
+    -ms-flex: 0 1 100%; /* IE 10 */
+    flex: 0 1 100%;
+    order: 2;
+  }
+}
+
+.fcr-form .field-type-entityreference select {
+  height: 3em;
+  width: 100%;
+}
+
+.fcr-form .field-name-field-rfc-requested-amount input {
+  width: 50%;
+  display: inline-block;
+}
+
+.fcr-form .price-info {
+  background: lightgrey;
+  box-sizing: border-box;
+  display: block;
+  padding: 1em;
+  margin: 1em 0 0;
+  border-radius: .5em;
+  width: 100%;
+}
+
+.fcr-form .price-info .price-list span {
+  margin-right: 5px;
+}
+
+.fcr-form .price-info ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.fcr-receipt .content--main .block--field-label,
+.fcr-receipt .content--main .block--field-text {
+  display: inline-block;
+  margin-top: 0;
+}
+
+.fcr-receipt .content--main .block--field-label:after {
+  content: ':';
+}
+
+.fcr-receipt .content--main h2 {
+  margin-top: 1.5em;
+}
+
+.fcr-content {
+  margin: 0 8px;
+}

@@ -1,0 +1,71 @@
+<?php
+/**
+ * @file
+ * Code for the Ulf free course request feature.
+ */
+
+include_once 'ulf_free_course_request.features.inc';
+include_once 'ulf_free_course_request.permissions.inc';
+include_once 'ulf_free_course_request.backend.inc';
+include_once 'ulf_free_course_request.actions.inc';
+include_once 'ulf_free_course_request.mail.inc';
+include_once 'ulf_free_course_request.form_alterations.inc';
+
+/**
+ * Implements hook_menu().
+ */
+function ulf_free_course_request_menu() {
+  $items = array();
+
+  $items['admin/settings/custom/free_course_request/requests'] = array(
+    'title' => 'Financing requests',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+
+  $items['admin/settings/custom/free_course_request/config'] = array(
+    'title' => 'Config / Help texts',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('ulf_free_course_request_form_backend'),
+    'type' => MENU_LOCAL_TASK,
+    'access arguments' => array('administer ulf free course request settings'),
+    'file' => 'ulf_free_course_request.backend.inc',
+    'file path' => drupal_get_path('module', 'ulf_free_course_request'),
+  );
+
+  return $items;
+}
+
+function ulf_free_course_request_preprocess_user_profile(&$variables) {
+  foreach ($variables['elements']['#account']->roles as $role) {
+    $filter = '![^abcdefghijklmnopqrstuvwxyz0-9-_]+!s';
+    $string_clean = preg_replace($filter, '-', drupal_strtolower($role));
+    $variables['theme_hook_suggestions'][] =  'user_profile__' . $string_clean;
+  }
+}
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function ulf_free_course_request_theme_registry_alter(&$theme_registry) {
+  // Defined path to the current module.
+  $module_path = drupal_get_path('module', 'ulf_free_course_request');
+  // Find all .tpl.php files in this module's folder recursively.
+  $template_file_objects = drupal_find_theme_templates($theme_registry, '.tpl.php', $module_path);
+  // Iterate through all found template file objects.
+  foreach ($template_file_objects as $key => $template_file_object) {
+    // If the template has not already been overridden by a theme.
+    if (!isset($theme_registry[$key]['theme path']) || !preg_match('#/themes/#', $theme_registry[$key]['theme path'])) {
+      // Alter the theme path and template elements.
+      $theme_registry[$key]['theme path'] = $module_path;
+      $theme_registry[$key] = array_merge($theme_registry[$key], $template_file_object);
+      $theme_registry[$key]['type'] = 'module';
+    }
+  }
+}
+
+function ulf_free_course_request_entity_insert($entity, $type) {
+  $wrapper = entity_metadata_wrapper('entityform', $entity);
+  _rfc_notify($wrapper, 'on_submit_user');
+  _rfc_notify($wrapper, 'on_submit_admin');
+}

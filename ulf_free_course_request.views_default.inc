@@ -1,0 +1,974 @@
+<?php
+/**
+ * @file
+ * ulf_free_course_request.views_default.inc
+ */
+
+/**
+ * Implements hook_views_default_views().
+ */
+function ulf_free_course_request_views_default_views() {
+  $export = array();
+
+  $view = new view();
+  $view->name = 'ulf_free_course_requests';
+  $view->description = 'A list of all entityforms submissions to be as an admin report';
+  $view->tag = 'entityforms';
+  $view->base_table = 'entityform';
+  $view->human_name = 'Ulf free course requests';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['title'] = 'Alle ansoegninger';
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['use_more_text'] = 'mere';
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['access']['perm'] = 'view own entityform';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['query']['options']['query_comment'] = FALSE;
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Udfør';
+  $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Gendan';
+  $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Sortér efter';
+  $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'Stigende';
+  $handler->display->display_options['exposed_form']['options']['sort_desc_label'] = 'Faldende';
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '50';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['expose']['items_per_page_label'] = 'Antal elementer';
+  $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all_label'] = '- Alle -';
+  $handler->display->display_options['pager']['options']['expose']['offset_label'] = 'Forskydning';
+  $handler->display->display_options['pager']['options']['tags']['first'] = '« første';
+  $handler->display->display_options['pager']['options']['tags']['previous'] = '‹ forrige';
+  $handler->display->display_options['pager']['options']['tags']['next'] = 'næste ›';
+  $handler->display->display_options['pager']['options']['tags']['last'] = 'sidste »';
+  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'uid' => 'uid',
+    'title' => 'title',
+    'field_profile_name' => 'field_profile_name',
+    'field_message_name' => 'field_message_name',
+    'field_message_email' => 'field_message_email',
+    'field_message_body' => 'field_message_body',
+    'created' => 'created',
+    'link_entityform' => 'link_entityform',
+  );
+  $handler->display->display_options['style_options']['default'] = 'created';
+  $handler->display->display_options['style_options']['info'] = array(
+    'uid' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'title' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_profile_name' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_message_name' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_message_email' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_message_body' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'created' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'link_entityform' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
+  /* Forbindelse: Entityform Submission: Bruger uid */
+  $handler->display->display_options['relationships']['user']['id'] = 'user';
+  $handler->display->display_options['relationships']['user']['table'] = 'entityform';
+  $handler->display->display_options['relationships']['user']['field'] = 'user';
+  $handler->display->display_options['relationships']['user']['label'] = 'forfatter';
+  /* Forbindelse: Entity Reference: Refereret entity */
+  $handler->display->display_options['relationships']['field_rfc_course_target_id']['id'] = 'field_rfc_course_target_id';
+  $handler->display->display_options['relationships']['field_rfc_course_target_id']['table'] = 'field_data_field_rfc_course';
+  $handler->display->display_options['relationships']['field_rfc_course_target_id']['field'] = 'field_rfc_course_target_id';
+  /* Felt: Masse-handlinger: Entityform Submission */
+  $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
+  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'views_entity_entityform';
+  $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
+  $handler->display->display_options['fields']['views_bulk_operations']['label'] = '';
+  $handler->display->display_options['fields']['views_bulk_operations']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['display_type'] = '1';
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['enable_select_all_pages'] = 1;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['force_single'] = 0;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['entity_load_capacity'] = '10';
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_operations'] = array(
+    'action::views_bulk_operations_delete_item' => array(
+      'selected' => 1,
+      'skip_confirmation' => 0,
+      'override_label' => 1,
+      'label' => 'Delete Submissions',
+      'postpone_processing' => 0,
+    ),
+  );
+  /* Felt: Entityform Submission: Link */
+  $handler->display->display_options['fields']['link_entityform']['id'] = 'link_entityform';
+  $handler->display->display_options['fields']['link_entityform']['table'] = 'entityform';
+  $handler->display->display_options['fields']['link_entityform']['field'] = 'link_entityform';
+  $handler->display->display_options['fields']['link_entityform']['label'] = 'Vis';
+  /* Felt: Entityform Submission: Redigér link */
+  $handler->display->display_options['fields']['edit_entityform']['id'] = 'edit_entityform';
+  $handler->display->display_options['fields']['edit_entityform']['table'] = 'entityform';
+  $handler->display->display_options['fields']['edit_entityform']['field'] = 'edit_entityform';
+  $handler->display->display_options['fields']['edit_entityform']['label'] = 'Redigér';
+  /* Felt: Entityform Submission: Delete Link */
+  $handler->display->display_options['fields']['delete_entityform']['id'] = 'delete_entityform';
+  $handler->display->display_options['fields']['delete_entityform']['table'] = 'entityform';
+  $handler->display->display_options['fields']['delete_entityform']['field'] = 'delete_entityform';
+  $handler->display->display_options['fields']['delete_entityform']['label'] = 'Slet';
+  $handler->display->display_options['fields']['delete_entityform']['hide_alter_empty'] = FALSE;
+  /* Felt: Entityform Type: Etiket */
+  $handler->display->display_options['fields']['label_1']['id'] = 'label_1';
+  $handler->display->display_options['fields']['label_1']['table'] = 'entityform_type';
+  $handler->display->display_options['fields']['label_1']['field'] = 'label';
+  $handler->display->display_options['fields']['label_1']['label'] = 'Form Type';
+  /* Felt: Entityform Submission: Date submitted */
+  $handler->display->display_options['fields']['created']['id'] = 'created';
+  $handler->display->display_options['fields']['created']['table'] = 'entityform';
+  $handler->display->display_options['fields']['created']['field'] = 'created';
+  $handler->display->display_options['fields']['created']['date_format'] = 'medium';
+  /* Felt: Entityform Submission: Dato ændret */
+  $handler->display->display_options['fields']['changed']['id'] = 'changed';
+  $handler->display->display_options['fields']['changed']['table'] = 'entityform';
+  $handler->display->display_options['fields']['changed']['field'] = 'changed';
+  $handler->display->display_options['fields']['changed']['hide_alter_empty'] = FALSE;
+  /* Sorteringskriterie: Entityform Submission: Date submitted */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'entityform';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Filterkriterie: Global: Kombinér felter filter */
+  $handler->display->display_options['filters']['combine']['id'] = 'combine';
+  $handler->display->display_options['filters']['combine']['table'] = 'views';
+  $handler->display->display_options['filters']['combine']['field'] = 'combine';
+  $handler->display->display_options['filters']['combine']['operator'] = 'contains';
+  $handler->display->display_options['filters']['combine']['group'] = 1;
+  $handler->display->display_options['filters']['combine']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['combine']['expose']['operator_id'] = 'combine_op';
+  $handler->display->display_options['filters']['combine']['expose']['label'] = 'Søg på skole, person, forløb, udbyder eller id';
+  $handler->display->display_options['filters']['combine']['expose']['operator'] = 'combine_op';
+  $handler->display->display_options['filters']['combine']['expose']['identifier'] = 'combine';
+  $handler->display->display_options['filters']['combine']['expose']['remember_roles'] = array(
+    2 => '2',
+  );
+  $handler->display->display_options['filters']['combine']['fields'] = array(
+    'entityform_id' => 'entityform_id',
+    'field_rfc_school' => 'field_rfc_school',
+    'field_rfc_name' => 'field_rfc_name',
+    'field_rfc_provider' => 'field_rfc_provider',
+    'field_rfc_course' => 'field_rfc_course',
+  );
+  /* Filterkriterie: Entityform Submission: Entityform Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'entityform';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'free_course_request' => 'free_course_request',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filterkriterie: Entityform Submission: Afviklingsdato (field_rfc_date) */
+  $handler->display->display_options['filters']['field_rfc_date_value']['id'] = 'field_rfc_date_value';
+  $handler->display->display_options['filters']['field_rfc_date_value']['table'] = 'field_data_field_rfc_date';
+  $handler->display->display_options['filters']['field_rfc_date_value']['field'] = 'field_rfc_date_value';
+  $handler->display->display_options['filters']['field_rfc_date_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_rfc_date_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_rfc_date_value']['expose']['operator_id'] = 'field_rfc_date_value_op';
+  $handler->display->display_options['filters']['field_rfc_date_value']['expose']['label'] = 'Afviklingsdato (field_rfc_date)';
+  $handler->display->display_options['filters']['field_rfc_date_value']['expose']['operator'] = 'field_rfc_date_value_op';
+  $handler->display->display_options['filters']['field_rfc_date_value']['expose']['identifier'] = 'field_rfc_date_value';
+  $handler->display->display_options['filters']['field_rfc_date_value']['is_grouped'] = TRUE;
+  $handler->display->display_options['filters']['field_rfc_date_value']['group_info']['label'] = 'Afviklingsår';
+  $handler->display->display_options['filters']['field_rfc_date_value']['group_info']['identifier'] = 'field_rfc_date_value';
+  $handler->display->display_options['filters']['field_rfc_date_value']['group_info']['group_items'] = array(
+    1 => array(
+      'title' => '2019',
+      'operator' => 'contains',
+      'value' => '2019',
+    ),
+    2 => array(
+      'title' => '2020',
+      'operator' => 'contains',
+      'value' => '2021',
+    ),
+    3 => array(
+      'title' => '2021',
+      'operator' => 'contains',
+      'value' => '2021',
+    ),
+    4 => array(
+      'title' => '2022',
+      'operator' => 'contains',
+      'value' => '2022',
+    ),
+    5 => array(
+      'title' => '2023',
+      'operator' => 'contains',
+      'value' => '2023',
+    ),
+    6 => array(
+      'title' => '2024',
+      'operator' => 'contains',
+      'value' => '2024',
+    ),
+    7 => array(
+      'title' => '2025',
+      'operator' => 'contains',
+      'value' => '2025',
+    ),
+  );
+  /* Filterkriterie: Entityform Submission: Status (field_rfc_status) */
+  $handler->display->display_options['filters']['field_rfc_status_value']['id'] = 'field_rfc_status_value';
+  $handler->display->display_options['filters']['field_rfc_status_value']['table'] = 'field_data_field_rfc_status';
+  $handler->display->display_options['filters']['field_rfc_status_value']['field'] = 'field_rfc_status_value';
+  $handler->display->display_options['filters']['field_rfc_status_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_rfc_status_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_rfc_status_value']['expose']['operator_id'] = 'field_rfc_status_value_op';
+  $handler->display->display_options['filters']['field_rfc_status_value']['expose']['label'] = 'Status';
+  $handler->display->display_options['filters']['field_rfc_status_value']['expose']['operator'] = 'field_rfc_status_value_op';
+  $handler->display->display_options['filters']['field_rfc_status_value']['expose']['identifier'] = 'field_rfc_status_value';
+  $handler->display->display_options['filters']['field_rfc_status_value']['expose']['remember_roles'] = array(
+    2 => '2',
+  );
+
+  /* Display: All applications */
+  $handler = $view->new_display('page', 'All applications', 'free_course_requests_table');
+  $handler->display->display_options['defaults']['access'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['access']['perm'] = 'administer ulf free course request settings';
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Forbindelse: Entity Reference: Refereret entity */
+  $handler->display->display_options['relationships']['field_rfc_course_target_id']['id'] = 'field_rfc_course_target_id';
+  $handler->display->display_options['relationships']['field_rfc_course_target_id']['table'] = 'field_data_field_rfc_course';
+  $handler->display->display_options['relationships']['field_rfc_course_target_id']['field'] = 'field_rfc_course_target_id';
+  $handler->display->display_options['relationships']['field_rfc_course_target_id']['label'] = 'Course';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Felt: Masse-handlinger: Entityform Submission */
+  $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
+  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'views_entity_entityform';
+  $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
+  $handler->display->display_options['fields']['views_bulk_operations']['label'] = '';
+  $handler->display->display_options['fields']['views_bulk_operations']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['display_type'] = '0';
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['enable_select_all_pages'] = 1;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['row_clickable'] = 1;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['force_single'] = 0;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['entity_load_capacity'] = '10';
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_operations'] = array(
+    'action::_rfc_accept' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'skip_permission_check' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::_rfc_change_status_accepted' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'skip_permission_check' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::_rfc_change_status_refused' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'skip_permission_check' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::_rfc_close' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'skip_permission_check' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::_rfc_refuse' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'skip_permission_check' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::views_bulk_operations_delete_item' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'skip_permission_check' => 0,
+      'override_label' => 0,
+      'label' => '',
+      'settings' => array(
+        'log' => 0,
+      ),
+    ),
+  );
+  /* Felt: Entityform Submission: Entityform submission ID */
+  $handler->display->display_options['fields']['entityform_id']['id'] = 'entityform_id';
+  $handler->display->display_options['fields']['entityform_id']['table'] = 'entityform';
+  $handler->display->display_options['fields']['entityform_id']['field'] = 'entityform_id';
+  $handler->display->display_options['fields']['entityform_id']['label'] = 'ID';
+  $handler->display->display_options['fields']['entityform_id']['separator'] = '';
+  /* Felt: Entityform Submission: Skole */
+  $handler->display->display_options['fields']['field_rfc_school']['id'] = 'field_rfc_school';
+  $handler->display->display_options['fields']['field_rfc_school']['table'] = 'field_data_field_rfc_school';
+  $handler->display->display_options['fields']['field_rfc_school']['field'] = 'field_rfc_school';
+  $handler->display->display_options['fields']['field_rfc_school']['settings'] = array(
+    'bypass_access' => 0,
+    'link' => 0,
+  );
+  /* Felt: Entityform Submission: Navn */
+  $handler->display->display_options['fields']['field_rfc_name']['id'] = 'field_rfc_name';
+  $handler->display->display_options['fields']['field_rfc_name']['table'] = 'field_data_field_rfc_name';
+  $handler->display->display_options['fields']['field_rfc_name']['field'] = 'field_rfc_name';
+  /* Felt: Entityform Submission: Udbyder */
+  $handler->display->display_options['fields']['field_rfc_provider']['id'] = 'field_rfc_provider';
+  $handler->display->display_options['fields']['field_rfc_provider']['table'] = 'field_data_field_rfc_provider';
+  $handler->display->display_options['fields']['field_rfc_provider']['field'] = 'field_rfc_provider';
+  $handler->display->display_options['fields']['field_rfc_provider']['settings'] = array(
+    'bypass_access' => 0,
+    'link' => 0,
+  );
+  /* Felt: Entityform Submission: Forløb */
+  $handler->display->display_options['fields']['field_rfc_course']['id'] = 'field_rfc_course';
+  $handler->display->display_options['fields']['field_rfc_course']['table'] = 'field_data_field_rfc_course';
+  $handler->display->display_options['fields']['field_rfc_course']['field'] = 'field_rfc_course';
+  $handler->display->display_options['fields']['field_rfc_course']['settings'] = array(
+    'bypass_access' => 0,
+    'link' => 0,
+  );
+  /* Felt: Indhold: Emneområde */
+  $handler->display->display_options['fields']['field_subject']['id'] = 'field_subject';
+  $handler->display->display_options['fields']['field_subject']['table'] = 'field_data_field_subject';
+  $handler->display->display_options['fields']['field_subject']['field'] = 'field_subject';
+  $handler->display->display_options['fields']['field_subject']['relationship'] = 'field_rfc_course_target_id';
+  $handler->display->display_options['fields']['field_subject']['type'] = 'taxonomy_term_reference_plain';
+  $handler->display->display_options['fields']['field_subject']['delta_offset'] = '0';
+  /* Felt: Entityform Submission: Afviklingsdato */
+  $handler->display->display_options['fields']['field_rfc_date']['id'] = 'field_rfc_date';
+  $handler->display->display_options['fields']['field_rfc_date']['table'] = 'field_data_field_rfc_date';
+  $handler->display->display_options['fields']['field_rfc_date']['field'] = 'field_rfc_date';
+  $handler->display->display_options['fields']['field_rfc_date']['settings'] = array(
+    'format_type' => 'short',
+    'custom_date_format' => '',
+    'fromto' => 'both',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+    'show_remaining_days' => 0,
+  );
+  /* Felt: Entityform Submission: Ansøgt beløb */
+  $handler->display->display_options['fields']['field_rfc_requested_amount']['id'] = 'field_rfc_requested_amount';
+  $handler->display->display_options['fields']['field_rfc_requested_amount']['table'] = 'field_data_field_rfc_requested_amount';
+  $handler->display->display_options['fields']['field_rfc_requested_amount']['field'] = 'field_rfc_requested_amount';
+  $handler->display->display_options['fields']['field_rfc_requested_amount']['settings'] = array(
+    'thousand_separator' => '',
+    'decimal_separator' => ',',
+    'scale' => '2',
+    'prefix_suffix' => 1,
+  );
+  /* Felt: Entityform Submission: Status */
+  $handler->display->display_options['fields']['field_rfc_status']['id'] = 'field_rfc_status';
+  $handler->display->display_options['fields']['field_rfc_status']['table'] = 'field_data_field_rfc_status';
+  $handler->display->display_options['fields']['field_rfc_status']['field'] = 'field_rfc_status';
+  /* Felt: Entityform Submission: Bevilget beløb */
+  $handler->display->display_options['fields']['field_rfc_granted_amount']['id'] = 'field_rfc_granted_amount';
+  $handler->display->display_options['fields']['field_rfc_granted_amount']['table'] = 'field_data_field_rfc_granted_amount';
+  $handler->display->display_options['fields']['field_rfc_granted_amount']['field'] = 'field_rfc_granted_amount';
+  $handler->display->display_options['fields']['field_rfc_granted_amount']['settings'] = array(
+    'thousand_separator' => '',
+    'decimal_separator' => ',',
+    'scale' => '2',
+    'prefix_suffix' => 1,
+  );
+  /* Felt: Entityform Submission: Bemærkninger */
+  $handler->display->display_options['fields']['field_rfc_remarks']['id'] = 'field_rfc_remarks';
+  $handler->display->display_options['fields']['field_rfc_remarks']['table'] = 'field_data_field_rfc_remarks';
+  $handler->display->display_options['fields']['field_rfc_remarks']['field'] = 'field_rfc_remarks';
+  /* Felt: Entityform Submission: Redigér link */
+  $handler->display->display_options['fields']['edit_entityform']['id'] = 'edit_entityform';
+  $handler->display->display_options['fields']['edit_entityform']['table'] = 'entityform';
+  $handler->display->display_options['fields']['edit_entityform']['field'] = 'edit_entityform';
+  $handler->display->display_options['fields']['edit_entityform']['label'] = '';
+  $handler->display->display_options['fields']['edit_entityform']['element_label_colon'] = FALSE;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  $handler->display->display_options['path'] = 'admin/settings/custom/free_course_request';
+  $handler->display->display_options['menu']['type'] = 'tab';
+  $handler->display->display_options['menu']['title'] = 'Financing requests';
+  $handler->display->display_options['menu']['description'] = 'Financing requests';
+  $handler->display->display_options['menu']['weight'] = '10';
+  $handler->display->display_options['menu']['name'] = 'management';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
+  $handler->display->display_options['tab_options']['weight'] = '0';
+
+  /* Display: User applications */
+  $handler = $view->new_display('page', 'User applications', 'free_course_requests_user');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Mine ansoegninger';
+  $handler->display->display_options['defaults']['access'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['access']['perm'] = 'view own entityform';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Felt: Entityform Submission: Entityform submission ID */
+  $handler->display->display_options['fields']['entityform_id']['id'] = 'entityform_id';
+  $handler->display->display_options['fields']['entityform_id']['table'] = 'entityform';
+  $handler->display->display_options['fields']['entityform_id']['field'] = 'entityform_id';
+  $handler->display->display_options['fields']['entityform_id']['label'] = 'ID';
+  $handler->display->display_options['fields']['entityform_id']['separator'] = '';
+  /* Felt: Entityform Submission: Navn */
+  $handler->display->display_options['fields']['field_rfc_name']['id'] = 'field_rfc_name';
+  $handler->display->display_options['fields']['field_rfc_name']['table'] = 'field_data_field_rfc_name';
+  $handler->display->display_options['fields']['field_rfc_name']['field'] = 'field_rfc_name';
+  /* Felt: Entityform Submission: Udbyder */
+  $handler->display->display_options['fields']['field_rfc_provider']['id'] = 'field_rfc_provider';
+  $handler->display->display_options['fields']['field_rfc_provider']['table'] = 'field_data_field_rfc_provider';
+  $handler->display->display_options['fields']['field_rfc_provider']['field'] = 'field_rfc_provider';
+  $handler->display->display_options['fields']['field_rfc_provider']['settings'] = array(
+    'bypass_access' => 0,
+    'link' => 0,
+  );
+  /* Felt: Entityform Submission: Forløb */
+  $handler->display->display_options['fields']['field_rfc_course']['id'] = 'field_rfc_course';
+  $handler->display->display_options['fields']['field_rfc_course']['table'] = 'field_data_field_rfc_course';
+  $handler->display->display_options['fields']['field_rfc_course']['field'] = 'field_rfc_course';
+  $handler->display->display_options['fields']['field_rfc_course']['settings'] = array(
+    'bypass_access' => 0,
+    'link' => 0,
+  );
+  /* Felt: Indhold: Emneområde */
+  $handler->display->display_options['fields']['field_subject']['id'] = 'field_subject';
+  $handler->display->display_options['fields']['field_subject']['table'] = 'field_data_field_subject';
+  $handler->display->display_options['fields']['field_subject']['field'] = 'field_subject';
+  $handler->display->display_options['fields']['field_subject']['relationship'] = 'field_rfc_course_target_id';
+  $handler->display->display_options['fields']['field_subject']['type'] = 'taxonomy_term_reference_plain';
+  $handler->display->display_options['fields']['field_subject']['delta_offset'] = '0';
+  /* Felt: Entityform Submission: Afviklingsdato */
+  $handler->display->display_options['fields']['field_rfc_date']['id'] = 'field_rfc_date';
+  $handler->display->display_options['fields']['field_rfc_date']['table'] = 'field_data_field_rfc_date';
+  $handler->display->display_options['fields']['field_rfc_date']['field'] = 'field_rfc_date';
+  $handler->display->display_options['fields']['field_rfc_date']['settings'] = array(
+    'format_type' => 'short',
+    'custom_date_format' => '',
+    'fromto' => 'both',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+    'show_remaining_days' => 0,
+  );
+  /* Felt: Entityform Submission: Ansøgt beløb */
+  $handler->display->display_options['fields']['field_rfc_requested_amount']['id'] = 'field_rfc_requested_amount';
+  $handler->display->display_options['fields']['field_rfc_requested_amount']['table'] = 'field_data_field_rfc_requested_amount';
+  $handler->display->display_options['fields']['field_rfc_requested_amount']['field'] = 'field_rfc_requested_amount';
+  $handler->display->display_options['fields']['field_rfc_requested_amount']['settings'] = array(
+    'thousand_separator' => '',
+    'decimal_separator' => ',',
+    'scale' => '2',
+    'prefix_suffix' => 1,
+  );
+  /* Felt: Entityform Submission: Status */
+  $handler->display->display_options['fields']['field_rfc_status']['id'] = 'field_rfc_status';
+  $handler->display->display_options['fields']['field_rfc_status']['table'] = 'field_data_field_rfc_status';
+  $handler->display->display_options['fields']['field_rfc_status']['field'] = 'field_rfc_status';
+  /* Felt: Entityform Submission: Bevilget beløb */
+  $handler->display->display_options['fields']['field_rfc_granted_amount']['id'] = 'field_rfc_granted_amount';
+  $handler->display->display_options['fields']['field_rfc_granted_amount']['table'] = 'field_data_field_rfc_granted_amount';
+  $handler->display->display_options['fields']['field_rfc_granted_amount']['field'] = 'field_rfc_granted_amount';
+  $handler->display->display_options['fields']['field_rfc_granted_amount']['settings'] = array(
+    'thousand_separator' => '',
+    'decimal_separator' => ',',
+    'scale' => '2',
+    'prefix_suffix' => 1,
+  );
+  /* Felt: Entityform Submission: Bemærkninger */
+  $handler->display->display_options['fields']['field_rfc_remarks']['id'] = 'field_rfc_remarks';
+  $handler->display->display_options['fields']['field_rfc_remarks']['table'] = 'field_data_field_rfc_remarks';
+  $handler->display->display_options['fields']['field_rfc_remarks']['field'] = 'field_rfc_remarks';
+  $handler->display->display_options['path'] = 'admin/udgiftsdaekning/ansoegninger';
+  $handler->display->display_options['menu']['title'] = 'Financing requests';
+  $handler->display->display_options['menu']['description'] = 'Financing requests';
+  $handler->display->display_options['menu']['weight'] = '10';
+  $handler->display->display_options['menu']['name'] = 'management';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
+  $handler->display->display_options['tab_options']['weight'] = '0';
+
+  /* Display: Data export */
+  $handler = $view->new_display('views_data_export', 'Data export', 'views_data_export_1');
+  $handler->display->display_options['defaults']['access'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['access']['perm'] = 'administer ulf free course request settings';
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['style_plugin'] = 'views_data_export_csv';
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Forbindelse: Entity Reference: Refereret entity */
+  $handler->display->display_options['relationships']['field_rfc_course_target_id']['id'] = 'field_rfc_course_target_id';
+  $handler->display->display_options['relationships']['field_rfc_course_target_id']['table'] = 'field_data_field_rfc_course';
+  $handler->display->display_options['relationships']['field_rfc_course_target_id']['field'] = 'field_rfc_course_target_id';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Felt: Entityform Submission: Entityform submission ID */
+  $handler->display->display_options['fields']['entityform_id']['id'] = 'entityform_id';
+  $handler->display->display_options['fields']['entityform_id']['table'] = 'entityform';
+  $handler->display->display_options['fields']['entityform_id']['field'] = 'entityform_id';
+  $handler->display->display_options['fields']['entityform_id']['label'] = 'ID';
+  $handler->display->display_options['fields']['entityform_id']['separator'] = '';
+  /* Felt: Entityform Submission: Skole */
+  $handler->display->display_options['fields']['field_rfc_school']['id'] = 'field_rfc_school';
+  $handler->display->display_options['fields']['field_rfc_school']['table'] = 'field_data_field_rfc_school';
+  $handler->display->display_options['fields']['field_rfc_school']['field'] = 'field_rfc_school';
+  $handler->display->display_options['fields']['field_rfc_school']['settings'] = array(
+    'bypass_access' => 0,
+    'link' => 0,
+  );
+  /* Felt: Entityform Submission: Klasse */
+  $handler->display->display_options['fields']['field_rfc_grade']['id'] = 'field_rfc_grade';
+  $handler->display->display_options['fields']['field_rfc_grade']['table'] = 'field_data_field_rfc_grade';
+  $handler->display->display_options['fields']['field_rfc_grade']['field'] = 'field_rfc_grade';
+  /* Felt: Entityform Submission: Navn */
+  $handler->display->display_options['fields']['field_rfc_name']['id'] = 'field_rfc_name';
+  $handler->display->display_options['fields']['field_rfc_name']['table'] = 'field_data_field_rfc_name';
+  $handler->display->display_options['fields']['field_rfc_name']['field'] = 'field_rfc_name';
+  /* Felt: Entityform Submission: Mailadresse */
+  $handler->display->display_options['fields']['field_rfc_mail']['id'] = 'field_rfc_mail';
+  $handler->display->display_options['fields']['field_rfc_mail']['table'] = 'field_data_field_rfc_mail';
+  $handler->display->display_options['fields']['field_rfc_mail']['field'] = 'field_rfc_mail';
+  /* Felt: Entityform Submission: Telefonnr */
+  $handler->display->display_options['fields']['field_rfc_phone']['id'] = 'field_rfc_phone';
+  $handler->display->display_options['fields']['field_rfc_phone']['table'] = 'field_data_field_rfc_phone';
+  $handler->display->display_options['fields']['field_rfc_phone']['field'] = 'field_rfc_phone';
+  /* Felt: Entityform Submission: Udbyder */
+  $handler->display->display_options['fields']['field_rfc_provider']['id'] = 'field_rfc_provider';
+  $handler->display->display_options['fields']['field_rfc_provider']['table'] = 'field_data_field_rfc_provider';
+  $handler->display->display_options['fields']['field_rfc_provider']['field'] = 'field_rfc_provider';
+  $handler->display->display_options['fields']['field_rfc_provider']['settings'] = array(
+    'bypass_access' => 0,
+    'link' => 0,
+  );
+  /* Felt: Entityform Submission: Forløb */
+  $handler->display->display_options['fields']['field_rfc_course']['id'] = 'field_rfc_course';
+  $handler->display->display_options['fields']['field_rfc_course']['table'] = 'field_data_field_rfc_course';
+  $handler->display->display_options['fields']['field_rfc_course']['field'] = 'field_rfc_course';
+  $handler->display->display_options['fields']['field_rfc_course']['settings'] = array(
+    'bypass_access' => 0,
+    'link' => 0,
+  );
+  /* Felt: Indhold: Emneområde */
+  $handler->display->display_options['fields']['field_subject']['id'] = 'field_subject';
+  $handler->display->display_options['fields']['field_subject']['table'] = 'field_data_field_subject';
+  $handler->display->display_options['fields']['field_subject']['field'] = 'field_subject';
+  $handler->display->display_options['fields']['field_subject']['relationship'] = 'field_rfc_course_target_id';
+  $handler->display->display_options['fields']['field_subject']['type'] = 'taxonomy_term_reference_plain';
+  $handler->display->display_options['fields']['field_subject']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['field_subject']['separator'] = ';';
+  /* Felt: Entityform Submission: Afviklingsdato */
+  $handler->display->display_options['fields']['field_rfc_date']['id'] = 'field_rfc_date';
+  $handler->display->display_options['fields']['field_rfc_date']['table'] = 'field_data_field_rfc_date';
+  $handler->display->display_options['fields']['field_rfc_date']['field'] = 'field_rfc_date';
+  $handler->display->display_options['fields']['field_rfc_date']['settings'] = array(
+    'format_type' => 'short',
+    'custom_date_format' => '',
+    'fromto' => 'both',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+    'show_remaining_days' => 0,
+  );
+  /* Felt: Entityform Submission: Ansøgt beløb */
+  $handler->display->display_options['fields']['field_rfc_requested_amount']['id'] = 'field_rfc_requested_amount';
+  $handler->display->display_options['fields']['field_rfc_requested_amount']['table'] = 'field_data_field_rfc_requested_amount';
+  $handler->display->display_options['fields']['field_rfc_requested_amount']['field'] = 'field_rfc_requested_amount';
+  $handler->display->display_options['fields']['field_rfc_requested_amount']['settings'] = array(
+    'thousand_separator' => '',
+    'decimal_separator' => ',',
+    'scale' => '2',
+    'prefix_suffix' => 1,
+  );
+  /* Felt: Entityform Submission: Bevilget beløb */
+  $handler->display->display_options['fields']['field_rfc_granted_amount']['id'] = 'field_rfc_granted_amount';
+  $handler->display->display_options['fields']['field_rfc_granted_amount']['table'] = 'field_data_field_rfc_granted_amount';
+  $handler->display->display_options['fields']['field_rfc_granted_amount']['field'] = 'field_rfc_granted_amount';
+  $handler->display->display_options['fields']['field_rfc_granted_amount']['settings'] = array(
+    'thousand_separator' => '',
+    'decimal_separator' => ',',
+    'scale' => '2',
+    'prefix_suffix' => 1,
+  );
+  /* Felt: Entityform Submission: Status */
+  $handler->display->display_options['fields']['field_rfc_status']['id'] = 'field_rfc_status';
+  $handler->display->display_options['fields']['field_rfc_status']['table'] = 'field_data_field_rfc_status';
+  $handler->display->display_options['fields']['field_rfc_status']['field'] = 'field_rfc_status';
+  /* Felt: Entityform Submission: Bemærkninger */
+  $handler->display->display_options['fields']['field_rfc_remarks']['id'] = 'field_rfc_remarks';
+  $handler->display->display_options['fields']['field_rfc_remarks']['table'] = 'field_data_field_rfc_remarks';
+  $handler->display->display_options['fields']['field_rfc_remarks']['field'] = 'field_rfc_remarks';
+  /* Felt: Entityform Submission: Date submitted */
+  $handler->display->display_options['fields']['created']['id'] = 'created';
+  $handler->display->display_options['fields']['created']['table'] = 'entityform';
+  $handler->display->display_options['fields']['created']['field'] = 'created';
+  $handler->display->display_options['fields']['created']['label'] = 'Indsendelsesdato';
+  $handler->display->display_options['fields']['created']['date_format'] = 'short';
+  $handler->display->display_options['fields']['created']['second_date_format'] = 'html5_tools_iso8601';
+  $handler->display->display_options['path'] = 'admin/settings/custom/free_course_request/export';
+  $handler->display->display_options['displays'] = array(
+    'free_course_requests_table' => 'free_course_requests_table',
+    'default' => 0,
+    'free_course_requests_user' => 0,
+  );
+  $translatables['ulf_free_course_requests'] = array(
+    t('Master'),
+    t('Alle ansoegninger'),
+    t('mere'),
+    t('Udfør'),
+    t('Gendan'),
+    t('Sortér efter'),
+    t('Stigende'),
+    t('Faldende'),
+    t('Antal elementer'),
+    t('- Alle -'),
+    t('Forskydning'),
+    t('« første'),
+    t('‹ forrige'),
+    t('næste ›'),
+    t('sidste »'),
+    t('forfatter'),
+    t('Indhold entity refereret fra field_rfc_course'),
+    t('- Vælg en handling -'),
+    t('Delete Submissions'),
+    t('Vis'),
+    t('Redigér'),
+    t('Slet'),
+    t('Form Type'),
+    t('Date submitted'),
+    t('Dato ændret'),
+    t('Søg på skole, person, forløb, udbyder eller id'),
+    t('Afviklingsdato (field_rfc_date)'),
+    t('Afviklingsår'),
+    t('Status'),
+    t('All applications'),
+    t('Course'),
+    t('ID'),
+    t('.'),
+    t('Skole'),
+    t('Navn'),
+    t('Udbyder'),
+    t('Forløb'),
+    t('Emneområde'),
+    t('Afviklingsdato'),
+    t('Ansøgt beløb'),
+    t('Bevilget beløb'),
+    t('Bemærkninger'),
+    t('User applications'),
+    t('Mine ansoegninger'),
+    t('Data export'),
+    t('Klasse'),
+    t('Mailadresse'),
+    t('Telefonnr'),
+    t('Indsendelsesdato'),
+  );
+  $export['ulf_free_course_requests'] = $view;
+
+  $view = new view();
+  $view->name = 'ulf_free_course_requests_dropdown_content';
+  $view->description = 'Holds dropdown lists with content for free course request form';
+  $view->tag = 'default';
+  $view->base_table = 'node';
+  $view->human_name = 'Ulf free course requests dropdown content';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['use_more_text'] = 'mere';
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Udfør';
+  $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Gendan';
+  $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Sortér efter';
+  $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'Stigende';
+  $handler->display->display_options['exposed_form']['options']['sort_desc_label'] = 'Faldende';
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['expose']['items_per_page_label'] = 'Antal elementer';
+  $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all_label'] = '- Alle -';
+  $handler->display->display_options['pager']['options']['expose']['offset_label'] = 'Forskydning';
+  $handler->display->display_options['pager']['options']['tags']['first'] = '« første';
+  $handler->display->display_options['pager']['options']['tags']['previous'] = '‹ forrige';
+  $handler->display->display_options['pager']['options']['tags']['next'] = 'næste ›';
+  $handler->display->display_options['pager']['options']['tags']['last'] = 'sidste »';
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['row_plugin'] = 'fields';
+  /* Felt: Indhold: Titel */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  /* Sorteringskriterie: Indhold: Titel */
+  $handler->display->display_options['sorts']['title']['id'] = 'title';
+  $handler->display->display_options['sorts']['title']['table'] = 'node';
+  $handler->display->display_options['sorts']['title']['field'] = 'title';
+  /* Sorteringskriterie: Indhold: Oprettelsesdato */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'node';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Filterkriterie: Indhold: Published status */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filterkriterie: Indhold: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'course' => 'course',
+  );
+  /* Filterkriterie: Indhold: Overordnet målgruppe (field_target_group) */
+  $handler->display->display_options['filters']['field_target_group_tid']['id'] = 'field_target_group_tid';
+  $handler->display->display_options['filters']['field_target_group_tid']['table'] = 'field_data_field_target_group';
+  $handler->display->display_options['filters']['field_target_group_tid']['field'] = 'field_target_group_tid';
+  $handler->display->display_options['filters']['field_target_group_tid']['value'] = array(
+    148 => '148',
+    149 => '149',
+  );
+  $handler->display->display_options['filters']['field_target_group_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_target_group_tid']['vocabulary'] = 'target_group';
+
+  /* Display: Entity Reference */
+  $handler = $view->new_display('entityreference', 'Entity Reference', 'entityreference_1');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'entityreference_style';
+  $handler->display->display_options['style_options']['search_fields'] = array(
+    'title' => 'title',
+  );
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'entityreference_fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $translatables['ulf_free_course_requests_dropdown_content'] = array(
+    t('Master'),
+    t('mere'),
+    t('Udfør'),
+    t('Gendan'),
+    t('Sortér efter'),
+    t('Stigende'),
+    t('Faldende'),
+    t('Antal elementer'),
+    t('- Alle -'),
+    t('Forskydning'),
+    t('« første'),
+    t('‹ forrige'),
+    t('næste ›'),
+    t('sidste »'),
+    t('Entity Reference'),
+  );
+  $export['ulf_free_course_requests_dropdown_content'] = $view;
+
+  $view = new view();
+  $view->name = 'ulf_free_course_requests_dropdowns_user';
+  $view->description = 'Holds dropdown lists with users for free course request form';
+  $view->tag = 'default';
+  $view->base_table = 'users';
+  $view->human_name = 'Ulf free course requests dropdowns user';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['use_more_text'] = 'mere';
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['access']['perm'] = 'access user profiles';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Udfør';
+  $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Gendan';
+  $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Sortér efter';
+  $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'Stigende';
+  $handler->display->display_options['exposed_form']['options']['sort_desc_label'] = 'Faldende';
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['expose']['items_per_page_label'] = 'Antal elementer';
+  $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all_label'] = '- Alle -';
+  $handler->display->display_options['pager']['options']['expose']['offset_label'] = 'Forskydning';
+  $handler->display->display_options['pager']['options']['tags']['first'] = '« første';
+  $handler->display->display_options['pager']['options']['tags']['previous'] = '‹ forrige';
+  $handler->display->display_options['pager']['options']['tags']['next'] = 'næste ›';
+  $handler->display->display_options['pager']['options']['tags']['last'] = 'sidste »';
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['style_options']['grouping'] = array(
+    0 => array(
+      'field' => 'name',
+      'rendered' => 1,
+      'rendered_strip' => 0,
+    ),
+  );
+  $handler->display->display_options['row_plugin'] = 'fields';
+  /* Felt: Bruger: Navn */
+  $handler->display->display_options['fields']['field_profile_name']['id'] = 'field_profile_name';
+  $handler->display->display_options['fields']['field_profile_name']['table'] = 'field_data_field_profile_name';
+  $handler->display->display_options['fields']['field_profile_name']['field'] = 'field_profile_name';
+  $handler->display->display_options['fields']['field_profile_name']['label'] = '';
+  $handler->display->display_options['fields']['field_profile_name']['element_label_colon'] = FALSE;
+  /* Sorteringskriterie: Bruger: Navn */
+  $handler->display->display_options['sorts']['name']['id'] = 'name';
+  $handler->display->display_options['sorts']['name']['table'] = 'users';
+  $handler->display->display_options['sorts']['name']['field'] = 'name';
+  /* Filterkriterie: Bruger: Active status */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'users';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filterkriterie: Bruger: Roller */
+  $handler->display->display_options['filters']['rid']['id'] = 'rid';
+  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
+  $handler->display->display_options['filters']['rid']['field'] = 'rid';
+  $handler->display->display_options['filters']['rid']['value'] = array(
+    18 => '18',
+  );
+
+  /* Display: Schools */
+  $handler = $view->new_display('entityreference', 'Schools', 'entityreference_1');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['display_description'] = 'List of users with skole role';
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'entityreference_style';
+  $handler->display->display_options['style_options']['search_fields'] = array(
+    'field_profile_name' => 'field_profile_name',
+  );
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'entityreference_fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filterkriterie: Bruger: Active status */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'users';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filterkriterie: Bruger: Roller */
+  $handler->display->display_options['filters']['rid']['id'] = 'rid';
+  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
+  $handler->display->display_options['filters']['rid']['field'] = 'rid';
+  $handler->display->display_options['filters']['rid']['value'] = array(
+    21 => '21',
+  );
+
+  /* Display: Course providers */
+  $handler = $view->new_display('entityreference', 'Course providers', 'entityreference_2');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['display_description'] = 'List of users with course provider role';
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'entityreference_style';
+  $handler->display->display_options['style_options']['search_fields'] = array(
+    'field_profile_name' => 'field_profile_name',
+  );
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'entityreference_fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filterkriterie: Bruger: Active status */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'users';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filterkriterie: Bruger: Roller */
+  $handler->display->display_options['filters']['rid']['id'] = 'rid';
+  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
+  $handler->display->display_options['filters']['rid']['field'] = 'rid';
+  $handler->display->display_options['filters']['rid']['value'] = array(
+    18 => '18',
+  );
+  $translatables['ulf_free_course_requests_dropdowns_user'] = array(
+    t('Master'),
+    t('mere'),
+    t('Udfør'),
+    t('Gendan'),
+    t('Sortér efter'),
+    t('Stigende'),
+    t('Faldende'),
+    t('Antal elementer'),
+    t('- Alle -'),
+    t('Forskydning'),
+    t('« første'),
+    t('‹ forrige'),
+    t('næste ›'),
+    t('sidste »'),
+    t('Schools'),
+    t('List of users with skole role'),
+    t('Course providers'),
+    t('List of users with course provider role'),
+  );
+  $export['ulf_free_course_requests_dropdowns_user'] = $view;
+
+  return $export;
+}
