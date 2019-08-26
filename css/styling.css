@@ -107,3 +107,8 @@
 .fcr-content {
   margin: 0 8px;
 }
+
+.field-name-field-rfc-send-mail > div,
+.field-name-field-rfc-send-mail > div label {
+  display: inline-block;
+}

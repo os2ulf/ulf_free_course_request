@@ -47,10 +47,13 @@
             <h2 class="block--field-label"><?php print t('Contact');?></h2>
             <div class="block--field-label"><?php print t('Name'); ?></div><div><?php print $elements["#account"]->name; ?></div>
             <div class="block--field-label"><?php print t('Email'); ?></div><div><?php print $elements["#account"]->mail; ?></div>
-            <?php if ($user->uid == $elements['#account']->uid || user_access('administer ulf free course request settings')) : ?>
-              <p></p>
+            <?php if ($user->uid == $elements['#account']->uid) : ?>
               <div>
-                <a href="/admin/udgiftsdaekning/ansoegninger/<?php print $elements['#account']->uid; ?>"><?php print t('View archived applications') ?></a>
+                <p></p>
+                <p>
+                  <a href="/ansoeg/udgiftsdaekning" class="button"><?php print t('Apply for expense coverage') ?></a>
+                  <a href="/admin/udgiftsdaekning/ansoegninger/<?php print $elements['#account']->uid; ?>" class="button"><?php print t('View archived applications') ?></a>
+                </p>
               </div>
             <?php endif; ?>
           </div>

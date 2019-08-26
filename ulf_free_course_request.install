@@ -10,4 +10,26 @@ function ulf_free_course_request_install () {
   // Use chosen only for frontend displays.
   variable_set('chosen_include', 1);
   variable_set('chosen_minimum_single', 1);
+
+  // Add form to captcha.
+  db_insert('captcha_points')
+    ->fields(array(
+      'form_id' => 'free_course_request_entityform_edit_form',
+      'captcha_type' => 'default',
+    ))
+    ->execute();
+}
+
+
+
+/**
+ * Add captcha to request form.
+ */
+function ulf_free_course_request_update_7100 () {
+  db_insert('captcha_points')
+  ->fields(array(
+    'form_id' => 'free_course_request_entityform_edit_form',
+    'captcha_type' => 'default',
+  ))
+    ->execute();
 }

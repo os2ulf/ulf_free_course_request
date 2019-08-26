@@ -36,6 +36,9 @@ function ulf_free_course_request_menu() {
   return $items;
 }
 
+/**
+ * Implements hook_preprocess_user_profile().
+ */
 function ulf_free_course_request_preprocess_user_profile(&$variables) {
   foreach ($variables['elements']['#account']->roles as $role) {
     $filter = '![^abcdefghijklmnopqrstuvwxyz0-9-_]+!s';
@@ -65,15 +68,46 @@ function ulf_free_course_request_theme_registry_alter(&$theme_registry) {
 }
 
 /**
- * Create notification on entity creation.
+ * Change the entiyform after it has been inserted into db.
+ * Also send mails.
  *
  * @param $entity
- * @param $type
+ * @param $entity_type
  */
-function ulf_free_course_request_entity_insert($entity, $type) {
-  if ($type == 'entityform') {
-    $wrapper = entity_metadata_wrapper($type, $entity);
-    _rfc_notify($wrapper, 'on_submit_user');
-    _rfc_notify($wrapper, 'on_submit_admin');
+function ulf_free_course_request_entity_postinsert($entity, $entity_type) {
+  if ($entity_type == 'entityform') {
+    if ($entity->type == 'free_course_request') {
+      $entity->uid = $entity->field_rfc_school['und'][0]['target_id'];
+      entityform_save($entity);
+
+      $wrapper = entity_metadata_wrapper($entity_type, $entity);
+      _rfc_notify($wrapper, 'on_submit_user');
+      _rfc_notify($wrapper, 'on_submit_admin');
+    }
+  }
+}
+
+
+/**
+ * Change the entiyform after it has been inserted into db.
+ * Also send mails.
+ *
+ * @param $entity
+ * @param $entity_type
+ */
+function ulf_free_course_request_entity_postupdate($entity, $entity_type) {
+  if ($entity_type == 'entityform') {
+    if ($entity->type == 'free_course_request') {
+      if ($entity->field_rfc_send_mail[LANGUAGE_NONE][0]['value'] == TRUE) {
+        $wrapper = entity_metadata_wrapper($entity_type, $entity);
+        if ($entity->field_rfc_status[LANGUAGE_NONE][0]['value'] == 'accepted') {
+          _rfc_notify($wrapper, 'on_change_accepted');
+        }
+        if ($entity->field_rfc_status[LANGUAGE_NONE][0]['value'] == 'refused') {
+          _rfc_notify($wrapper, 'on_change_refused');
+        }
+      }
+      drupal_goto('admin/config/system/free_course_request');
+    }
   }
 }

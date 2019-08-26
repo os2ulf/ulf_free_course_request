@@ -121,12 +121,14 @@ function ulf_free_course_request_form_backend(array $form, array &$form_state) {
 
   $form['settings']['dates'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Settlement period'),
+    '#title' => t('Arrangement period'),
+    '#description' => t('Set the date range of the arrangement date field in frontend'),
     '#weight' => 2,
   );
 
   $form['settings']['dates']['ufcr_from'] = array(
     '#type' => 'date_popup',
+    '#title' => t('From'),
     '#default_value' => variable_get('ufcr_from'),
     '#date_type' => DATE_DATETIME,
     '#date_timezone' => date_default_timezone(),
@@ -137,6 +139,7 @@ function ulf_free_course_request_form_backend(array $form, array &$form_state) {
 
   $form['settings']['dates']['ufcr_to'] = array(
     '#type' => 'date_popup',
+    '#title' => t('To'),
     '#default_value' => variable_get('ufcr_to'),
     '#date_type' => DATE_DATETIME,
     '#date_timezone' => date_default_timezone(),

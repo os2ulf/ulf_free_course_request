@@ -10,7 +10,7 @@
  * Implements hook_form_FORMID_alter().
  */
 function ulf_free_course_request_form_user_profile_form_alter(&$form, $form_state) {
-  // If on a "skole" profile.
+  // If on a 'skole' profile.
   if(in_array('skole', $form['#user']->roles)) {
     $form['picture']['#access'] = FALSE;
     // Hide all fields
@@ -30,7 +30,7 @@ function ulf_free_course_request_form_user_profile_form_alter(&$form, $form_stat
  */
 function ulf_free_course_request_form_free_course_request_entityform_edit_form_alter(&$form, $form_state) {
   global $user;
-
+  $form['#logged_in_user'] = $user;
   // Set layout of page.
   $intro_text = variable_get('ufcr_intro', array('value' => '', 'format' => NULL))['value'];
   $form['#prefix'] = '<div class="fcr-form"><div class="user-message--wrapper"><div class="user-message">' . $intro_text . '</div></div>';
@@ -47,16 +47,23 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
     $form['field_rfc_status']['#access'] = FALSE;
     $form['field_rfc_granted_amount']['#access'] = FALSE;
     $form['field_rfc_remarks']['#access'] = FALSE;
+    $form['field_rfc_send_mail']['#access'] = FALSE;
+  }
+
+  // Auto fill send mail checkbox when editing an application
+  if ($form_state['entityform_form_mode'] == 'edit') {
+    $form['field_rfc_send_mail']['und']['#default_value'] = 1;
   }
 
   // Fill input fields for school users.
   if (in_array('skole', $user->roles)) {
     // Add user email if user is logged in.
     $form['field_rfc_mail'][LANGUAGE_NONE]['0']['value']['#default_value'] = $user->mail;
-    $form['field_rfc_school']['und']['#default_value'][0] = $user->uid;
+    $form['field_rfc_school'][LANGUAGE_NONE]['#default_value'][0] = $user->uid;
   }
 
   $form['#attached']['js'] = array(
+    drupal_get_path('module', 'ulf_free_course_request') . '/js/change-course-value.js',
     drupal_get_path('module', 'ulf_free_course_request') . '/js/calendar-popup.js',
     array(
       'type' => 'setting',
@@ -70,14 +77,14 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
   );
 
   // Add ajax to provider field.
-  $form['field_rfc_provider']['und']['#ajax'] = array(
+  $form['field_rfc_provider'][LANGUAGE_NONE]['#ajax'] = array(
     'event'=>'change',
     'callback' =>'_rfc_change_course_dropdown',
     'wrapper' => 'course-dropdown-wrapper',
   );
 
   // Add ajax to course field.
-  $form['field_rfc_course']['und']['#ajax'] = array(
+  $form['field_rfc_course'][LANGUAGE_NONE]['#ajax'] = array(
     'event'=>'change',
     'callback' =>'_rfc_show_price_info',
     'wrapper' => 'course-price-wrapper',
@@ -91,23 +98,64 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
   $form['field_rfc_requested_amount']['#prefix'] = '<div id="course-price-wrapper">';
   $form['field_rfc_requested_amount']['#suffix'] = '</div>';
 
-  // Add option _none for dropdowns if it does not exist.
-  $no_select = array('_none' => '- Vælg en værdi -');
-  if (!array_key_exists('_none', $form['field_rfc_course']['und']['#options'])) {
-    $form['field_rfc_course']['und']['#options'] = $no_select + $form['field_rfc_course']['und']['#options'];
+  // Add option _none for dropdowns if it does not exist. (Due to ajax)
+  if (!array_key_exists('_none', $form['field_rfc_course'][LANGUAGE_NONE]['#options'])) {
+    $form['field_rfc_course'][LANGUAGE_NONE]['#options'] = array('_none' => t('- Select a course  -')) +
+      $form['field_rfc_course']['und']['#options'];
   }
-  if (!array_key_exists('_none', $form['field_rfc_provider']['und']['#options'])) {
-    $form['field_rfc_provider']['und']['#options'] = $no_select + $form[  'field_rfc_provider']['und']['#options'];
+  else {
+    $form['field_rfc_course'][LANGUAGE_NONE]['#options']['_none'] = t('- Select a course  -');
+  }
+  if (!array_key_exists('_none', $form['field_rfc_provider'][LANGUAGE_NONE]['#options'])) {
+    $form['field_rfc_provider'][LANGUAGE_NONE]['#options'] = array('_none' => t('- Select a provider -')) +
+      $form['field_rfc_provider']['und']['#options'];
+  }
+  else {
+    $form['field_rfc_provider'][LANGUAGE_NONE]['#options']['_none'] = t('- Select a provider  -');
   }
 
+  $form['field_rfc_subject'][LANGUAGE_NONE]['#options']['_none'] = t('- Select a subject  -');
+  $form['field_rfc_school'][LANGUAGE_NONE]['#options']['_none'] = t('- Select a school  -');
+
   // Get new courses for dropdown if provider is set.
-  if (isset($form_state['values']['field_rfc_provider']['und']['0'])) {
-    $field_value = $form_state['values']['field_rfc_provider']['und']['0'];
-    $form['field_rfc_course']['und']['#options'] = _rfc_get_courses(
+  if (isset($form_state['values']['field_rfc_provider'][LANGUAGE_NONE]['0'])) {
+    $field_value = $form_state['values']['field_rfc_provider'][LANGUAGE_NONE]['0'];
+    $form['field_rfc_course'][LANGUAGE_NONE]['#options'] = _rfc_get_courses(
       isset($field_value['target_id']) ? $field_value['target_id'] : $field_value,
-      $form['field_rfc_course']['und']['#options']
+      $form['field_rfc_course'][LANGUAGE_NONE]['#options']
     );
   }
+
+  // Set required and hide fields based on field_rfc_course_not_found checkbox
+  $form['field_rfc_course']['#states'] = array(
+    'required' => array(
+      ':input[id="edit-field-rfc-course-not-found-und"]' => array('checked' => FALSE),
+    ),
+    'visible' => array(
+      ':input[id="edit-field-rfc-course-not-found-und"]' => array('checked' => FALSE),
+    )
+  );
+  $form['field_rfc_new_course_name']['#states'] = array(
+    'required' => array(
+      ':input[id="edit-field-rfc-course-not-found-und"]' => array('checked' => TRUE),
+    ),
+    'visible' => array(
+      ':input[id="edit-field-rfc-course-not-found-und"]' => array('checked' => TRUE),
+    ),
+  );
+  $form['field_rfc_new_course_description']['#states'] = array(
+    'required' => array(
+      ':input[id="edit-field-rfc-course-not-found-und"]' => array('checked' => TRUE),
+    ),
+    'visible' => array(
+      ':input[id="edit-field-rfc-course-not-found-und"]' => array('checked' => TRUE),
+    )
+  );
+
+
+
+  // Add custom validation handler
+  $form['#validate'][] = '_rfc_request_form_validate';
 
   // Get price info if course is selected.
   if (isset($form_state['values']['field_rfc_course']['und']['0']['target_id'])) {
@@ -118,6 +166,11 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
   // Set GDPR and Cancellation texts.
   $form['field_rfc_conditions']['#prefix'] = variable_get('ufcr_cancellation', array('value' => '', 'format' => NULL))['value'];
   $form['field_rfc_gdpr']['#prefix'] = variable_get('ufcr_gdpr', array('value' => '', 'format' => NULL))['value'];
+
+
+  if ($form_state['entityform_form_mode'] == 'submit') {
+    array_unshift($form['actions']['submit']['#submit'],'_rfc_request_form_submit');
+  }
 }
 
 /**
@@ -209,6 +262,44 @@ function _rfc_get_course_price_info($nid) {
 }
 
 /**
+ * Custom validation to handle form states required fields.
+ *
+ * @param $element
+ * @param $form_state
+ */
+function _rfc_request_form_validate($element, $form_state) {
+  if ($form_state['triggering_element']['#id'] == 'edit-submit') {
+    if ($form_state['values']['field_rfc_course_not_found']['und'][0]['value'] == TRUE) {
+      if (empty($form_state['values']['field_rfc_new_course_name'][LANGUAGE_NONE][0]['value'])) {
+        form_set_error('field_rfc_new_course_name',  t('The field %field is required.', array('%field' => $element['field_rfc_new_course_name'][LANGUAGE_NONE]['#title'])));
+      }
+      if (empty($form_state['values']['field_rfc_new_course_description'][LANGUAGE_NONE][0]['value'])) {
+        form_set_error('field_rfc_new_course_description',  t('The field %field is required.', array('%field' => $element['field_rfc_new_course_description'][LANGUAGE_NONE]['#title'])));
+      }
+
+
+    }
+    else {
+      if (empty($form_state['values']['field_rfc_course'][LANGUAGE_NONE][0]['target_id'])) {
+        form_set_error('field_rfc_course', t('The field %field is required.', array('%field' => $element['field_rfc_course'][LANGUAGE_NONE]['#title'])));
+      }
+    }
+  }
+}
+
+/**
+ * Custom submit to alter submission values.
+ *
+ * @param $form
+ * @param $form_state
+ */
+function _rfc_request_form_submit($form, &$form_state) {
+  // Add 3 hours to date timestamp to ensure correct date (Timezones and summertime)
+  // We don't care about the exact time.
+  $form_state['values']['field_rfc_date'][LANGUAGE_NONE][0]['value'] = $form_state['values']['field_rfc_date'][LANGUAGE_NONE][0]['value'] + 10800;
+}
+
+/**
  * Get all middle school courses by user.
  *
  * @param $uid
@@ -217,7 +308,7 @@ function _rfc_get_course_price_info($nid) {
  */
 function _rfc_get_courses($uid, $current_options) {
   // Set target group pre school and middle school.
-  $term_ids = array('147','148');
+  $term_ids = array('148');
 
   // Get courses
   $query = new EntityFieldQuery;
