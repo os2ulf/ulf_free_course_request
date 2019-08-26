@@ -49,7 +49,7 @@ function ulf_free_course_request_default_entityform_type() {
       "submissions_view" : "default",
       "user_submissions_view" : "default",
       "form_status" : "ENTITYFORM_OPEN",
-      "roles" : { "1" : "1", "2" : "2"},
+      "roles" : { "1" : "1", "2" : "2", "18" : 0, "19" : 0, "20" : 0, "21" : 0 },
       "resubmit_action" : "new",
       "redirect_path" : "",
       "instruction_pre" : { "value" : "", "format" : "editor" }

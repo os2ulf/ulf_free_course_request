@@ -69,7 +69,7 @@ function ulf_free_course_request_field_default_field_instances() {
     'entity_type' => 'entityform',
     'field_name' => 'field_rfc_course',
     'label' => 'Forløb',
-    'required' => 1,
+    'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
@@ -80,6 +80,44 @@ function ulf_free_course_request_field_default_field_instances() {
         'apply_chosen' => '',
       ),
       'type' => 'options_select',
+      'weight' => 3,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'entityform-free_course_request-field_rfc_course_not_found'.
+  $field_instances['entityform-free_course_request-field_rfc_course_not_found'] = array(
+    'bundle' => 'free_course_request',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 18,
+      ),
+    ),
+    'entity_type' => 'entityform',
+    'field_name' => 'field_rfc_course_not_found',
+    'label' => 'Forløb findes ikke på listen',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 1,
+      ),
+      'type' => 'options_onoff',
       'weight' => 4,
     ),
   );
@@ -88,10 +126,10 @@ function ulf_free_course_request_field_default_field_instances() {
   $field_instances['entityform-free_course_request-field_rfc_date'] = array(
     'bundle' => 'free_course_request',
     'deleted' => 0,
-    'description' => 'Hvis forløbet kører over flere dage, så bedes du vælge startdatoen.',
+    'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'inline',
+        'label' => 'above',
         'module' => 'date',
         'settings' => array(
           'custom_date_format' => '',
@@ -103,15 +141,15 @@ function ulf_free_course_request_field_default_field_instances() {
           'show_remaining_days' => 0,
         ),
         'type' => 'date_default',
-        'weight' => 9,
+        'weight' => 17,
       ),
     ),
     'entity_type' => 'entityform',
     'field_name' => 'field_rfc_date',
     'label' => 'Afviklingsdato',
-    'required' => 1,
+    'required' => 0,
     'settings' => array(
-      'default_value' => 'now',
+      'default_value' => 'blank',
       'default_value2' => 'same',
       'default_value_code' => '',
       'default_value_code2' => '',
@@ -130,7 +168,7 @@ function ulf_free_course_request_field_default_field_instances() {
         'year_range' => '-3:+3',
       ),
       'type' => 'date_popup',
-      'weight' => 6,
+      'weight' => 9,
     ),
   );
 
@@ -316,6 +354,82 @@ function ulf_free_course_request_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance:
+  // 'entityform-free_course_request-field_rfc_new_course_description'.
+  $field_instances['entityform-free_course_request-field_rfc_new_course_description'] = array(
+    'bundle' => 'free_course_request',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 20,
+      ),
+    ),
+    'entity_type' => 'entityform',
+    'field_name' => 'field_rfc_new_course_description',
+    'label' => 'Beskrivelse af forløbet',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'maxlength_js' => '',
+        'maxlength_js_enforce' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+        'maxlength_js_truncate_html' => 0,
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 6,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'entityform-free_course_request-field_rfc_new_course_name'.
+  $field_instances['entityform-free_course_request-field_rfc_new_course_name'] = array(
+    'bundle' => 'free_course_request',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 19,
+      ),
+    ),
+    'entity_type' => 'entityform',
+    'field_name' => 'field_rfc_new_course_name',
+    'label' => 'Forløbets navn',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'maxlength_js' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 5,
+    ),
+  );
+
   // Exported field_instance: 'entityform-free_course_request-field_rfc_phone'.
   $field_instances['entityform-free_course_request-field_rfc_phone'] = array(
     'bundle' => 'free_course_request',
@@ -461,7 +575,7 @@ function ulf_free_course_request_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 5,
+      'weight' => 8,
     ),
   );
 
@@ -498,6 +612,45 @@ function ulf_free_course_request_field_default_field_instances() {
       ),
       'type' => 'options_select',
       'weight' => 8,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'entityform-free_course_request-field_rfc_send_mail'.
+  $field_instances['entityform-free_course_request-field_rfc_send_mail'] = array(
+    'bundle' => 'free_course_request',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => 'Send mail til brugeren om status på ansøgningen når formularen gemmes. 
+Mail sendes dog kun hvis status er godkendt eller afvist.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 22,
+      ),
+    ),
+    'entity_type' => 'entityform',
+    'field_name' => 'field_rfc_send_mail',
+    'label' => 'Send mail ved gem',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 1,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 16,
     ),
   );
 
@@ -538,25 +691,65 @@ function ulf_free_course_request_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance:
+  // 'entityform-free_course_request-field_rfc_subject'.
+  $field_instances['entityform-free_course_request-field_rfc_subject'] = array(
+    'bundle' => 'free_course_request',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_link',
+        'weight' => 21,
+      ),
+    ),
+    'entity_type' => 'entityform',
+    'field_name' => 'field_rfc_subject',
+    'label' => 'Vælg emneområde',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'apply_chosen' => '',
+      ),
+      'type' => 'options_select',
+      'weight' => 7,
+    ),
+  );
+
   // Translatables
   // Included for use with string extractors like potx.
   t('Afviklingsdato');
   t('Ansøgt beløb');
   t('Bemærkninger');
+  t('Beskrivelse af forløbet');
   t('Bevilget beløb');
   t('Forløb');
-  t('Hvis forløbet kører over flere dage, så bedes du vælge startdatoen.');
+  t('Forløb findes ikke på listen');
+  t('Forløbets navn');
   t('Ja, det er forstået');
   t('Jeg giver samtykke');
   t('Klasse');
   t('Mailadresse');
   t('Navn');
+  t('Send mail til brugeren om status på ansøgningen når formularen gemmes. 
+Mail sendes dog kun hvis status er godkendt eller afvist.');
+  t('Send mail ved gem');
   t('Skole');
   t('Skriv forløbets totale pris i hele tal - eks. \'400\'. Det er den pris, der er aftalt med udbyderen af forløbet og som ULF i Aarhus skal betale totalt. Hvis du ansøger for flere klasser, så skriv den samlede pris for alle forløb.');
   t('Skriv hvilken klasse, der deltager i forløbet - sådan her: 7.B eller 7.ABC)');
   t('Status');
   t('Telefonnr');
   t('Udbyder');
+  t('Vælg emneområde');
 
   return $field_instances;
 }

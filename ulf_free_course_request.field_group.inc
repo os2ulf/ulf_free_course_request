@@ -53,9 +53,13 @@ function ulf_free_course_request_field_group_info() {
     'weight' => '2',
     'children' => array(
       0 => 'field_rfc_course',
-      1 => 'field_rfc_date',
-      2 => 'field_rfc_provider',
-      3 => 'field_rfc_requested_amount',
+      1 => 'field_rfc_provider',
+      2 => 'field_rfc_requested_amount',
+      3 => 'field_rfc_date',
+      4 => 'field_rfc_course_not_found',
+      5 => 'field_rfc_new_course_name',
+      6 => 'field_rfc_new_course_description',
+      7 => 'field_rfc_subject',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -84,9 +88,9 @@ function ulf_free_course_request_field_group_info() {
     'label' => 'Redaktion',
     'weight' => '0',
     'children' => array(
-      0 => 'field_rfc_status',
-      1 => 'field_rfc_granted_amount',
-      2 => 'field_rfc_remarks',
+      0 => 'field_rfc_granted_amount',
+      1 => 'field_rfc_remarks',
+      2 => 'field_rfc_status',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
