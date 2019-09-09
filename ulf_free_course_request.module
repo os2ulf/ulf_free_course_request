@@ -89,14 +89,14 @@ function ulf_free_course_request_entity_postinsert($entity, $entity_type) {
 
 
 /**
- * Change the entiyform after it has been inserted into db.
- * Also send mails.
+ * Act after entiyform has been changed.
  *
  * @param $entity
  * @param $entity_type
  */
 function ulf_free_course_request_entity_postupdate($entity, $entity_type) {
-  if ($entity_type == 'entityform') {
+  // Ensure we are submitting an entityform from form view.
+  if ($entity_type == 'entityform' && arg(2) == 'edit') {
     if ($entity->type == 'free_course_request') {
       if ($entity->field_rfc_send_mail[LANGUAGE_NONE][0]['value'] == TRUE) {
         $wrapper = entity_metadata_wrapper($entity_type, $entity);

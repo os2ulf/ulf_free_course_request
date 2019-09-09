@@ -241,7 +241,7 @@ function ulf_free_course_request_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 11,
+      'weight' => 18,
     ),
   );
 
@@ -314,7 +314,44 @@ function ulf_free_course_request_field_default_field_instances() {
       'module' => 'html5_tools',
       'settings' => array(),
       'type' => 'emailwidget',
-      'weight' => 14,
+      'weight' => 22,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'entityform-free_course_request-field_rfc_mails_sent'.
+  $field_instances['entityform-free_course_request-field_rfc_mails_sent'] = array(
+    'bundle' => 'free_course_request',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 23,
+      ),
+    ),
+    'entity_type' => 'entityform',
+    'field_name' => 'field_rfc_mails_sent',
+    'label' => 'Sendte mails',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'maxlength_js' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 11,
     ),
   );
 
@@ -350,7 +387,7 @@ function ulf_free_course_request_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 12,
+      'weight' => 19,
     ),
   );
 
@@ -458,7 +495,7 @@ function ulf_free_course_request_field_default_field_instances() {
       'module' => 'html5_tools',
       'settings' => array(),
       'type' => 'telwidget',
-      'weight' => 13,
+      'weight' => 21,
     ),
   );
 
@@ -611,7 +648,7 @@ function ulf_free_course_request_field_default_field_instances() {
         'apply_chosen' => '',
       ),
       'type' => 'options_select',
-      'weight' => 8,
+      'weight' => 17,
     ),
   );
 
@@ -650,7 +687,7 @@ Mail sendes dog kun hvis status er godkendt eller afvist.',
         'display_label' => 1,
       ),
       'type' => 'options_onoff',
-      'weight' => 16,
+      'weight' => 10,
     ),
   );
 
@@ -743,6 +780,7 @@ Mail sendes dog kun hvis status er godkendt eller afvist.',
   t('Send mail til brugeren om status på ansøgningen når formularen gemmes. 
 Mail sendes dog kun hvis status er godkendt eller afvist.');
   t('Send mail ved gem');
+  t('Sendte mails');
   t('Skole');
   t('Skriv forløbets totale pris i hele tal - eks. \'400\'. Det er den pris, der er aftalt med udbyderen af forløbet og som ULF i Aarhus skal betale totalt. Hvis du ansøger for flere klasser, så skriv den samlede pris for alle forløb.');
   t('Skriv hvilken klasse, der deltager i forløbet - sådan her: 7.B eller 7.ABC)');
