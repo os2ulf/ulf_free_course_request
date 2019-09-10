@@ -20,8 +20,6 @@ function ulf_free_course_request_install () {
     ->execute();
 }
 
-
-
 /**
  * Add captcha to request form.
  */
