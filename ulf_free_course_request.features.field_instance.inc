@@ -274,7 +274,7 @@ function ulf_free_course_request_field_default_field_instances() {
       'max' => '',
       'min' => '',
       'prefix' => '',
-      'suffix' => 'kr.',
+      'suffix' => ' kr.',
       'user_register_form' => FALSE,
     ),
     'widget' => array(
@@ -604,7 +604,7 @@ function ulf_free_course_request_field_default_field_instances() {
       'max' => '',
       'min' => '',
       'prefix' => '',
-      'suffix' => 'kr.',
+      'suffix' => ' kr.',
       'user_register_form' => FALSE,
     ),
     'widget' => array(

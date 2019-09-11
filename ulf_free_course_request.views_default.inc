@@ -54,6 +54,7 @@ function ulf_free_course_request_views_default_views() {
     'field_rfc_school' => 'field_rfc_school',
     'field_rfc_name' => 'field_rfc_name',
     'field_rfc_provider' => 'field_rfc_provider',
+    'field_rfc_new_course_name' => 'field_rfc_new_course_name',
     'field_rfc_course' => 'field_rfc_course',
     'field_rfc_subject' => 'field_rfc_subject',
     'field_rfc_date' => 'field_rfc_date',
@@ -61,7 +62,11 @@ function ulf_free_course_request_views_default_views() {
     'field_rfc_status' => 'field_rfc_status',
     'field_rfc_granted_amount' => 'field_rfc_granted_amount',
     'field_rfc_remarks' => 'field_rfc_remarks',
+    'field_rfc_mails_sent' => 'field_rfc_mails_sent',
     'edit_entityform' => 'edit_entityform',
+    'field_profile_name' => 'field_profile_name',
+    'field_profile_name_1' => 'field_profile_name_1',
+    'title' => 'title',
   );
   $handler->display->display_options['style_options']['class'] = '';
   $handler->display->display_options['style_options']['default'] = 'entityform_id';
@@ -93,6 +98,13 @@ function ulf_free_course_request_views_default_views() {
       'empty_column' => 0,
     ),
     'field_rfc_provider' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_rfc_new_course_name' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -148,7 +160,33 @@ function ulf_free_course_request_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
+    'field_rfc_mails_sent' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
     'edit_entityform' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_profile_name' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_profile_name_1' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'title' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -246,7 +284,11 @@ function ulf_free_course_request_views_default_views() {
   );
   $handler->display->display_options['filters']['combine']['fields'] = array(
     'entityform_id' => 'entityform_id',
+    'field_rfc_school' => 'field_rfc_school',
     'field_rfc_name' => 'field_rfc_name',
+    'field_rfc_provider' => 'field_rfc_provider',
+    'field_rfc_new_course_name' => 'field_rfc_new_course_name',
+    'field_rfc_course' => 'field_rfc_course',
     'field_profile_name' => 'field_profile_name',
     'field_profile_name_1' => 'field_profile_name_1',
     'title' => 'title',
@@ -420,13 +462,19 @@ function ulf_free_course_request_views_default_views() {
     'bypass_access' => 0,
     'link' => 0,
   );
+  /* Felt: Entityform Submission: Forløbets navn */
+  $handler->display->display_options['fields']['field_rfc_new_course_name']['id'] = 'field_rfc_new_course_name';
+  $handler->display->display_options['fields']['field_rfc_new_course_name']['table'] = 'field_data_field_rfc_new_course_name';
+  $handler->display->display_options['fields']['field_rfc_new_course_name']['field'] = 'field_rfc_new_course_name';
+  $handler->display->display_options['fields']['field_rfc_new_course_name']['exclude'] = TRUE;
   /* Felt: Entityform Submission: Forløb */
   $handler->display->display_options['fields']['field_rfc_course']['id'] = 'field_rfc_course';
   $handler->display->display_options['fields']['field_rfc_course']['table'] = 'field_data_field_rfc_course';
   $handler->display->display_options['fields']['field_rfc_course']['field'] = 'field_rfc_course';
+  $handler->display->display_options['fields']['field_rfc_course']['empty'] = '[field_rfc_new_course_name] ';
   $handler->display->display_options['fields']['field_rfc_course']['settings'] = array(
     'bypass_access' => 0,
-    'link' => 0,
+    'link' => 1,
   );
   /* Felt: Entityform Submission: Vælg emneområde */
   $handler->display->display_options['fields']['field_rfc_subject']['id'] = 'field_rfc_subject';
@@ -562,13 +610,19 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['fields']['field_rfc_grade']['id'] = 'field_rfc_grade';
   $handler->display->display_options['fields']['field_rfc_grade']['table'] = 'field_data_field_rfc_grade';
   $handler->display->display_options['fields']['field_rfc_grade']['field'] = 'field_rfc_grade';
+  /* Felt: Entityform Submission: Forløbets navn */
+  $handler->display->display_options['fields']['field_rfc_new_course_name']['id'] = 'field_rfc_new_course_name';
+  $handler->display->display_options['fields']['field_rfc_new_course_name']['table'] = 'field_data_field_rfc_new_course_name';
+  $handler->display->display_options['fields']['field_rfc_new_course_name']['field'] = 'field_rfc_new_course_name';
+  $handler->display->display_options['fields']['field_rfc_new_course_name']['exclude'] = TRUE;
   /* Felt: Entityform Submission: Forløb */
   $handler->display->display_options['fields']['field_rfc_course']['id'] = 'field_rfc_course';
   $handler->display->display_options['fields']['field_rfc_course']['table'] = 'field_data_field_rfc_course';
   $handler->display->display_options['fields']['field_rfc_course']['field'] = 'field_rfc_course';
+  $handler->display->display_options['fields']['field_rfc_course']['empty'] = '[field_rfc_new_course_name] ';
   $handler->display->display_options['fields']['field_rfc_course']['settings'] = array(
     'bypass_access' => 0,
-    'link' => 0,
+    'link' => 1,
   );
   /* Felt: Entityform Submission: Vælg emneområde */
   $handler->display->display_options['fields']['field_rfc_subject']['id'] = 'field_rfc_subject';
@@ -622,12 +676,14 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['fields']['field_profile_name']['field'] = 'field_profile_name';
   $handler->display->display_options['fields']['field_profile_name']['relationship'] = 'field_rfc_provider_target_id';
   $handler->display->display_options['fields']['field_profile_name']['label'] = 'Udbyder';
+  $handler->display->display_options['fields']['field_profile_name']['exclude'] = TRUE;
   /* Felt: Indhold: Titel */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['relationship'] = 'field_rfc_course_target_id';
   $handler->display->display_options['fields']['title']['label'] = 'Forløb';
+  $handler->display->display_options['fields']['title']['exclude'] = TRUE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['filter_groups']['groups'] = array(
     1 => 'AND',
@@ -651,6 +707,10 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['filters']['combine']['fields'] = array(
     'entityform_id' => 'entityform_id',
     'field_rfc_name' => 'field_rfc_name',
+    'field_rfc_provider' => 'field_rfc_provider',
+    'field_rfc_grade' => 'field_rfc_grade',
+    'field_rfc_new_course_name' => 'field_rfc_new_course_name',
+    'field_rfc_course' => 'field_rfc_course',
     'field_profile_name' => 'field_profile_name',
     'title' => 'title',
   );
@@ -893,7 +953,9 @@ function ulf_free_course_request_views_default_views() {
     t('Skole'),
     t('Navn'),
     t('Udbyder'),
+    t('Forløbets navn'),
     t('Forløb'),
+    t('[field_rfc_new_course_name] '),
     t('Emneområde'),
     t('Afviklingsdato'),
     t('Ansøgt beløb'),
@@ -908,7 +970,6 @@ function ulf_free_course_request_views_default_views() {
     t('Data export'),
     t('Mailadresse'),
     t('Telefonnr'),
-    t('Forløbets navn'),
     t('Beskrivelse af forløbet'),
     t('Indsendelsesdato'),
   );

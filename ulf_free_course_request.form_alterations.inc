@@ -57,6 +57,9 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
     $form['field_rfc_send_mail']['und']['#default_value'] = 1;
   }
 
+  // Hide format options from description field.
+  $form['field_rfc_remarks']['#after_build'][] = '_rfc_after';
+
   // Fill input fields for school users.
   if (in_array('skole', $user->roles)) {
     // Add user email if user is logged in.
@@ -338,4 +341,12 @@ function _rfc_get_courses($uid, $current_options) {
   }
 
   return $current_options;
+}
+
+function _rfc_after(&$form) {
+  $form[LANGUAGE_NONE][0]['format']['guidelines']['#access'] = FALSE;
+  $form[LANGUAGE_NONE][0]['format']['format']['#access'] = FALSE;
+  $form[LANGUAGE_NONE][0]['format']['help']['#access'] = FALSE;
+  $form[LANGUAGE_NONE][0]['format']['#theme_wrappers'] = NULL;
+  return $form;
 }

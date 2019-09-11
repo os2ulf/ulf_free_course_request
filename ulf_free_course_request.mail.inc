@@ -179,7 +179,7 @@ function _rfc_build_mail_confirmation(EntityMetadataWrapper $wrapper) {
   $application .= '<strong>';
   $application .= t('Requested amount', array(), $translation_lang);
   $application .= ':</strong> ';
-  $application .= $wrapper->field_rfc_requested_amount->value();
+  $application .= $wrapper->field_rfc_requested_amount->value() . ' kr.';
   $application .= '<br/>';
   $application .= '<strong>';
   $application .= t('Date', array(), $translation_lang);
@@ -235,7 +235,7 @@ function _rfc_build_mail_followup(EntityMetadataWrapper $wrapper) {
   $application .= '<strong>';
   $application .= t('Granted amount', array(), $translation_lang);
   $application .= ':</strong> ';
-  $application .= $wrapper->field_rfc_granted_amount->value();
+  $application .= $wrapper->field_rfc_granted_amount->value() . ' kr.';
   $application .= '<br/>';
   $application .= '<strong>';
   $application .= t('Remarks', array(), $translation_lang);
@@ -292,7 +292,7 @@ function _rfc_build_mail_followup(EntityMetadataWrapper $wrapper) {
   $application .= '<strong>';
   $application .= t('Requested amount', array(), $translation_lang);
   $application .= ':</strong> ';
-  $application .= $wrapper->field_rfc_requested_amount->value();
+  $application .= $wrapper->field_rfc_requested_amount->value() . ' kr.';
   $application .= '<br/>';
   $application .= '<strong>';
   $application .= t('Date', array(), $translation_lang);
