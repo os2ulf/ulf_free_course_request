@@ -70,6 +70,15 @@ function ulf_free_course_request_form_backend(array $form, array &$form_state) {
     '#collapsed' => 0,
   );
 
+  $form['frontend_texts']['ufcr_title'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Title for the form'),
+    '#default_value' => variable_get('ufcr_title'),
+    '#description' => t('Sit the title for the form page'),
+    '#weight' => 0,
+    '#size' => 30,
+  );
+
   $form['frontend_texts']['ufcr_intro'] = array(
     '#type' => 'text_format',
     '#title' => t('Intro text'),

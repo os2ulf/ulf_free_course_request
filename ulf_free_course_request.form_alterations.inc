@@ -30,6 +30,8 @@ function ulf_free_course_request_form_user_profile_form_alter(&$form, $form_stat
  */
 function ulf_free_course_request_form_free_course_request_entityform_edit_form_alter(&$form, $form_state) {
   global $user;
+  drupal_set_title(variable_get('ufcr_title'));
+
   $form['#logged_in_user'] = $user;
   // Set layout of page.
   $intro_text = variable_get('ufcr_intro', array('value' => '', 'format' => NULL))['value'];
