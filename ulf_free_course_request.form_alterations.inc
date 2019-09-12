@@ -74,12 +74,14 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
   $form['#attached']['js'] = array(
     drupal_get_path('module', 'ulf_free_course_request') . '/js/change-course-value.js',
     drupal_get_path('module', 'ulf_free_course_request') . '/js/calendar-popup.js',
+    drupal_get_path('module', 'ulf_free_course_request') . '/js/change-subject.js',
     array(
       'type' => 'setting',
       'data' => array(
         'fcr' => array(
           'from' => explode('-', variable_get('ufcr_from')),
           'to' => explode('-', variable_get('ufcr_to')),
+          'subjects' => _rfc_get_subjects(),
         ),
       ),
     ),
@@ -275,6 +277,14 @@ function _rfc_get_course_price_info($nid) {
   $text .= '<div><a target="_blank" href="/node/' . $nid . '">' . t('Read more') . '</a></div>';
   $text .= '</div>';
 
+  // Add subject selected information as well.
+  $subject_ids = [];
+  $subjects = $wrapper->field_subject->value();
+  foreach ($subjects as $subject) {
+    $subject_ids[] = $subject->tid;
+  }
+  $text .= '<div class="data-selected-subject" data-course-subject="' . implode(':', $subject_ids). '"></div>';
+
   return $text;
 }
 
@@ -373,4 +383,23 @@ function _rfc_after(&$form) {
   $form[LANGUAGE_NONE][0]['format']['help']['#access'] = FALSE;
   $form[LANGUAGE_NONE][0]['format']['#theme_wrappers'] = NULL;
   return $form;
+}
+
+/**
+ * Get all topics for dropdown.
+ *
+ * @return array
+ */
+function _rfc_get_subjects() {
+  $options = array();
+  $vid = taxonomy_vocabulary_machine_name_load('topic')->vid;
+  $options_source = taxonomy_get_tree($vid);
+  foreach($options_source as $item ) {
+    $key = $item->tid;
+    $value = $item->name;
+    $options[$key] = $value;
+  }
+  natsort($options);
+
+  return $options;
 }
