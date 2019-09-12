@@ -285,7 +285,7 @@ function _rfc_get_course_price_info($nid) {
  * @param $form_state
  */
 function _rfc_request_form_validate($element, $form_state) {
-  if ($form_state['triggering_element']['#id'] == 'edit-submit') {
+  if ($form_state['triggering_element']['#id'] == 'edit-submit' || $form_state['triggering_element']['#id'] == 'edit-save' ) {
     // Validate on course or course name required.
     if ($form_state['values']['field_rfc_course_not_found'][LANGUAGE_NONE][0]['value'] == TRUE) {
       if (empty($form_state['values']['field_rfc_new_course_name'][LANGUAGE_NONE][0]['value'])) {
