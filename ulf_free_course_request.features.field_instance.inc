@@ -286,6 +286,45 @@ function ulf_free_course_request_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance:
+  // 'entityform-free_course_request-field_rfc_latest_editor'.
+  $field_instances['entityform-free_course_request-field_rfc_latest_editor'] = array(
+    'bundle' => 'free_course_request',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'entityreference',
+        'settings' => array(
+          'bypass_access' => FALSE,
+          'link' => FALSE,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 24,
+      ),
+    ),
+    'entity_type' => 'entityform',
+    'field_name' => 'field_rfc_latest_editor',
+    'label' => 'Senest ændret af',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'entityreference',
+      'settings' => array(
+        'match_operator' => 'CONTAINS',
+        'path' => '',
+        'size' => 60,
+      ),
+      'type' => 'entityreference_autocomplete',
+      'weight' => 12,
+    ),
+  );
+
   // Exported field_instance: 'entityform-free_course_request-field_rfc_mail'.
   $field_instances['entityform-free_course_request-field_rfc_mail'] = array(
     'bundle' => 'free_course_request',
@@ -781,6 +820,7 @@ Mail sendes dog kun hvis status er godkendt eller afvist.',
 Mail sendes dog kun hvis status er godkendt eller afvist.');
   t('Send mail ved gem');
   t('Sendte mails');
+  t('Senest ændret af');
   t('Skole');
   t('Skriv forløbets totale pris i hele tal - eks. \'400\'. Det er den pris, der er aftalt med udbyderen af forløbet og som ULF i Aarhus skal betale totalt. Hvis du ansøger for flere klasser, så skriv den samlede pris for alle forløb.');
   t('Skriv hvilken klasse, der deltager i forløbet - sådan her: 7.B eller 7.ABC)');

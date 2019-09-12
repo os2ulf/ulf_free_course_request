@@ -128,14 +128,28 @@ function _rfc_change_entity($entity, $action) {
   $wrapper = entity_metadata_wrapper('entityform', $entity);
   switch ($action) {
     case 'accepted':
-      $wrapper->field_rfc_status = 'accepted';
-      $wrapper->save();
+      if (!empty($wrapper->field_rfc_granted_amount->value())) {
+        $wrapper->field_rfc_status = 'accepted';
+        $wrapper->save();
+      }
+      else {
+        drupal_set_message(t('The application with id: @id was not accepted due to missing granted amount.', array(
+          '@id' => $wrapper->getIdentifier(),
+        )), 'warning');
+      }
       break;
 
     case 'accepted_mail':
-      $wrapper->field_rfc_status = 'accepted';
-      $wrapper->save();
-      _rfc_notify($wrapper, 'on_change_accepted');
+      if (!empty($wrapper->field_rfc_granted_amount->value())) {
+        $wrapper->field_rfc_status = 'accepted';
+        $wrapper->save();
+        _rfc_notify($wrapper, 'on_change_accepted');
+      }
+      else {
+        drupal_set_message(t('The application with id: @id was not accepted due to missing granted amount.', array(
+          '@id' => $wrapper->getIdentifier(),
+        )), 'warning');
+      }
       break;
 
     case 'refused':

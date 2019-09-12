@@ -93,6 +93,7 @@ function ulf_free_course_request_field_group_info() {
       2 => 'field_rfc_send_mail',
       3 => 'field_rfc_status',
       4 => 'field_rfc_mails_sent',
+      5 => 'field_rfc_latest_editor',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

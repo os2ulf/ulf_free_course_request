@@ -32,6 +32,7 @@ function _rfc_notify(EntityMetadataWrapper $wrapper, $action) {
       ))['value'];
       $params['body'] .= _rfc_build_mail_confirmation($wrapper);
 
+      // Log what mail was sent.
       $wrapper->field_rfc_mails_sent[] = t('Financing request received', array(), array('langcode' => $language->language));
       $wrapper->save();
       $to = $wrapper->field_rfc_mail->value();
@@ -58,6 +59,7 @@ function _rfc_notify(EntityMetadataWrapper $wrapper, $action) {
       ))['value'];
       $params['body'] .= _rfc_build_mail_followup($wrapper);
 
+      // Log what mail was sent.
       $wrapper->field_rfc_mails_sent[] = t('Financing request accepted', array(), array('langcode' => $language->language));
       $wrapper->save();
       $to = $wrapper->field_rfc_mail->value();

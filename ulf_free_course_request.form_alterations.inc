@@ -44,7 +44,7 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
     array('system', 'ui.datepicker'),
   );
 
-  // Hide editorial fields for non editors
+  // Hide editorial fields for non editors.
   if (!in_array('editor', $user->roles)) {
     $form['field_rfc_status']['#access'] = FALSE;
     $form['field_rfc_granted_amount']['#access'] = FALSE;
@@ -53,8 +53,10 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
   }
   // Always hide mails sent field. Set in code, and only used for display.
   $form['field_rfc_mails_sent']['#access'] = FALSE;
+  $form['field_rfc_latest_editor']['#access'] = FALSE;
 
-  // Auto fill send mail checkbox when editing an application
+
+  // Auto fill send mail checkbox when editing an application.
   if ($form_state['entityform_form_mode'] == 'edit') {
     $form['field_rfc_send_mail']['und']['#default_value'] = 1;
   }
@@ -105,7 +107,7 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
   $form['field_rfc_requested_amount']['#prefix'] = '<div id="course-price-wrapper">';
   $form['field_rfc_requested_amount']['#suffix'] = '</div>';
 
-  // Add option _none for dropdowns if it does not exist. (Due to ajax)
+  // Add option _none for dropdowns if it does not exist. (Due to ajax).
   if (!array_key_exists('_none', $form['field_rfc_course'][LANGUAGE_NONE]['#options'])) {
     $form['field_rfc_course'][LANGUAGE_NONE]['#options'] = array('_none' => t('- Select a course  -')) +
       $form['field_rfc_course']['und']['#options'];
@@ -133,7 +135,7 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
     );
   }
 
-  // Set required and hide fields based on field_rfc_course_not_found checkbox
+  // Set required and hide fields based on field_rfc_course_not_found checkbox.
   $form['field_rfc_course']['#states'] = array(
     'required' => array(
       ':input[id="edit-field-rfc-course-not-found-und"]' => array('checked' => FALSE),
@@ -159,9 +161,7 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
     )
   );
 
-
-
-  // Add custom validation handler
+  // Add custom validation handler.
   $form['#validate'][] = '_rfc_request_form_validate';
 
   // Get price info if course is selected.
@@ -185,12 +185,21 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
  *
  * @param $form
  * @param $form_state
+ *
  * @return mixed
  */
 function _rfc_change_course_dropdown($form, $form_state) {
   return $form['field_rfc_course'];
 }
 
+/**
+ * Show price information.
+ *
+ * @param $form
+ * @param $form_state
+ *
+ * @return mixed
+ */
 function _rfc_show_price_info($form, $form_state) {
   return $form['field_rfc_requested_amount'];
 }
@@ -199,6 +208,7 @@ function _rfc_show_price_info($form, $form_state) {
  * Get info about course prices.
  *
  * @param $nid
+ *
  * @return string
  */
 function _rfc_get_course_price_info($nid) {
@@ -276,20 +286,24 @@ function _rfc_get_course_price_info($nid) {
  */
 function _rfc_request_form_validate($element, $form_state) {
   if ($form_state['triggering_element']['#id'] == 'edit-submit') {
-    if ($form_state['values']['field_rfc_course_not_found']['und'][0]['value'] == TRUE) {
+    // Validate on course or course name required.
+    if ($form_state['values']['field_rfc_course_not_found'][LANGUAGE_NONE][0]['value'] == TRUE) {
       if (empty($form_state['values']['field_rfc_new_course_name'][LANGUAGE_NONE][0]['value'])) {
         form_set_error('field_rfc_new_course_name',  t('The field %field is required.', array('%field' => $element['field_rfc_new_course_name'][LANGUAGE_NONE]['#title'])));
       }
       if (empty($form_state['values']['field_rfc_new_course_description'][LANGUAGE_NONE][0]['value'])) {
         form_set_error('field_rfc_new_course_description',  t('The field %field is required.', array('%field' => $element['field_rfc_new_course_description'][LANGUAGE_NONE]['#title'])));
       }
-
-
     }
     else {
       if (empty($form_state['values']['field_rfc_course'][LANGUAGE_NONE][0]['target_id'])) {
         form_set_error('field_rfc_course', t('The field %field is required.', array('%field' => $element['field_rfc_course'][LANGUAGE_NONE]['#title'])));
       }
+    }
+
+    // Validate on no acceptance without amount.
+    if (empty($form_state['values']['field_rfc_granted_amount'][LANGUAGE_NONE][0]['value']) && $form_state['values']['field_rfc_status'][LANGUAGE_NONE][0]['value'] == 'accepted') {
+      form_set_error('field_rfc_granted_amount', t('The field %field is required to accept an application.', array('%field' => $element['field_rfc_granted_amount'][LANGUAGE_NONE]['#title'])));
     }
   }
 }
@@ -311,13 +325,14 @@ function _rfc_request_form_submit($form, &$form_state) {
  *
  * @param $uid
  * @param $current_options
+ *
  * @return mixed
  */
 function _rfc_get_courses($uid, $current_options) {
   // Set target group pre school and middle school.
   $term_ids = array('148');
 
-  // Get courses
+  // Get courses.
   $query = new EntityFieldQuery;
   $result = $query
     ->entityCondition('entity_type', 'node')
@@ -345,6 +360,13 @@ function _rfc_get_courses($uid, $current_options) {
   return $current_options;
 }
 
+/**
+ * Remove format options from form element.
+ *
+ * @param $form
+ *
+ * @return mixed
+ */
 function _rfc_after(&$form) {
   $form[LANGUAGE_NONE][0]['format']['guidelines']['#access'] = FALSE;
   $form[LANGUAGE_NONE][0]['format']['format']['#access'] = FALSE;

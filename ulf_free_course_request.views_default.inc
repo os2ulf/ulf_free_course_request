@@ -49,11 +49,10 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['pager']['options']['tags']['last'] = 'sidste »';
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
-    'views_bulk_operations' => 'views_bulk_operations',
     'entityform_id' => 'entityform_id',
-    'field_rfc_school' => 'field_rfc_school',
     'field_rfc_name' => 'field_rfc_name',
     'field_rfc_provider' => 'field_rfc_provider',
+    'field_rfc_grade' => 'field_rfc_grade',
     'field_rfc_new_course_name' => 'field_rfc_new_course_name',
     'field_rfc_course' => 'field_rfc_course',
     'field_rfc_subject' => 'field_rfc_subject',
@@ -62,30 +61,15 @@ function ulf_free_course_request_views_default_views() {
     'field_rfc_status' => 'field_rfc_status',
     'field_rfc_granted_amount' => 'field_rfc_granted_amount',
     'field_rfc_remarks' => 'field_rfc_remarks',
-    'field_rfc_mails_sent' => 'field_rfc_mails_sent',
-    'edit_entityform' => 'edit_entityform',
     'field_profile_name' => 'field_profile_name',
-    'field_profile_name_1' => 'field_profile_name_1',
     'title' => 'title',
   );
   $handler->display->display_options['style_options']['class'] = '';
   $handler->display->display_options['style_options']['default'] = 'entityform_id';
   $handler->display->display_options['style_options']['info'] = array(
-    'views_bulk_operations' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
     'entityform_id' => array(
       'sortable' => 1,
       'default_sort_order' => 'desc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_rfc_school' => array(
-      'sortable' => 1,
-      'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -98,6 +82,13 @@ function ulf_free_course_request_views_default_views() {
       'empty_column' => 0,
     ),
     'field_rfc_provider' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_rfc_grade' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -160,24 +151,7 @@ function ulf_free_course_request_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'field_rfc_mails_sent' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'edit_entityform' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
     'field_profile_name' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_profile_name_1' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',

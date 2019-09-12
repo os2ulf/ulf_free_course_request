@@ -77,6 +77,7 @@ function ulf_free_course_request_theme_registry_alter(&$theme_registry) {
 function ulf_free_course_request_entity_postinsert($entity, $entity_type) {
   if ($entity_type == 'entityform') {
     if ($entity->type == 'free_course_request') {
+      // Set author to choice of school.
       $entity->uid = $entity->field_rfc_school['und'][0]['target_id'];
       entityform_save($entity);
 
@@ -106,6 +107,10 @@ function ulf_free_course_request_entity_postupdate($entity, $entity_type) {
         if ($entity->field_rfc_status[LANGUAGE_NONE][0]['value'] == 'refused') {
           _rfc_notify($wrapper, 'on_change_refused');
         }
+        // Log the user that changed the entity
+        global $user;
+        $wrapper->field_rfc_latest_editor = $user->uid;
+        $wrapper->save();
       }
       drupal_goto('admin/config/system/free_course_request');
     }
