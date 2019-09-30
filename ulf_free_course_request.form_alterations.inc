@@ -82,10 +82,17 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
           'from' => explode('-', variable_get('ufcr_from')),
           'to' => explode('-', variable_get('ufcr_to')),
           'subjects' => _rfc_get_subjects(),
+          'create_mode' => $form_state['entityform_form_mode'] == 'submit' ? 1 : 0
         ),
       ),
     ),
   );
+
+  // Auto fill send mail checkbox when editing an application.
+  if ($form_state['entityform_form_mode'] == 'edit') {
+    $form['field_rfc_send_mail']['und']['#default_value'] = 1;
+  }
+
 
   // Add ajax to provider field.
   $form['field_rfc_provider'][LANGUAGE_NONE]['#ajax'] = array(
@@ -109,24 +116,27 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
   $form['field_rfc_requested_amount']['#prefix'] = '<div id="course-price-wrapper">';
   $form['field_rfc_requested_amount']['#suffix'] = '</div>';
 
-  // Add option _none for dropdowns if it does not exist. (Due to ajax).
-  if (!array_key_exists('_none', $form['field_rfc_course'][LANGUAGE_NONE]['#options'])) {
-    $form['field_rfc_course'][LANGUAGE_NONE]['#options'] = array('_none' => t('- Select a course  -')) +
-      $form['field_rfc_course']['und']['#options'];
-  }
-  else {
-    $form['field_rfc_course'][LANGUAGE_NONE]['#options']['_none'] = t('- Select a course  -');
-  }
-  if (!array_key_exists('_none', $form['field_rfc_provider'][LANGUAGE_NONE]['#options'])) {
-    $form['field_rfc_provider'][LANGUAGE_NONE]['#options'] = array('_none' => t('- Select a provider -')) +
-      $form['field_rfc_provider']['und']['#options'];
-  }
-  else {
-    $form['field_rfc_provider'][LANGUAGE_NONE]['#options']['_none'] = t('- Select a provider  -');
-  }
+  if ($form_state['entityform_form_mode'] == 'submit') {
+    // Add option _none for dropdowns if it does not exist. (Due to ajax).
+    if (!array_key_exists('_none', $form['field_rfc_course'][LANGUAGE_NONE]['#options'])) {
+      $form['field_rfc_course'][LANGUAGE_NONE]['#options'] = array('_none' => t('- Select a course  -')) +
+        $form['field_rfc_course']['und']['#options'];
+    }
+    else {
+      $form['field_rfc_course'][LANGUAGE_NONE]['#options']['_none'] = t('- Select a course  -');
+    }
+    if (!array_key_exists('_none', $form['field_rfc_provider'][LANGUAGE_NONE]['#options'])) {
+      $form['field_rfc_provider'][LANGUAGE_NONE]['#options'] = array('_none' => t('- Select a provider -')) +
+        $form['field_rfc_provider']['und']['#options'];
+    }
+    else {
+      $form['field_rfc_provider'][LANGUAGE_NONE]['#options']['_none'] = t('- Select a provider  -');
+    }
 
-  $form['field_rfc_subject'][LANGUAGE_NONE]['#options']['_none'] = t('- Select a subject  -');
-  $form['field_rfc_school'][LANGUAGE_NONE]['#options']['_none'] = t('- Select a school  -');
+    // Add no select options on create mode.
+    $form['field_rfc_subject'][LANGUAGE_NONE]['#options']['_none'] = t('- Select a subject  -');
+    $form['field_rfc_school'][LANGUAGE_NONE]['#options']['_none'] = t('- Select a school  -');
+  }
 
   // Get new courses for dropdown if provider is set.
   if (isset($form_state['values']['field_rfc_provider'][LANGUAGE_NONE]['0'])) {
