@@ -1172,7 +1172,7 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
   $handler->display->display_options['filters']['rid']['field'] = 'rid';
   $handler->display->display_options['filters']['rid']['value'] = array(
-    28 => '28',
+    30 => '30',
   );
 
   /* Display: Course providers */
