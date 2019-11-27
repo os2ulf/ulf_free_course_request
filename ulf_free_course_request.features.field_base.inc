@@ -570,7 +570,11 @@ function ulf_free_course_request_field_default_field_bases() {
       'allowed_values' => array(
         'awaiting' => 'Afventer',
         'accepted' => 'Godkendt',
+        'awaiting_payment' => 'Afventer udbetaling',
+        'ready_for_payment' => 'Klar til udbetaling',
+        'payment_completed' => 'Udbetalt',
         'refused' => 'Afvist',
+        'cancelled' => 'Annulleret',
         'closed' => 'Lukket',
       ),
       'allowed_values_function' => '',
