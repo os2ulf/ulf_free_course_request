@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * ulf_free_course_request.field_group.inc
@@ -89,11 +90,11 @@ function ulf_free_course_request_field_group_info() {
     'weight' => '0',
     'children' => array(
       0 => 'field_rfc_granted_amount',
-      1 => 'field_rfc_remarks',
-      2 => 'field_rfc_send_mail',
-      3 => 'field_rfc_status',
-      4 => 'field_rfc_mails_sent',
-      5 => 'field_rfc_latest_editor',
+      1 => 'field_rfc_latest_editor',
+      2 => 'field_rfc_mails_sent',
+      3 => 'field_rfc_remarks',
+      4 => 'field_rfc_send_mail',
+      5 => 'field_rfc_status',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -108,6 +109,37 @@ function ulf_free_course_request_field_group_info() {
     ),
   );
   $field_groups['group_rfc_editors|entityform|free_course_request|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_rfc_payment|entityform|free_course_request|form';
+  $field_group->group_name = 'group_rfc_payment';
+  $field_group->entity_type = 'entityform';
+  $field_group->bundle = 'free_course_request';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Udbetaling',
+    'weight' => '5',
+    'children' => array(
+      0 => 'field_rfc_payment_date',
+      1 => 'field_rfc_attachment',
+      2 => 'field_rfc_spent_amount',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'label' => 'Udbetaling',
+      'instance_settings' => array(
+        'required_fields' => 0,
+        'id' => '',
+        'classes' => 'group-rfc-payment field-group-fieldset',
+        'description' => '',
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  $field_groups['group_rfc_payment|entityform|free_course_request|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -178,6 +210,7 @@ function ulf_free_course_request_field_group_info() {
   t('Forløb');
   t('Redaktion');
   t('Skole');
+  t('Udbetaling');
 
   return $field_groups;
 }

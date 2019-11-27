@@ -71,6 +71,11 @@
   display: inline-block;
 }
 
+.fcr-form .field-name-field-rfc-spent-amount input {
+  width: 50%;
+  display: inline-block;
+}
+
 .fcr-form .price-info {
   background: lightgrey;
   box-sizing: border-box;

@@ -71,6 +71,52 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
     $form['field_rfc_school'][LANGUAGE_NONE]['#default_value'][0] = $user->uid;
   }
 
+  $entity = $form_state['entityform'];
+
+  if (property_exists($entity, 'is_new') && $entity->is_new == true) {
+    $status = 'new';
+  } else {
+    $status = $entity->field_rfc_status[LANGUAGE_NONE][0]['value'];
+    array_unshift($form['actions']['save']['#submit'],'_rfc_request_form_submit_handle_status_change');
+  }
+
+
+  if (in_array('editor', $user->roles)) {
+    //felter skjules aldrig for redaktører
+  } else if (in_array('skole', $user->roles) && ($status == 'accepted' || $status == 'awaiting_payment')) {
+    //hvis bruger har rollen "skole" og hvis ansøgningen har status "Godkendt" eller "Afventer udbetaling"
+    //vises payment felter og alle andre felter deaktiveres
+    $form['field_rfc_conditions'][LANGUAGE_NONE]['#disabled'] = TRUE;
+    $form['field_rfc_course'][LANGUAGE_NONE]['#disabled'] = TRUE;
+    $form['field_rfc_course_not_found'][LANGUAGE_NONE]['#disabled'] = TRUE;
+    $form['field_rfc_date'][LANGUAGE_NONE]['#disabled'] = TRUE;
+    $form['field_rfc_gdpr'][LANGUAGE_NONE]['#disabled'] = TRUE;
+    $form['field_rfc_grade'][LANGUAGE_NONE]['#disabled'] = TRUE;
+    $form['field_rfc_mail'][LANGUAGE_NONE]['#disabled'] = TRUE;
+    $form['field_rfc_name'][LANGUAGE_NONE]['#disabled'] = TRUE;
+    $form['field_rfc_new_course_description'][LANGUAGE_NONE]['#disabled'] = TRUE;
+    $form['field_rfc_new_course_name'][LANGUAGE_NONE]['#disabled'] = TRUE;
+    $form['field_rfc_phone'][LANGUAGE_NONE]['#disabled'] = TRUE;
+    $form['field_rfc_provider'][LANGUAGE_NONE]['#disabled'] = TRUE;
+    $form['field_rfc_requested_amount'][LANGUAGE_NONE]['#disabled'] = TRUE;
+    $form['field_rfc_school'][LANGUAGE_NONE]['#disabled'] = TRUE;
+    $form['field_rfc_subject'][LANGUAGE_NONE]['#disabled'] = TRUE;
+
+    $form['field_rfc_spent_amount'][LANGUAGE_NONE][0]['value']['#required'] = TRUE;
+    $form['field_rfc_attachment'][LANGUAGE_NONE][0]['#required'] = TRUE;
+    $form['field_rfc_payment_date']['#access'] = FALSE;
+
+    array_unshift($form['actions']['save']['#submit'],'_rfc_request_form_submit_payment_details');
+    unset($form['actions']['captcha']);
+
+  } else {
+    //ellers skjules payment felter
+    $form['field_rfc_spent_amount']['#access'] = FALSE;
+    $form['field_rfc_attachment']['#access'] = FALSE;
+    $form['field_rfc_payment_date']['#access'] = FALSE;
+  }
+
+
   $form['#attached']['js'] = array(
     drupal_get_path('module', 'ulf_free_course_request') . '/js/change-course-value.js',
     drupal_get_path('module', 'ulf_free_course_request') . '/js/calendar-popup.js',
@@ -338,7 +384,37 @@ function _rfc_request_form_submit($form, &$form_state) {
   // Add 3 hours to date timestamp to ensure correct date (Timezones and summertime)
   // We don't care about the exact time.
   $form_state['values']['field_rfc_date'][LANGUAGE_NONE][0]['value'] = $form_state['values']['field_rfc_date'][LANGUAGE_NONE][0]['value'] + 10800;
+
 }
+
+/**
+ * Custom submit to alter submission values.
+ *
+ * @param $form
+ * @param $form_state
+ */
+function _rfc_request_form_submit_handle_status_change($form, &$form_state) {
+
+  if ($form['field_rfc_status'][LANGUAGE_NONE]['#default_value'] != 'ready_for_payment' && $form_state['values']['field_rfc_status'][LANGUAGE_NONE][0]['value'] == 'ready_for_payment') {
+    //if status is being changed to "ready_for_payment" set payment date
+    form_set_value($form['field_rfc_payment_date'], ['und' => [['value' => time()]]], $form_state);
+  }
+
+}
+
+/**
+ * Custom submit to alter submission values.
+ *
+ * @param $form
+ * @param $form_state
+ */
+function _rfc_request_form_submit_payment_details($form, &$form_state) {
+
+  form_set_value($form['field_rfc_status'], ['und' => [['value' => 'awaiting_payment']]], $form_state);
+
+}
+
+
 
 /**
  * Get all middle school courses by user.

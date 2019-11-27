@@ -37,6 +37,20 @@ function ulf_free_course_request_menu() {
 }
 
 /**
+ * Implements hook_entityform_access_alter().
+ */
+function ulf_free_course_request_entityform_access_alter(&$access, $op, $context) {
+  $account = $context['account'];
+  $entityform = $context['entityform'];
+  if (!$access && isset($entityform->uid) && $account->uid == $entityform->uid) {
+    $status = $entityform->field_rfc_status[LANGUAGE_NONE][0]['value'];
+    if ($status == 'accepted' || $status == 'awaiting_payment') {
+      $access = TRUE;
+    }
+  }
+}
+
+/**
  * Implements hook_preprocess_user_profile().
  */
 function ulf_free_course_request_preprocess_user_profile(&$variables) {
@@ -107,12 +121,16 @@ function ulf_free_course_request_entity_postupdate($entity, $entity_type) {
         if ($entity->field_rfc_status[LANGUAGE_NONE][0]['value'] == 'refused') {
           _rfc_notify($wrapper, 'on_change_refused');
         }
-        // Log the user that changed the entity
-        global $user;
-        $wrapper->field_rfc_latest_editor = $user->uid;
-        $wrapper->save();
       }
-      drupal_goto('admin/config/system/free_course_request');
+      // Log the user that changed the entity
+      global $user;
+      $wrapper->field_rfc_latest_editor = $user->uid;
+      $wrapper->save();
+      if(!in_array('editor', $user->roles)) {
+        drupal_goto('admin/udgiftsdaekning/ansoegninger/'.$user->uid);
+      } else {
+        drupal_goto('admin/config/system/free_course_request');
+      }
     }
   }
 }
