@@ -37,6 +37,103 @@ function ulf_free_course_request_menu() {
 }
 
 /**
+ * Implements hook_block_info().
+ */
+function ulf_free_course_request_block_info()
+{
+  $blocks['free_course_request_summary'] = [
+    'info' => 'Ansøgninger opsummering',
+  ];
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function ulf_free_course_request_block_view($delta = '') {
+  if ($delta == 'free_course_request_summary') {
+    $block['subject'] = null;
+    $block['content'] = '<style>#block-ulf-free-course-request-free-course-request-summary{float:right;}</style>';
+
+    $requested_amount = 0;
+    $granted_amount = 0;
+    $spent_amount = 0;
+
+    $params = drupal_get_query_parameters();
+    $query = db_select('entityform', 'e');
+    $query->leftJoin('field_data_field_rfc_requested_amount', 'ra', 'e.entityform_id = ra.entity_id');
+    $query->leftJoin('field_data_field_rfc_granted_amount', 'ga', 'e.entityform_id = ga.entity_id');
+    $query->leftJoin('field_data_field_rfc_spent_amount', 'sa', 'e.entityform_id = sa.entity_id');
+
+    $query->condition('e.type', 'free_course_request');
+    if(isset($params['field_rfc_date_value']) || isset($params['field_rfc_date_value_1'])) {
+      $query->leftJoin('field_data_field_rfc_date', 'd', 'e.entityform_id = d.entity_id');
+      if($params['field_rfc_date_value']['value']['date'] != '') {
+        $parts = explode('/', $params['field_rfc_date_value']['value']['date']);
+        $time = strtotime($parts[2].$parts[1].$parts[0]);
+        if($time > 0) {
+          $query->condition('d.field_rfc_date_value', $time, '>');
+        }
+      }
+      if($params['field_rfc_date_value_1']['value']['date'] != '') {
+        $parts = explode('/', $params['field_rfc_date_value_1']['value']['date']);
+        $time = strtotime($parts[2].$parts[1].$parts[0]);
+        if($time > 0) {
+          $query->condition('d.field_rfc_date_value', $time, '<');
+        }
+      }
+    }
+    if(isset($params['field_rfc_status_value']) && $params['field_rfc_status_value'] != 'All') {
+      $query->leftJoin('field_data_field_rfc_status', 's', 'e.entityform_id = s.entity_id');
+      $query->condition('s.field_rfc_status_value', $params['field_rfc_status_value'], '=');
+    }
+
+    if(isset($params['combine']) && $params['combine'] != '') {
+
+      $query->leftJoin('field_data_field_rfc_name', 'field_data_field_rfc_name', 'e.entityform_id = field_data_field_rfc_name.entity_id');
+      $query->leftJoin('field_data_field_rfc_school', 'field_data_field_rfc_school', 'e.entityform_id = field_data_field_rfc_school.entity_id');
+      $query->leftJoin('users', 'users_field_data_field_rfc_school', 'field_data_field_rfc_school.field_rfc_school_target_id = users_field_data_field_rfc_school.uid');
+      $query->leftJoin('field_data_field_profile_name', 'users_field_data_field_rfc_school__field_data_field_profile_name', 'users_field_data_field_rfc_school.uid = users_field_data_field_rfc_school__field_data_field_profile_name.entity_id');
+      $query->leftJoin('field_data_field_rfc_provider', 'field_data_field_rfc_provider', 'e.entityform_id = field_data_field_rfc_provider.entity_id');
+      $query->leftJoin('users', 'users_field_data_field_rfc_provider', 'field_data_field_rfc_provider.field_rfc_provider_target_id = users_field_data_field_rfc_provider.uid');
+      $query->leftJoin('field_data_field_profile_name', 'users_field_data_field_rfc_provider__field_data_field_profile_name', 'users_field_data_field_rfc_provider.uid = users_field_data_field_rfc_provider__field_data_field_profile_name.entity_id');
+      $query->leftJoin('field_data_field_rfc_new_course_name', 'field_data_field_rfc_new_course_name', 'e.entityform_id = field_data_field_rfc_new_course_name.entity_id');
+      $query->leftJoin('field_data_field_rfc_course', 'field_data_field_rfc_course', 'e.entityform_id = field_data_field_rfc_course.entity_id');
+      $query->leftJoin('node', 'node_field_data_field_rfc_course', 'field_data_field_rfc_course.field_rfc_course_target_id = node_field_data_field_rfc_course.nid');
+
+      $query->addExpression("CONCAT_WS(' ', e.entityform_id, ' ', field_data_field_rfc_school.field_rfc_school_target_id, ' ', field_data_field_rfc_name.field_rfc_name_value, ' ', field_data_field_rfc_provider.field_rfc_provider_target_id, ' ', field_data_field_rfc_new_course_name.field_rfc_new_course_name_value, ' ', field_data_field_rfc_course.field_rfc_course_target_id, ' ', users_field_data_field_rfc_school__field_data_field_profile_name.field_profile_name_value, ' ', users_field_data_field_rfc_provider__field_data_field_profile_name.field_profile_name_value, ' ', node_field_data_field_rfc_course.title)", 'combined_fields');
+
+      $query->havingCondition('combined_fields', '%'.$params['combine'].'%', 'LIKE');
+
+      $query->addField('ra', 'field_rfc_requested_amount_value', 'requested_amount');
+      $query->addField('ga', 'field_rfc_granted_amount_value', 'granted_amount');
+      $query->addField('sa', 'field_rfc_spent_amount_value', 'spent_amount');
+
+      $result = $query->execute()->fetchAll();
+      foreach ($result as $row) {
+        $requested_amount+= floatval($row->requested_amount);
+        $granted_amount+= floatval($row->granted_amount);
+        $spent_amount+= floatval($row->spent_amount);
+      }
+
+    } else {
+      $query->addExpression('SUM(field_rfc_requested_amount_value)', 'requested_amount');
+      $query->addExpression('SUM(field_rfc_granted_amount_value)', 'granted_amount');
+      $query->addExpression('SUM(field_rfc_spent_amount_value)', 'spent_amount');
+      $result = $query->execute()->fetchAll();
+      $result = reset($result);
+      $requested_amount = $result->requested_amount;
+      $granted_amount = $result->granted_amount;
+      $spent_amount = $result->spent_amount;
+
+    }
+
+    $block['content'].='<p>Ansøgt beløb sum: <b>'.number_format($requested_amount, 2, ',', '.').' kr.</b> - Bevilget sum: <b>'.number_format($granted_amount, 2, ',', '.').' kr.</b> - Forbrugt beløb sum: <b>'.number_format($spent_amount, 2, ',', '.').'kr.</b></p>';
+    return $block;
+  }
+}
+
+/**
  * Implements hook_entityform_access_alter().
  */
 function ulf_free_course_request_entityform_access_alter(&$access, $op, $context) {
