@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * ulf_free_course_request.strongarm.inc
@@ -44,7 +45,7 @@ function ulf_free_course_request_strongarm() {
     'extra_fields' => array(
       'form' => array(
         'redirect' => array(
-          'weight' => '5',
+          'weight' => '6',
         ),
       ),
       'display' => array(),

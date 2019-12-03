@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * ulf_free_course_request.features.field_base.inc
@@ -9,6 +10,29 @@
  */
 function ulf_free_course_request_field_default_field_bases() {
   $field_bases = array();
+
+  // Exported field_base: 'field_rfc_attachment'.
+  $field_bases['field_rfc_attachment'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_rfc_attachment',
+    'indexes' => array(
+      'fid' => array(
+        0 => 'fid',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'file',
+    'settings' => array(
+      'display_default' => 0,
+      'display_field' => 0,
+      'uri_scheme' => 'private',
+    ),
+    'translatable' => 0,
+    'type' => 'file',
+  );
 
   // Exported field_base: 'field_rfc_conditions'.
   $field_bases['field_rfc_conditions'] = array(
@@ -328,6 +352,35 @@ function ulf_free_course_request_field_default_field_bases() {
     'type' => 'text',
   );
 
+  // Exported field_base: 'field_rfc_payment_date'.
+  $field_bases['field_rfc_payment_date'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_rfc_payment_date',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'date',
+    'settings' => array(
+      'cache_count' => 4,
+      'cache_enabled' => 0,
+      'granularity' => array(
+        'day' => 'day',
+        'hour' => 0,
+        'minute' => 0,
+        'month' => 'month',
+        'second' => 0,
+        'year' => 'year',
+      ),
+      'timezone_db' => '',
+      'todate' => '',
+      'tz_handling' => 'none',
+    ),
+    'translatable' => 0,
+    'type' => 'datestamp',
+  );
+
   // Exported field_base: 'field_rfc_phone'.
   $field_bases['field_rfc_phone'] = array(
     'active' => 1,
@@ -480,6 +533,25 @@ function ulf_free_course_request_field_default_field_bases() {
     'type' => 'list_boolean',
   );
 
+  // Exported field_base: 'field_rfc_spent_amount'.
+  $field_bases['field_rfc_spent_amount'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_rfc_spent_amount',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'number',
+    'settings' => array(
+      'decimal_separator' => '.',
+      'precision' => 10,
+      'scale' => 2,
+    ),
+    'translatable' => 0,
+    'type' => 'number_decimal',
+  );
+
   // Exported field_base: 'field_rfc_status'.
   $field_bases['field_rfc_status'] = array(
     'active' => 1,
@@ -498,7 +570,11 @@ function ulf_free_course_request_field_default_field_bases() {
       'allowed_values' => array(
         'awaiting' => 'Afventer',
         'accepted' => 'Godkendt',
+        'awaiting_payment' => 'Afventer udbetaling',
+        'ready_for_payment' => 'Klar til udbetaling',
+        'payment_completed' => 'Udbetalt',
         'refused' => 'Afvist',
+        'cancelled' => 'Annulleret',
         'closed' => 'Lukket',
       ),
       'allowed_values_function' => '',

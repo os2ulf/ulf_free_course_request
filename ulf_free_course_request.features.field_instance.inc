@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * ulf_free_course_request.features.field_instance.inc
@@ -9,6 +10,61 @@
  */
 function ulf_free_course_request_field_default_field_instances() {
   $field_instances = array();
+
+  // Exported field_instance:
+  // 'entityform-free_course_request-field_rfc_attachment'.
+  $field_instances['entityform-free_course_request-field_rfc_attachment'] = array(
+    'bundle' => 'free_course_request',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'file',
+        'settings' => array(),
+        'type' => 'file_default',
+        'weight' => 26,
+      ),
+    ),
+    'entity_type' => 'entityform',
+    'field_name' => 'field_rfc_attachment',
+    'label' => 'Bilag',
+    'required' => 0,
+    'settings' => array(
+      'description_field' => 0,
+      'file_directory' => 'bilag',
+      'file_extensions' => 'pdf png jpg jpeg',
+      'max_filesize' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'file',
+      'settings' => array(
+        'insert' => 0,
+        'insert_absolute' => 0,
+        'insert_class' => '',
+        'insert_default' => 'icon_link',
+        'insert_styles' => array(
+          'auto' => 0,
+          'icon_link' => 'icon_link',
+          'image' => 0,
+          'image_facebook_open_graph' => 0,
+          'image_large' => 0,
+          'image_logo' => 0,
+          'image_medium' => 0,
+          'image_node_display' => 0,
+          'image_teaser_display' => 0,
+          'image_thumbnail' => 0,
+          'link' => 0,
+        ),
+        'insert_width' => '',
+        'progress_indicator' => 'throbber',
+      ),
+      'type' => 'file_generic',
+      'weight' => 26,
+    ),
+  );
 
   // Exported field_instance:
   // 'entityform-free_course_request-field_rfc_conditions'.
@@ -506,6 +562,56 @@ function ulf_free_course_request_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance:
+  // 'entityform-free_course_request-field_rfc_payment_date'.
+  $field_instances['entityform-free_course_request-field_rfc_payment_date'] = array(
+    'bundle' => 'free_course_request',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'date',
+        'settings' => array(
+          'format_type' => 'long',
+          'fromto' => 'both',
+          'multiple_from' => '',
+          'multiple_number' => '',
+          'multiple_to' => '',
+          'show_remaining_days' => FALSE,
+        ),
+        'type' => 'date_default',
+        'weight' => 25,
+      ),
+    ),
+    'entity_type' => 'entityform',
+    'field_name' => 'field_rfc_payment_date',
+    'label' => 'Udbetalingsdato',
+    'required' => 0,
+    'settings' => array(
+      'default_value' => 'blank',
+      'default_value2' => 'same',
+      'default_value_code' => '',
+      'default_value_code2' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'date',
+      'settings' => array(
+        'increment' => 15,
+        'input_format' => 'd/m/Y - H:i:s',
+        'input_format_custom' => '',
+        'label_position' => 'above',
+        'no_fieldset' => 1,
+        'text_parts' => array(),
+        'year_range' => '-3:+3',
+      ),
+      'type' => 'date_popup',
+      'weight' => 27,
+    ),
+  );
+
   // Exported field_instance: 'entityform-free_course_request-field_rfc_phone'.
   $field_instances['entityform-free_course_request-field_rfc_phone'] = array(
     'bundle' => 'free_course_request',
@@ -730,6 +836,47 @@ Mail sendes dog kun hvis status er godkendt eller afvist.',
     ),
   );
 
+  // Exported field_instance:
+  // 'entityform-free_course_request-field_rfc_spent_amount'.
+  $field_instances['entityform-free_course_request-field_rfc_spent_amount'] = array(
+    'bundle' => 'free_course_request',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 2,
+          'thousand_separator' => '',
+        ),
+        'type' => 'number_decimal',
+        'weight' => 27,
+      ),
+    ),
+    'entity_type' => 'entityform',
+    'field_name' => 'field_rfc_spent_amount',
+    'label' => 'Forbrugt beløb (eks. moms)',
+    'required' => 0,
+    'settings' => array(
+      'max' => '',
+      'min' => '',
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'number',
+      'settings' => array(),
+      'type' => 'number',
+      'weight' => 25,
+    ),
+  );
+
   // Exported field_instance: 'entityform-free_course_request-field_rfc_status'.
   $field_instances['entityform-free_course_request-field_rfc_status'] = array(
     'bundle' => 'free_course_request',
@@ -808,6 +955,8 @@ Mail sendes dog kun hvis status er godkendt eller afvist.',
   t('Bemærkninger');
   t('Beskrivelse af forløbet');
   t('Bevilget beløb');
+  t('Bilag');
+  t('Forbrugt beløb (eks. moms)');
   t('Forløb');
   t('Forløb findes ikke på listen');
   t('Forløbets navn');
@@ -826,6 +975,7 @@ Mail sendes dog kun hvis status er godkendt eller afvist.');
   t('Skriv hvilken klasse, der deltager i forløbet - sådan her: 7.B eller 7.ABC)');
   t('Status');
   t('Telefonnr');
+  t('Udbetalingsdato');
   t('Udbyder');
   t('Vælg emneområde');
 
