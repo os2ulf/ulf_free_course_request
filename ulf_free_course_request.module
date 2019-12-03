@@ -134,6 +134,28 @@ function ulf_free_course_request_block_view($delta = '') {
 }
 
 /**
+ * Implements hook_views_pre_render().
+ */
+function ulf_free_course_request_views_pre_render(&$view)
+{
+  if($view->name == 'ulf_free_course_requests') {
+    if($view->current_display == 'views_data_export_1') {
+      foreach ($view->result as $value) {
+        $time = $value->field_field_rfc_date_1[0]['raw']['value'];
+        $year = date('Y', $time);
+        $month = date('m', $time);
+        if($month < 7) {
+          $string = '2. halvår '.($year - 1).'/'.$year;
+        } else {
+          $string = '1. halvår '.$year.'/'.($year + 1);
+        }
+        $value->field_field_rfc_date_1[0]['rendered']['#markup'] = $string;
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_entityform_access_alter().
  */
 function ulf_free_course_request_entityform_access_alter(&$access, $op, $context) {
