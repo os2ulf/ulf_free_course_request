@@ -993,6 +993,21 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['fields']['created']['label'] = 'Indsendelsesdato';
   $handler->display->display_options['fields']['created']['date_format'] = 'short';
   $handler->display->display_options['fields']['created']['second_date_format'] = 'html5_tools_iso8601';
+  /* Felt: Entityform Submission: Afviklingsdato */
+  $handler->display->display_options['fields']['field_rfc_date_1']['id'] = 'field_rfc_date_1';
+  $handler->display->display_options['fields']['field_rfc_date_1']['table'] = 'field_data_field_rfc_date';
+  $handler->display->display_options['fields']['field_rfc_date_1']['field'] = 'field_rfc_date';
+  $handler->display->display_options['fields']['field_rfc_date_1']['label'] = 'Skoleår';
+  $handler->display->display_options['fields']['field_rfc_date_1']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_rfc_date_1']['settings'] = array(
+    'format_type' => 'custom',
+    'custom_date_format' => 'U',
+    'fromto' => 'both',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+    'show_remaining_days' => 0,
+  );
   $handler->display->display_options['path'] = 'admin/settings/custom/free_course_request/export';
   $handler->display->display_options['displays'] = array(
     'free_course_requests_table' => 'free_course_requests_table',
@@ -1062,6 +1077,7 @@ function ulf_free_course_request_views_default_views() {
     t('Telefonnr'),
     t('Beskrivelse af forløbet'),
     t('Indsendelsesdato'),
+    t('Skoleår'),
   );
   $export['ulf_free_course_requests'] = $view;
 
