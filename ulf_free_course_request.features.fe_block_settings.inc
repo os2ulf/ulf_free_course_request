@@ -19,7 +19,8 @@ function ulf_free_course_request_default_fe_block_settings() {
     'delta' => 'free_course_request_summary',
     'module' => 'ulf_free_course_request',
     'node_types' => array(),
-    'pages' => 'admin/config/system/free_course_request',
+    'pages' => 'admin/config/system/free_course_request
+admin/udgiftsdaekning/ansoegninger/*',
     'roles' => array(),
     'themes' => array(
       'ulf_aarhus' => array(

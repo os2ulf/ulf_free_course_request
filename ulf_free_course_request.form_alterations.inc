@@ -83,6 +83,7 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
 
   if (in_array('editor', $user->roles)) {
     //felter skjules aldrig for redaktører
+    unset($form['actions']['captcha']);
   } else if (in_array('skole', $user->roles) && ($status == 'accepted' || $status == 'awaiting_payment')) {
     //hvis bruger har rollen "skole" og hvis ansøgningen har status "Godkendt" eller "Afventer udbetaling"
     //vises payment felter og alle andre felter deaktiveres
