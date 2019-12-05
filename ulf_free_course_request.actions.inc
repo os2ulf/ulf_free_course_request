@@ -52,6 +52,26 @@ function ulf_free_course_request_action_info() {
     'pass rows' => TRUE,
   );
 
+  $actions['_rfc_ready_for_payment'] = array(
+    'type' => 'entityform',
+    'label' => t('Change status to Ready for Payment'),
+    'configurable' => FALSE,
+    'triggers' => array('any'),
+    'behavior' => array('changes_property'),
+    'vbo_configurable' => FALSE,
+    'pass rows' => TRUE,
+  );
+
+  $actions['_rfc_payment_completed'] = array(
+    'type' => 'entityform',
+    'label' => t('Change status to Payment Completed'),
+    'configurable' => FALSE,
+    'triggers' => array('any'),
+    'behavior' => array('changes_property'),
+    'vbo_configurable' => FALSE,
+    'pass rows' => TRUE,
+  );
+
   $actions['_rfc_close'] = array(
     'type' => 'entityform',
     'label' => t('Close'),
@@ -104,6 +124,26 @@ function _rfc_change_status_refused($entity) {
  */
 function _rfc_refuse($entity) {
   _rfc_change_entity($entity, 'refused_mail');
+}
+
+/**
+ * Custom action for bulk operation. (Change status to ready for payment)
+ *
+ * @param object $entity
+ *   The entity to act on.
+ */
+function _rfc_ready_for_payment($entity) {
+  _rfc_change_entity($entity, 'ready_for_payment');
+}
+
+/**
+ * Custom action for bulk operation. (Change status to payment completed)
+ *
+ * @param object $entity
+ *   The entity to act on.
+ */
+function _rfc_payment_completed($entity) {
+  _rfc_change_entity($entity, 'payment_completed');
 }
 
 /**
@@ -161,6 +201,16 @@ function _rfc_change_entity($entity, $action) {
       $wrapper->field_rfc_status = 'refused';
       $wrapper->save();
       _rfc_notify($wrapper, 'on_change_refused');
+      break;
+
+    case 'ready_for_payment':
+      $wrapper->field_rfc_status = 'ready_for_payment';
+      $wrapper->save();
+      break;
+
+    case 'payment_completed':
+      $wrapper->field_rfc_status = 'payment_completed';
+      $wrapper->save();
       break;
 
     case 'closed':

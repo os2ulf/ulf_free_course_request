@@ -865,7 +865,7 @@ Mail sendes dog kun hvis status er godkendt eller afvist.',
       'max' => '',
       'min' => '',
       'prefix' => '',
-      'suffix' => '',
+      'suffix' => ' kr.',
       'user_register_form' => FALSE,
     ),
     'widget' => array(
