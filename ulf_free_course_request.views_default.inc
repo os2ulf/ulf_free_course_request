@@ -415,6 +415,22 @@ function ulf_free_course_request_views_default_views() {
       'override_label' => 0,
       'label' => '',
     ),
+    'action::_rfc_ready_for_payment' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'skip_permission_check' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::_rfc_payment_completed' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'skip_permission_check' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
     'action::views_bulk_operations_delete_item' => array(
       'selected' => 1,
       'postpone_processing' => 0,
@@ -485,6 +501,21 @@ function ulf_free_course_request_views_default_views() {
     'multiple_to' => '',
     'show_remaining_days' => 0,
   );
+  /* Felt: Entityform Submission: Afviklingsdato */
+  $handler->display->display_options['fields']['field_rfc_date_1']['id'] = 'field_rfc_date_1';
+  $handler->display->display_options['fields']['field_rfc_date_1']['table'] = 'field_data_field_rfc_date';
+  $handler->display->display_options['fields']['field_rfc_date_1']['field'] = 'field_rfc_date';
+  $handler->display->display_options['fields']['field_rfc_date_1']['label'] = 'Skoleår';
+  $handler->display->display_options['fields']['field_rfc_date_1']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_rfc_date_1']['settings'] = array(
+    'format_type' => 'custom',
+    'custom_date_format' => 'U',
+    'fromto' => 'both',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+    'show_remaining_days' => 0,
+  );
   /* Felt: Entityform Submission: Ansøgt beløb */
   $handler->display->display_options['fields']['field_rfc_requested_amount']['id'] = 'field_rfc_requested_amount';
   $handler->display->display_options['fields']['field_rfc_requested_amount']['table'] = 'field_data_field_rfc_requested_amount';
@@ -517,18 +548,23 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['fields']['field_rfc_spent_amount']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_rfc_spent_amount']['settings'] = array(
     'thousand_separator' => '',
-    'decimal_separator' => '.',
+    'decimal_separator' => ',',
     'scale' => '2',
     'prefix_suffix' => 1,
   );
+  /* Felt: Entityform Submission: Bilag */
+  $handler->display->display_options['fields']['field_rfc_attachment']['id'] = 'field_rfc_attachment';
+  $handler->display->display_options['fields']['field_rfc_attachment']['table'] = 'field_data_field_rfc_attachment';
+  $handler->display->display_options['fields']['field_rfc_attachment']['field'] = 'field_rfc_attachment';
+  $handler->display->display_options['fields']['field_rfc_attachment']['click_sort_column'] = 'fid';
   /* Felt: Entityform Submission: Udbetalingsdato */
   $handler->display->display_options['fields']['field_rfc_payment_date']['id'] = 'field_rfc_payment_date';
   $handler->display->display_options['fields']['field_rfc_payment_date']['table'] = 'field_data_field_rfc_payment_date';
   $handler->display->display_options['fields']['field_rfc_payment_date']['field'] = 'field_rfc_payment_date';
   $handler->display->display_options['fields']['field_rfc_payment_date']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_rfc_payment_date']['settings'] = array(
-    'format_type' => 'custom',
-    'custom_date_format' => 'Y-m-d',
+    'format_type' => 'short',
+    'custom_date_format' => '',
     'fromto' => 'both',
     'multiple_number' => '',
     'multiple_from' => '',
@@ -667,6 +703,21 @@ function ulf_free_course_request_views_default_views() {
     'multiple_to' => '',
     'show_remaining_days' => 0,
   );
+  /* Felt: Entityform Submission: Afviklingsdato */
+  $handler->display->display_options['fields']['field_rfc_date_1']['id'] = 'field_rfc_date_1';
+  $handler->display->display_options['fields']['field_rfc_date_1']['table'] = 'field_data_field_rfc_date';
+  $handler->display->display_options['fields']['field_rfc_date_1']['field'] = 'field_rfc_date';
+  $handler->display->display_options['fields']['field_rfc_date_1']['label'] = 'Skoleår';
+  $handler->display->display_options['fields']['field_rfc_date_1']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_rfc_date_1']['settings'] = array(
+    'format_type' => 'custom',
+    'custom_date_format' => 'U',
+    'fromto' => 'both',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+    'show_remaining_days' => 0,
+  );
   /* Felt: Entityform Submission: Ansøgt beløb */
   $handler->display->display_options['fields']['field_rfc_requested_amount']['id'] = 'field_rfc_requested_amount';
   $handler->display->display_options['fields']['field_rfc_requested_amount']['table'] = 'field_data_field_rfc_requested_amount';
@@ -699,18 +750,23 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['fields']['field_rfc_spent_amount']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_rfc_spent_amount']['settings'] = array(
     'thousand_separator' => '',
-    'decimal_separator' => '.',
+    'decimal_separator' => ',',
     'scale' => '2',
     'prefix_suffix' => 1,
   );
+  /* Felt: Entityform Submission: Bilag */
+  $handler->display->display_options['fields']['field_rfc_attachment']['id'] = 'field_rfc_attachment';
+  $handler->display->display_options['fields']['field_rfc_attachment']['table'] = 'field_data_field_rfc_attachment';
+  $handler->display->display_options['fields']['field_rfc_attachment']['field'] = 'field_rfc_attachment';
+  $handler->display->display_options['fields']['field_rfc_attachment']['click_sort_column'] = 'fid';
   /* Felt: Entityform Submission: Udbetalingsdato */
   $handler->display->display_options['fields']['field_rfc_payment_date']['id'] = 'field_rfc_payment_date';
   $handler->display->display_options['fields']['field_rfc_payment_date']['table'] = 'field_data_field_rfc_payment_date';
   $handler->display->display_options['fields']['field_rfc_payment_date']['field'] = 'field_rfc_payment_date';
   $handler->display->display_options['fields']['field_rfc_payment_date']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_rfc_payment_date']['settings'] = array(
-    'format_type' => 'custom',
-    'custom_date_format' => 'Y-m-d',
+    'format_type' => 'short',
+    'custom_date_format' => '',
     'fromto' => 'both',
     'multiple_number' => '',
     'multiple_from' => '',
@@ -954,7 +1010,7 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['fields']['field_rfc_spent_amount']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_rfc_spent_amount']['settings'] = array(
     'thousand_separator' => '',
-    'decimal_separator' => '.',
+    'decimal_separator' => ',',
     'scale' => '2',
     'prefix_suffix' => 1,
   );
@@ -964,8 +1020,8 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['fields']['field_rfc_payment_date']['field'] = 'field_rfc_payment_date';
   $handler->display->display_options['fields']['field_rfc_payment_date']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_rfc_payment_date']['settings'] = array(
-    'format_type' => 'custom',
-    'custom_date_format' => 'Y-m-d',
+    'format_type' => 'short',
+    'custom_date_format' => '',
     'fromto' => 'both',
     'multiple_number' => '',
     'multiple_from' => '',

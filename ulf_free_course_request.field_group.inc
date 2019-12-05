@@ -22,7 +22,7 @@ function ulf_free_course_request_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Databeskyttelse',
-    'weight' => '4',
+    'weight' => '5',
     'children' => array(
       0 => 'field_rfc_gdpr',
     ),
@@ -121,7 +121,7 @@ function ulf_free_course_request_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Udbetaling',
-    'weight' => '5',
+    'weight' => '3',
     'children' => array(
       0 => 'field_rfc_payment_date',
       1 => 'field_rfc_attachment',
@@ -185,7 +185,7 @@ function ulf_free_course_request_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Det med småt',
-    'weight' => '3',
+    'weight' => '4',
     'children' => array(
       0 => 'field_rfc_conditions',
     ),
