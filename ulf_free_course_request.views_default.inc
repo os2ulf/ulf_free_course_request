@@ -126,6 +126,13 @@ function ulf_free_course_request_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
+    'field_rfc_date_1' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
     'field_rfc_requested_amount' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
@@ -556,7 +563,10 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['fields']['field_rfc_attachment']['id'] = 'field_rfc_attachment';
   $handler->display->display_options['fields']['field_rfc_attachment']['table'] = 'field_data_field_rfc_attachment';
   $handler->display->display_options['fields']['field_rfc_attachment']['field'] = 'field_rfc_attachment';
+  $handler->display->display_options['fields']['field_rfc_attachment']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_rfc_attachment']['alter']['text'] = '<a href="[field_rfc_attachment]" target="_blank">Bilag</a>';
   $handler->display->display_options['fields']['field_rfc_attachment']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_rfc_attachment']['type'] = 'file_url_plain';
   /* Felt: Entityform Submission: Udbetalingsdato */
   $handler->display->display_options['fields']['field_rfc_payment_date']['id'] = 'field_rfc_payment_date';
   $handler->display->display_options['fields']['field_rfc_payment_date']['table'] = 'field_data_field_rfc_payment_date';
@@ -758,7 +768,10 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['fields']['field_rfc_attachment']['id'] = 'field_rfc_attachment';
   $handler->display->display_options['fields']['field_rfc_attachment']['table'] = 'field_data_field_rfc_attachment';
   $handler->display->display_options['fields']['field_rfc_attachment']['field'] = 'field_rfc_attachment';
+  $handler->display->display_options['fields']['field_rfc_attachment']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_rfc_attachment']['alter']['text'] = '<a href="[field_rfc_attachment]" target="_blank">Bilag</a>';
   $handler->display->display_options['fields']['field_rfc_attachment']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_rfc_attachment']['type'] = 'file_url_plain';
   /* Felt: Entityform Submission: Udbetalingsdato */
   $handler->display->display_options['fields']['field_rfc_payment_date']['id'] = 'field_rfc_payment_date';
   $handler->display->display_options['fields']['field_rfc_payment_date']['table'] = 'field_data_field_rfc_payment_date';
@@ -1114,9 +1127,12 @@ function ulf_free_course_request_views_default_views() {
     t('[field_rfc_new_course_name] '),
     t('Emneområde'),
     t('Afviklingsdato'),
+    t('Skoleår'),
     t('Ansøgt beløb'),
     t('Bevilget beløb'),
     t('Forbrugt beløb'),
+    t('Bilag'),
+    t('<a href="[field_rfc_attachment]" target="_blank">Bilag</a>'),
     t('Udbetalingsdato'),
     t('Bemærkninger'),
     t('Senest ændret af'),
@@ -1133,7 +1149,6 @@ function ulf_free_course_request_views_default_views() {
     t('Telefonnr'),
     t('Beskrivelse af forløbet'),
     t('Indsendelsesdato'),
-    t('Skoleår'),
   );
   $export['ulf_free_course_requests'] = $view;
 
