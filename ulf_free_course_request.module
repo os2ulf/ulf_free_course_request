@@ -87,6 +87,11 @@ function ulf_free_course_request_block_view($delta = '') {
       $query->leftJoin('field_data_field_rfc_status', 's', 'e.entityform_id = s.entity_id');
       $query->condition('s.field_rfc_status_value', $params['field_rfc_status_value'], '=');
     }
+    $uid = arg(3);
+    if($uid && $uid > 0) {
+      $query->leftJoin('field_data_field_rfc_school', 'field_data_field_rfc_school_filter', 'e.entityform_id = field_data_field_rfc_school_filter.entity_id');
+      $query->condition('field_data_field_rfc_school_filter.field_rfc_school_target_id', $uid);
+    }
 
     if(isset($params['combine']) && $params['combine'] != '') {
 
