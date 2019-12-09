@@ -68,14 +68,14 @@ function ulf_free_course_request_block_view($delta = '') {
     $query->condition('e.type', 'free_course_request');
     if(isset($params['field_rfc_date_value']) || isset($params['field_rfc_date_value_1'])) {
       $query->leftJoin('field_data_field_rfc_date', 'd', 'e.entityform_id = d.entity_id');
-      if($params['field_rfc_date_value']['value']['date'] != '') {
+      if(isset($params['field_rfc_date_value']['value']['date']) && $params['field_rfc_date_value']['value']['date'] != '') {
         $parts = explode('/', $params['field_rfc_date_value']['value']['date']);
         $time = strtotime($parts[2].$parts[1].$parts[0]);
         if($time > 0) {
           $query->condition('d.field_rfc_date_value', $time, '>');
         }
       }
-      if($params['field_rfc_date_value_1']['value']['date'] != '') {
+      if(isset($params['field_rfc_date_value_1']['value']['date']) && $params['field_rfc_date_value_1']['value']['date'] != '') {
         $parts = explode('/', $params['field_rfc_date_value_1']['value']['date']);
         $time = strtotime($parts[2].$parts[1].$parts[0]);
         if($time > 0) {
