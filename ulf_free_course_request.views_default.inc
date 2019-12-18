@@ -692,7 +692,7 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['fields']['field_rfc_course']['field'] = 'field_rfc_course';
   $handler->display->display_options['fields']['field_rfc_course']['empty'] = '[field_rfc_new_course_name] ';
   $handler->display->display_options['fields']['field_rfc_course']['settings'] = array(
-    'bypass_access' => 0,
+    'bypass_access' => 1,
     'link' => 1,
   );
   /* Felt: Entityform Submission: Vælg emneområde */
