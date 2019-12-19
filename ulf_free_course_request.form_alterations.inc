@@ -107,6 +107,10 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
     $form['field_rfc_attachment'][LANGUAGE_NONE][0]['#required'] = TRUE;
     $form['field_rfc_payment_date']['#access'] = FALSE;
 
+    $form['field_rfc_granted_amount']['#access'] = TRUE;
+    $form['field_rfc_granted_amount'][LANGUAGE_NONE]['#disabled'] = TRUE;
+    $form['#group_children']['field_rfc_granted_amount'] = 'group_rfc_payment';
+
     array_unshift($form['actions']['save']['#submit'],'_rfc_request_form_submit_payment_details');
     unset($form['actions']['captcha']);
 
@@ -375,6 +379,9 @@ function _rfc_request_form_validate($element, $form_state) {
       else if (empty($form_state['values']['field_rfc_course'][LANGUAGE_NONE][0]['target_id'])) {
         form_set_error('field_rfc_course', t('The field %field is required.', array('%field' => $element['field_rfc_course'][LANGUAGE_NONE]['#title'])));
       }
+    }
+    if(!empty($form_state['values']['field_rfc_spent_amount'][LANGUAGE_NONE][0]['value']) && $element['#entity']->field_rfc_granted_amount[LANGUAGE_NONE][0]['value'] < $form_state['values']['field_rfc_spent_amount'][LANGUAGE_NONE][0]['value']) {
+      form_set_error('field_rfc_spent_amount', t('%name: the value may be no greater than %max.', array('%name' => $element['field_rfc_spent_amount'][LANGUAGE_NONE]['#title'], '%max' => $element['field_rfc_granted_amount'][LANGUAGE_NONE]['#title'])));
     }
 
     // Validate on no acceptance without amount.
