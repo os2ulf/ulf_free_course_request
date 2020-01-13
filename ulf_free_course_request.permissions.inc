@@ -36,7 +36,7 @@ function ulf_free_course_request_permission() {
 function ulf_free_course_request_secure_permissions($role) {
   $permissions = array(
     'skole' => array(
-//      'view own entityform',
+      'view own entityform',
       'view the administration theme',
       'access toolbar',
     ),
