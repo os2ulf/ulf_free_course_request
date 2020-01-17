@@ -66,7 +66,7 @@ function ulf_free_course_request_block_view($delta = '') {
     $query->leftJoin('field_data_field_rfc_spent_amount', 'sa', 'e.entityform_id = sa.entity_id');
 
     $query->condition('e.type', 'free_course_request');
-    if(isset($params['field_rfc_date_value']) || isset($params['field_rfc_date_value_1'])) {
+    if(isset($params['field_rfc_date_value']) || isset($params['field_rfc_date_value_1']) || isset($params['field_rfc_date_value_2'])) {
       $query->leftJoin('field_data_field_rfc_date', 'd', 'e.entityform_id = d.entity_id');
       if(isset($params['field_rfc_date_value']['value']['date']) && $params['field_rfc_date_value']['value']['date'] != '') {
         $parts = explode('/', $params['field_rfc_date_value']['value']['date']);
@@ -82,6 +82,17 @@ function ulf_free_course_request_block_view($delta = '') {
           $query->condition('d.field_rfc_date_value', $time, '<');
         }
       }
+      if(isset($params['field_rfc_date_value_2']['semester']) && count($params['field_rfc_date_value_2']['semester']) > 0) {
+        $condition_group = db_or();
+        foreach ($params['field_rfc_date_value_2']['semester'] as $semester) {
+          $exp = explode('_', $semester);
+          if(count($exp) == 2) {
+            $args = $exp[1] == 1 ? [':semester_'.$semester.'_min' => $exp[0].'-01', ':semester_'.$semester.'_max' => $exp[0].'-06'] : [':semester_'.$semester.'_min' => $exp[0].'-07', ':semester_'.$semester.'_max' => $exp[0].'-12'];
+            $condition_group->where('DATE_FORMAT(FROM_UNIXTIME(d.field_rfc_date_value), \'%Y-%m\') >= :semester_'.$semester.'_min AND DATE_FORMAT(FROM_UNIXTIME(d.field_rfc_date_value), \'%Y-%m\') <= :semester_'.$semester.'_max', $args);
+          }
+        }
+        $query->condition($condition_group);
+      }
     }
     if(isset($params['field_rfc_status_value']) && $params['field_rfc_status_value'] != 'All') {
       $query->leftJoin('field_data_field_rfc_status', 's', 'e.entityform_id = s.entity_id');
@@ -89,8 +100,9 @@ function ulf_free_course_request_block_view($delta = '') {
     }
     $uid = arg(3);
     if($uid && $uid > 0) {
-      $query->leftJoin('field_data_field_rfc_school', 'field_data_field_rfc_school_filter', 'e.entityform_id = field_data_field_rfc_school_filter.entity_id');
-      $query->condition('field_data_field_rfc_school_filter.field_rfc_school_target_id', $uid);
+//      $query->leftJoin('field_data_field_rfc_school', 'field_data_field_rfc_school_filter', 'e.entityform_id = field_data_field_rfc_school_filter.entity_id');
+//      $query->condition('field_data_field_rfc_school_filter.field_rfc_school_target_id', $uid);
+      $query->condition('e.uid', $uid);
     }
 
     if(isset($params['combine']) && $params['combine'] != '') {
@@ -135,6 +147,44 @@ function ulf_free_course_request_block_view($delta = '') {
 
     $block['content'].='<p>Ansøgt sum: <b>'.number_format($requested_amount, 2, ',', '.').' kr.</b> - Bevilget sum: <b>'.number_format($granted_amount, 2, ',', '.').' kr.</b> - Forbrugt sum: <b>'.number_format($spent_amount, 2, ',', '.').'kr.</b></p>';
     return $block;
+  }
+}
+
+/**
+ * Implements hook_views_query_alter().
+ * @param $view
+ * @param views_plugin_query_default $query
+ */
+function ulf_free_course_request_views_query_alter(&$view, &$query)
+{
+  if($view->name == 'ulf_free_course_requests' && ($view->current_display == 'free_course_requests_table' || $view->current_display == 'free_course_requests_user')) {
+//    kint($query);die;
+    $params = drupal_get_query_parameters();
+    if(isset($params['field_rfc_date_value_2']['semester']) && !empty($params['field_rfc_date_value_2']['semester'])) {
+      $snippet = '';
+      $args = [];
+      foreach ($params['field_rfc_date_value_2']['semester'] as $semester) {
+        $exp = explode('_', $semester);
+        if(count($exp) == 2) {
+          if($snippet != '') {
+            $snippet .= ' OR ';
+          }
+          $snippet.= 'DATE_FORMAT(FROM_UNIXTIME(field_data_field_rfc_date.field_rfc_date_value), \'%Y-%m\') >= :semester_'.$semester.'_min AND DATE_FORMAT(FROM_UNIXTIME(field_data_field_rfc_date.field_rfc_date_value), \'%Y-%m\') <= :semester_'.$semester.'_max';
+          if($exp[1] == 1) {
+            $args[':semester_'.$semester.'_min'] = $exp[0].'-01';
+            $args[':semester_'.$semester.'_max'] = $exp[0].'-06';
+          } else if($exp[1] == 2) {
+            $args[':semester_'.$semester.'_min'] = $exp[0].'-07';
+            $args[':semester_'.$semester.'_max'] = $exp[0].'-12';
+          }
+        }
+      }
+      $group = $query->set_where_group();
+      $query->add_where_expression($group, $snippet, $args);
+      $query->ensure_table('field_data_field_rfc_date');
+
+    }
+
   }
 }
 

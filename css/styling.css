@@ -122,3 +122,8 @@
 .field-name-field-rfc-send-mail > div label {
   display: inline-block;
 }
+
+#edit-field-rfc-date-value-min-wrapper,
+#edit-field-rfc-date-value-max-wrapper {
+  display: none;
+}
