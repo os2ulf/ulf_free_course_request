@@ -37,6 +37,62 @@ function ulf_free_course_request_menu() {
 }
 
 /**
+ * Implements hook_cron().
+ */
+function ulf_free_course_request_cron()
+{
+  global $language;
+
+  if(variable_get('enable_free_course_follow_up_mails', false)) {
+    if(date('G') > 8) {
+      $from = strtotime('yesterday 00:00');
+      $to = strtotime('today 00:00') - 1;
+      $query = db_select('field_data_field_rfc_date', 'd');
+      $query->fields('d', ['entity_id']);
+      $query->leftJoin('field_data_field_rfc_follow_up_mail_sent', 'f', 'd.entity_id = f.entity_id AND d.bundle = f.bundle');
+      $query->condition('d.field_rfc_date_value', $from, '>');
+      $query->condition('d.field_rfc_date_value', $to, '<');
+      $query->condition('d.bundle', 'free_course_request', '=');
+      $query->isNull('f.field_rfc_follow_up_mail_sent_value');
+      $result = $query->execute()->fetchAllKeyed(0, 0);
+
+      foreach (entityform_load_multiple($result) as $course_request) {
+        $course_request->field_rfc_follow_up_mail_sent = time();
+        field_attach_presave('entityform', $course_request);
+        field_attach_update('entityform', $course_request);
+        $to = $course_request->wrapper()->field_rfc_mail->value();
+        drupal_mail('ulf_free_course_request', 'free_course_request_follow_up_mail', $to, $language->language, []);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_mailkeys().
+ */
+function ulf_free_course_request_mailkeys() {
+  return array(
+    'free_course_request_follow_up_mail' => t('Mail sent to schools the day after the course was held.'),
+  );
+}
+
+/**
+ * Implements hook_mail_edit_text().
+ */
+function ulf_free_course_request_mail_edit_text($mailkey, $language) {
+  $return = array();
+  switch ($mailkey) {
+    case 'free_course_request_follow_up_mail':
+      $return['subject'] = 'Evaluate the course';
+      $return['always'] = TRUE;
+      $return['body'] =
+        'Here is a body text';
+      break;
+  }
+  return $return;
+}
+
+/**
  * Implements hook_block_info().
  */
 function ulf_free_course_request_block_info()
