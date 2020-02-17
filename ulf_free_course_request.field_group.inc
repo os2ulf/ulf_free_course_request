@@ -61,6 +61,7 @@ function ulf_free_course_request_field_group_info() {
       5 => 'field_rfc_provider',
       6 => 'field_rfc_requested_amount',
       7 => 'field_rfc_subject',
+      8 => 'field_rfc_provider_name',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -123,8 +124,8 @@ function ulf_free_course_request_field_group_info() {
     'label' => 'Udbetaling',
     'weight' => '3',
     'children' => array(
-      0 => 'field_rfc_payment_date',
-      1 => 'field_rfc_attachment',
+      0 => 'field_rfc_attachment',
+      1 => 'field_rfc_payment_date',
       2 => 'field_rfc_spent_amount',
     ),
     'format_type' => 'fieldset',
