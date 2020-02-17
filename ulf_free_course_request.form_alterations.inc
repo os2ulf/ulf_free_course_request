@@ -245,6 +245,7 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
 
 
   if ($form_state['entityform_form_mode'] == 'submit') {
+    $form['field_rfc_provider_name']['#access'] = false;
     array_unshift($form['actions']['submit']['#submit'],'_rfc_request_form_submit');
   }
 }
@@ -448,6 +449,11 @@ function _rfc_request_form_submit($form, &$form_state) {
   // Add 3 hours to date timestamp to ensure correct date (Timezones and summertime)
   // We don't care about the exact time.
   $form_state['values']['field_rfc_date'][LANGUAGE_NONE][0]['value'] = $form_state['values']['field_rfc_date'][LANGUAGE_NONE][0]['value'] + 10800;
+  // Save provider name in case the provider is deleted in the future
+  $provider_id = $form_state['values']['field_rfc_provider'][LANGUAGE_NONE][0]['target_id'];
+  $provider = user_load($provider_id);
+  $provider_name = $provider->field_profile_name[LANGUAGE_NONE][0]['safe_value'];
+  form_set_value($form['field_rfc_provider_name'], [LANGUAGE_NONE => [['value' => $provider_name]]], $form_state);
 
 }
 
@@ -475,7 +481,7 @@ function _rfc_request_form_submit_handle_status_change($form, &$form_state) {
     form_set_value($form['field_rfc_payment_date'], [LANGUAGE_NONE => [['value' => null]]], $form_state);
   }
   if ($form['#entity']->wrapper()->field_rfc_status->value() != 'payment_completed' && $form_state['values']['field_rfc_status'][LANGUAGE_NONE][0]['value'] == 'payment_completed') {
-    //if status is being changed to "ready_for_payment" set payment date
+    //if status is being changed to "payment_completed" set payment date
     form_set_value($form['field_rfc_payment_date'], [LANGUAGE_NONE => [['value' => time()]]], $form_state);
   }
 
