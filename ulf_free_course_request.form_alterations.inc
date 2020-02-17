@@ -470,8 +470,11 @@ function _rfc_request_form_submit_handle_course($form, &$form_state) {
  * @param $form_state
  */
 function _rfc_request_form_submit_handle_status_change($form, &$form_state) {
-
-  if ($form['field_rfc_status'][LANGUAGE_NONE]['#default_value'] != 'payment_completed' && $form_state['values']['field_rfc_status'][LANGUAGE_NONE][0]['value'] == 'payment_completed') {
+  if ($form['#entity']->wrapper()->field_rfc_status->value() != 'ready_for_payment' && $form_state['values']['field_rfc_status'][LANGUAGE_NONE][0]['value'] == 'ready_for_payment') {
+    //if status is being changed to "ready_for_payment" set payment date
+    form_set_value($form['field_rfc_payment_date'], [LANGUAGE_NONE => [['value' => null]]], $form_state);
+  }
+  if ($form['#entity']->wrapper()->field_rfc_status->value() != 'payment_completed' && $form_state['values']['field_rfc_status'][LANGUAGE_NONE][0]['value'] == 'payment_completed') {
     //if status is being changed to "ready_for_payment" set payment date
     form_set_value($form['field_rfc_payment_date'], [LANGUAGE_NONE => [['value' => time()]]], $form_state);
   }
