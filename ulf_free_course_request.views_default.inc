@@ -481,6 +481,10 @@ function ulf_free_course_request_views_default_views() {
     'bypass_access' => 0,
     'link' => 0,
   );
+  /* Felt: Entityform Submission: Klasse */
+  $handler->display->display_options['fields']['field_rfc_grade']['id'] = 'field_rfc_grade';
+  $handler->display->display_options['fields']['field_rfc_grade']['table'] = 'field_data_field_rfc_grade';
+  $handler->display->display_options['fields']['field_rfc_grade']['field'] = 'field_rfc_grade';
   /* Felt: Entityform Submission: Navn */
   $handler->display->display_options['fields']['field_rfc_name']['id'] = 'field_rfc_name';
   $handler->display->display_options['fields']['field_rfc_name']['table'] = 'field_data_field_rfc_name';
@@ -1155,6 +1159,7 @@ function ulf_free_course_request_views_default_views() {
     t('ID'),
     t('.'),
     t('Skole'),
+    t('Klasse'),
     t('Navn'),
     t('Udbyder'),
     t('Forløbets navn'),
@@ -1175,7 +1180,6 @@ function ulf_free_course_request_views_default_views() {
     t('Titel'),
     t('User applications'),
     t('Skolens ansøgninger'),
-    t('Klasse'),
     t('Handlinger'),
     t('Rediger'),
     t('Søg på person, forløb, udbyder eller id'),
