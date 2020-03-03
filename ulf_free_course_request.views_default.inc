@@ -489,10 +489,16 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['fields']['field_rfc_name']['id'] = 'field_rfc_name';
   $handler->display->display_options['fields']['field_rfc_name']['table'] = 'field_data_field_rfc_name';
   $handler->display->display_options['fields']['field_rfc_name']['field'] = 'field_rfc_name';
+  /* Felt: Entityform Submission: Udbyder navn */
+  $handler->display->display_options['fields']['field_rfc_provider_name']['id'] = 'field_rfc_provider_name';
+  $handler->display->display_options['fields']['field_rfc_provider_name']['table'] = 'field_data_field_rfc_provider_name';
+  $handler->display->display_options['fields']['field_rfc_provider_name']['field'] = 'field_rfc_provider_name';
+  $handler->display->display_options['fields']['field_rfc_provider_name']['exclude'] = TRUE;
   /* Felt: Entityform Submission: Udbyder */
   $handler->display->display_options['fields']['field_rfc_provider']['id'] = 'field_rfc_provider';
   $handler->display->display_options['fields']['field_rfc_provider']['table'] = 'field_data_field_rfc_provider';
   $handler->display->display_options['fields']['field_rfc_provider']['field'] = 'field_rfc_provider';
+  $handler->display->display_options['fields']['field_rfc_provider']['empty'] = '[field_rfc_provider_name] <i>(slettet)</i>';
   $handler->display->display_options['fields']['field_rfc_provider']['settings'] = array(
     'bypass_access' => 0,
     'link' => 0,
@@ -1161,7 +1167,9 @@ function ulf_free_course_request_views_default_views() {
     t('Skole'),
     t('Klasse'),
     t('Navn'),
+    t('Udbyder navn'),
     t('Udbyder'),
+    t('[field_rfc_provider_name] <i>(slettet)</i>'),
     t('Forløbets navn'),
     t('Forløb'),
     t('[field_rfc_new_course_name] '),
