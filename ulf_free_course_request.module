@@ -15,23 +15,23 @@ include_once 'ulf_free_course_request.form_alterations.inc';
  * Implements hook_menu().
  */
 function ulf_free_course_request_menu() {
-  $items = array();
+  $items = [];
 
-  $items['admin/config/system/free_course_request/requests'] = array(
+  $items['admin/config/system/free_course_request/requests'] = [
     'title' => 'Financing requests',
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'weight' => -10,
-  );
+  ];
 
-  $items['admin/config/system/free_course_request/config'] = array(
+  $items['admin/config/system/free_course_request/config'] = [
     'title' => 'Config / Help texts',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('ulf_free_course_request_form_backend'),
+    'page arguments' => ['ulf_free_course_request_form_backend'],
     'type' => MENU_LOCAL_TASK,
-    'access arguments' => array('administer ulf free course request settings'),
+    'access arguments' => ['administer ulf free course request settings'],
     'file' => 'ulf_free_course_request.backend.inc',
     'file path' => drupal_get_path('module', 'ulf_free_course_request'),
-  );
+  ];
 
   return $items;
 }
@@ -39,29 +39,30 @@ function ulf_free_course_request_menu() {
 /**
  * Implements hook_cron().
  */
-function ulf_free_course_request_cron()
-{
+function ulf_free_course_request_cron() {
   global $language;
 
-  if(variable_get('enable_free_course_follow_up_mails', false)) {
-    if(date('G') > 8) {
-      $from = strtotime('yesterday 00:00');
-      $to = strtotime('today 00:00') - 1;
+  if (variable_get('enable_free_course_follow_up_mails', FALSE)) {
+    if (date('G') > 8) {
+      $from = strtotime('yesterday 00:00 Europe/Copenhagen');
+      $to = strtotime('today 00:00 Europe/Copenhagen') - 1;
       $query = db_select('field_data_field_rfc_date', 'd');
       $query->fields('d', ['entity_id']);
       $query->leftJoin('field_data_field_rfc_follow_up_mail_sent', 'f', 'd.entity_id = f.entity_id AND d.bundle = f.bundle');
-      $query->condition('d.field_rfc_date_value', $from, '>');
+      $query->condition('d.field_rfc_date_value', $from, '>=');
       $query->condition('d.field_rfc_date_value', $to, '<');
       $query->condition('d.bundle', 'free_course_request', '=');
       $query->isNull('f.field_rfc_follow_up_mail_sent_value');
       $result = $query->execute()->fetchAllKeyed(0, 0);
 
       foreach (entityform_load_multiple($result) as $course_request) {
-        $course_request->field_rfc_follow_up_mail_sent = time();
-        field_attach_presave('entityform', $course_request);
-        field_attach_update('entityform', $course_request);
         $to = $course_request->wrapper()->field_rfc_mail->value();
-        drupal_mail('ulf_free_course_request', 'free_course_request_follow_up_mail', $to, $language->language, []);
+        if (drupal_mail('ulf_free_course_request', 'free_course_request_follow_up_mail', $to, $language->language, [])) {
+
+          $course_request->field_rfc_follow_up_mail_sent[LANGUAGE_NONE][0]['value'] = time();
+          field_attach_presave('entityform', $course_request);
+          field_attach_update('entityform', $course_request);
+        }
       }
     }
   }
@@ -71,22 +72,21 @@ function ulf_free_course_request_cron()
  * Implements hook_mailkeys().
  */
 function ulf_free_course_request_mailkeys() {
-  return array(
+  return [
     'free_course_request_follow_up_mail' => t('Mail sent to schools the day after the course was held.'),
-  );
+  ];
 }
 
 /**
  * Implements hook_mail_edit_text().
  */
 function ulf_free_course_request_mail_edit_text($mailkey, $language) {
-  $return = array();
+  $return = [];
   switch ($mailkey) {
     case 'free_course_request_follow_up_mail':
       $return['subject'] = 'Evaluate the course';
       $return['always'] = TRUE;
-      $return['body'] =
-        'Here is a body text';
+      $return['body'] = 'Here is a body text';
       break;
   }
   return $return;
@@ -95,8 +95,7 @@ function ulf_free_course_request_mail_edit_text($mailkey, $language) {
 /**
  * Implements hook_block_info().
  */
-function ulf_free_course_request_block_info()
-{
+function ulf_free_course_request_block_info() {
   $blocks['free_course_request_summary'] = [
     'info' => 'Ansøgninger opsummering',
   ];
@@ -108,8 +107,9 @@ function ulf_free_course_request_block_info()
  */
 function ulf_free_course_request_block_view($delta = '') {
   if ($delta == 'free_course_request_summary') {
-    $block['subject'] = null;
-    $block['content'] = '<style>#block-ulf-free-course-request-free-course-request-summary{float:right;}</style>';
+    $block['subject'] = NULL;
+    $block['content']
+      = '<style>#block-ulf-free-course-request-free-course-request-summary{float:right;}</style>';
 
     $requested_amount = 0;
     $granted_amount = 0;
@@ -122,46 +122,71 @@ function ulf_free_course_request_block_view($delta = '') {
     $query->leftJoin('field_data_field_rfc_spent_amount', 'sa', 'e.entityform_id = sa.entity_id');
 
     $query->condition('e.type', 'free_course_request');
-    if(isset($params['field_rfc_date_value']) || isset($params['field_rfc_date_value_1']) || isset($params['field_rfc_date_value_2'])) {
+    if (isset($params['field_rfc_date_value'])
+      || isset($params['field_rfc_date_value_1'])
+      || isset($params['field_rfc_date_value_2'])
+    ) {
       $query->leftJoin('field_data_field_rfc_date', 'd', 'e.entityform_id = d.entity_id');
-      if(isset($params['field_rfc_date_value']['value']['date']) && $params['field_rfc_date_value']['value']['date'] != '') {
+      if (isset($params['field_rfc_date_value']['value']['date'])
+        && $params['field_rfc_date_value']['value']['date'] != ''
+      ) {
         $parts = explode('/', $params['field_rfc_date_value']['value']['date']);
-        $time = strtotime($parts[2].$parts[1].$parts[0]);
-        if($time > 0) {
+        $time = strtotime($parts[2] . $parts[1] . $parts[0]);
+        if ($time > 0) {
           $query->condition('d.field_rfc_date_value', $time, '>');
         }
       }
-      if(isset($params['field_rfc_date_value_1']['value']['date']) && $params['field_rfc_date_value_1']['value']['date'] != '') {
-        $parts = explode('/', $params['field_rfc_date_value_1']['value']['date']);
-        $time = strtotime($parts[2].$parts[1].$parts[0]);
-        if($time > 0) {
+      if (isset($params['field_rfc_date_value_1']['value']['date'])
+        && $params['field_rfc_date_value_1']['value']['date'] != ''
+      ) {
+        $parts
+          = explode('/', $params['field_rfc_date_value_1']['value']['date']);
+        $time = strtotime($parts[2] . $parts[1] . $parts[0]);
+        if ($time > 0) {
           $query->condition('d.field_rfc_date_value', $time, '<');
         }
       }
-      if(isset($params['field_rfc_date_value_2']['semester']) && count($params['field_rfc_date_value_2']['semester']) > 0) {
+      if (isset($params['field_rfc_date_value_2']['semester'])
+        && count($params['field_rfc_date_value_2']['semester']) > 0
+      ) {
         $condition_group = db_or();
         foreach ($params['field_rfc_date_value_2']['semester'] as $semester) {
           $exp = explode('_', $semester);
-          if(count($exp) == 2) {
-            $args = $exp[1] == 1 ? [':semester_'.$semester.'_min' => $exp[0].'-01', ':semester_'.$semester.'_max' => $exp[0].'-06'] : [':semester_'.$semester.'_min' => $exp[0].'-07', ':semester_'.$semester.'_max' => $exp[0].'-12'];
-            $condition_group->where('DATE_FORMAT(FROM_UNIXTIME(d.field_rfc_date_value), \'%Y-%m\') >= :semester_'.$semester.'_min AND DATE_FORMAT(FROM_UNIXTIME(d.field_rfc_date_value), \'%Y-%m\') <= :semester_'.$semester.'_max', $args);
+          if (count($exp) == 2) {
+            $args = $exp[1] == 1
+              ? [
+                ':semester_' . $semester . '_min' => $exp[0] . '-01',
+                ':semester_' . $semester . '_max' => $exp[0] . '-06',
+              ]
+              : [
+                ':semester_' . $semester . '_min' => $exp[0] . '-07',
+                ':semester_' . $semester . '_max' => $exp[0] . '-12',
+              ];
+            $condition_group->where(
+              'DATE_FORMAT(FROM_UNIXTIME(d.field_rfc_date_value), \'%Y-%m\') >= :semester_'
+              . $semester
+              . '_min AND DATE_FORMAT(FROM_UNIXTIME(d.field_rfc_date_value), \'%Y-%m\') <= :semester_'
+              . $semester . '_max', $args
+            );
           }
         }
         $query->condition($condition_group);
       }
     }
-    if(isset($params['field_rfc_status_value']) && $params['field_rfc_status_value'] != 'All') {
+    if (isset($params['field_rfc_status_value'])
+      && $params['field_rfc_status_value'] != 'All'
+    ) {
       $query->leftJoin('field_data_field_rfc_status', 's', 'e.entityform_id = s.entity_id');
       $query->condition('s.field_rfc_status_value', $params['field_rfc_status_value'], '=');
     }
     $uid = arg(3);
-    if($uid && $uid > 0) {
-//      $query->leftJoin('field_data_field_rfc_school', 'field_data_field_rfc_school_filter', 'e.entityform_id = field_data_field_rfc_school_filter.entity_id');
-//      $query->condition('field_data_field_rfc_school_filter.field_rfc_school_target_id', $uid);
+    if ($uid && $uid > 0) {
+      //      $query->leftJoin('field_data_field_rfc_school', 'field_data_field_rfc_school_filter', 'e.entityform_id = field_data_field_rfc_school_filter.entity_id');
+      //      $query->condition('field_data_field_rfc_school_filter.field_rfc_school_target_id', $uid);
       $query->condition('e.uid', $uid);
     }
 
-    if(isset($params['combine']) && $params['combine'] != '') {
+    if (isset($params['combine']) && $params['combine'] != '') {
 
       $query->leftJoin('field_data_field_rfc_name', 'field_data_field_rfc_name', 'e.entityform_id = field_data_field_rfc_name.entity_id');
       $query->leftJoin('field_data_field_rfc_school', 'field_data_field_rfc_school', 'e.entityform_id = field_data_field_rfc_school.entity_id');
@@ -176,7 +201,9 @@ function ulf_free_course_request_block_view($delta = '') {
 
       $query->addExpression("CONCAT_WS(' ', e.entityform_id, ' ', field_data_field_rfc_school.field_rfc_school_target_id, ' ', field_data_field_rfc_name.field_rfc_name_value, ' ', field_data_field_rfc_provider.field_rfc_provider_target_id, ' ', field_data_field_rfc_new_course_name.field_rfc_new_course_name_value, ' ', field_data_field_rfc_course.field_rfc_course_target_id, ' ', users_field_data_field_rfc_school__field_data_field_profile_name.field_profile_name_value, ' ', users_field_data_field_rfc_provider__field_data_field_profile_name.field_profile_name_value, ' ', node_field_data_field_rfc_course.title)", 'combined_fields');
 
-      $query->havingCondition('combined_fields', '%'.$params['combine'].'%', 'LIKE');
+      $query->havingCondition(
+        'combined_fields', '%' . $params['combine'] . '%', 'LIKE'
+      );
 
       $query->addField('ra', 'field_rfc_requested_amount_value', 'requested_amount');
       $query->addField('ga', 'field_rfc_granted_amount_value', 'granted_amount');
@@ -184,12 +211,13 @@ function ulf_free_course_request_block_view($delta = '') {
 
       $result = $query->execute()->fetchAll();
       foreach ($result as $row) {
-        $requested_amount+= floatval($row->requested_amount);
-        $granted_amount+= floatval($row->granted_amount);
-        $spent_amount+= floatval($row->spent_amount);
+        $requested_amount += floatval($row->requested_amount);
+        $granted_amount += floatval($row->granted_amount);
+        $spent_amount += floatval($row->spent_amount);
       }
 
-    } else {
+    }
+    else {
       $query->addExpression('SUM(field_rfc_requested_amount_value)', 'requested_amount');
       $query->addExpression('SUM(field_rfc_granted_amount_value)', 'granted_amount');
       $query->addExpression('SUM(field_rfc_spent_amount_value)', 'spent_amount');
@@ -201,37 +229,53 @@ function ulf_free_course_request_block_view($delta = '') {
 
     }
 
-    $block['content'].='<p>Ansøgt sum: <b>'.number_format($requested_amount, 2, ',', '.').' kr.</b> - Bevilget sum: <b>'.number_format($granted_amount, 2, ',', '.').' kr.</b> - Forbrugt sum: <b>'.number_format($spent_amount, 2, ',', '.').'kr.</b></p>';
+    $block['content'] .= '<p>Ansøgt sum: <b>'
+      . number_format($requested_amount, 2, ',', '.')
+      . ' kr.</b> - Bevilget sum: <b>'
+      . number_format($granted_amount, 2, ',', '.')
+      . ' kr.</b> - Forbrugt sum: <b>'
+      . number_format($spent_amount, 2, ',', '.') . 'kr.</b></p>';
     return $block;
   }
 }
 
 /**
  * Implements hook_views_query_alter().
+ *
  * @param $view
  * @param views_plugin_query_default $query
  */
-function ulf_free_course_request_views_query_alter(&$view, &$query)
-{
-  if($view->name == 'ulf_free_course_requests' && ($view->current_display == 'free_course_requests_table' || $view->current_display == 'free_course_requests_user')) {
-//    kint($query);die;
+function ulf_free_course_request_views_query_alter(&$view, &$query) {
+  if ($view->name == 'ulf_free_course_requests'
+    && ($view->current_display == 'free_course_requests_table'
+      || $view->current_display == 'free_course_requests_user')
+  ) {
+    //    kint($query);die;
     $params = drupal_get_query_parameters();
-    if(isset($params['field_rfc_date_value_2']['semester']) && !empty($params['field_rfc_date_value_2']['semester'])) {
+    if (isset($params['field_rfc_date_value_2']['semester'])
+      && !empty($params['field_rfc_date_value_2']['semester'])
+    ) {
       $snippet = '';
       $args = [];
       foreach ($params['field_rfc_date_value_2']['semester'] as $semester) {
         $exp = explode('_', $semester);
-        if(count($exp) == 2) {
-          if($snippet != '') {
+        if (count($exp) == 2) {
+          if ($snippet != '') {
             $snippet .= ' OR ';
           }
-          $snippet.= 'DATE_FORMAT(FROM_UNIXTIME(field_data_field_rfc_date.field_rfc_date_value), \'%Y-%m\') >= :semester_'.$semester.'_min AND DATE_FORMAT(FROM_UNIXTIME(field_data_field_rfc_date.field_rfc_date_value), \'%Y-%m\') <= :semester_'.$semester.'_max';
-          if($exp[1] == 1) {
-            $args[':semester_'.$semester.'_min'] = $exp[0].'-01';
-            $args[':semester_'.$semester.'_max'] = $exp[0].'-06';
-          } else if($exp[1] == 2) {
-            $args[':semester_'.$semester.'_min'] = $exp[0].'-07';
-            $args[':semester_'.$semester.'_max'] = $exp[0].'-12';
+          $snippet .= 'DATE_FORMAT(FROM_UNIXTIME(field_data_field_rfc_date.field_rfc_date_value), \'%Y-%m\') >= :semester_'
+            . $semester
+            . '_min AND DATE_FORMAT(FROM_UNIXTIME(field_data_field_rfc_date.field_rfc_date_value), \'%Y-%m\') <= :semester_'
+            . $semester . '_max';
+          if ($exp[1] == 1) {
+            $args[':semester_' . $semester . '_min'] = $exp[0] . '-01';
+            $args[':semester_' . $semester . '_max'] = $exp[0] . '-06';
+          }
+          else {
+            if ($exp[1] == 2) {
+              $args[':semester_' . $semester . '_min'] = $exp[0] . '-07';
+              $args[':semester_' . $semester . '_max'] = $exp[0] . '-12';
+            }
           }
         }
       }
@@ -247,17 +291,17 @@ function ulf_free_course_request_views_query_alter(&$view, &$query)
 /**
  * Implements hook_views_pre_render().
  */
-function ulf_free_course_request_views_pre_render(&$view)
-{
-  if($view->name == 'ulf_free_course_requests') {
+function ulf_free_course_request_views_pre_render(&$view) {
+  if ($view->name == 'ulf_free_course_requests') {
     foreach ($view->result as $value) {
       $time = $value->field_field_rfc_date_1[0]['raw']['value'];
       $year = date('Y', $time);
       $month = date('m', $time);
-      if($month < 7) {
-        $string = '2. halvår '.($year - 1).'/'.$year;
-      } else {
-        $string = '1. halvår '.$year.'/'.($year + 1);
+      if ($month < 7) {
+        $string = '2. halvår ' . ($year - 1) . '/' . $year;
+      }
+      else {
+        $string = '1. halvår ' . $year . '/' . ($year + 1);
       }
       $value->field_field_rfc_date_1[0]['rendered']['#markup'] = $string;
     }
@@ -270,7 +314,9 @@ function ulf_free_course_request_views_pre_render(&$view)
 function ulf_free_course_request_entityform_access_alter(&$access, $op, $context) {
   $account = $context['account'];
   $entityform = $context['entityform'];
-  if (!$access && $op == 'edit' && isset($entityform->uid) && $account->uid == $entityform->uid) {
+  if (!$access && $op == 'edit' && isset($entityform->uid)
+    && $account->uid == $entityform->uid
+  ) {
     $status = $entityform->field_rfc_status[LANGUAGE_NONE][0]['value'];
     if ($status == 'accepted' || $status == 'awaiting_payment') {
       $access = TRUE;
@@ -285,7 +331,7 @@ function ulf_free_course_request_preprocess_user_profile(&$variables) {
   foreach ($variables['elements']['#account']->roles as $role) {
     $filter = '![^abcdefghijklmnopqrstuvwxyz0-9-_]+!s';
     $string_clean = preg_replace($filter, '-', drupal_strtolower($role));
-    $variables['theme_hook_suggestions'][] =  'user_profile__' . $string_clean;
+    $variables['theme_hook_suggestions'][] = 'user_profile__' . $string_clean;
   }
 }
 
@@ -296,14 +342,18 @@ function ulf_free_course_request_theme_registry_alter(&$theme_registry) {
   // Defined path to the current module.
   $module_path = drupal_get_path('module', 'ulf_free_course_request');
   // Find all .tpl.php files in this module's folder recursively.
-  $template_file_objects = drupal_find_theme_templates($theme_registry, '.tpl.php', $module_path);
+  $template_file_objects
+    = drupal_find_theme_templates($theme_registry, '.tpl.php', $module_path);
   // Iterate through all found template file objects.
   foreach ($template_file_objects as $key => $template_file_object) {
     // If the template has not already been overridden by a theme.
-    if (!isset($theme_registry[$key]['theme path']) || !preg_match('#/themes/#', $theme_registry[$key]['theme path'])) {
+    if (!isset($theme_registry[$key]['theme path'])
+      || !preg_match('#/themes/#', $theme_registry[$key]['theme path'])
+    ) {
       // Alter the theme path and template elements.
       $theme_registry[$key]['theme path'] = $module_path;
-      $theme_registry[$key] = array_merge($theme_registry[$key], $template_file_object);
+      $theme_registry[$key]
+        = array_merge($theme_registry[$key], $template_file_object);
       $theme_registry[$key]['type'] = 'module';
     }
   }
@@ -343,7 +393,9 @@ function ulf_free_course_request_entity_postupdate($entity, $entity_type) {
     if ($entity->type == 'free_course_request') {
       if ($entity->field_rfc_send_mail[LANGUAGE_NONE][0]['value'] == TRUE) {
         $wrapper = entity_metadata_wrapper($entity_type, $entity);
-        if ($entity->field_rfc_status[LANGUAGE_NONE][0]['value'] == 'accepted') {
+        if ($entity->field_rfc_status[LANGUAGE_NONE][0]['value']
+          == 'accepted'
+        ) {
           _rfc_notify($wrapper, 'on_change_accepted');
         }
         if ($entity->field_rfc_status[LANGUAGE_NONE][0]['value'] == 'refused') {
@@ -354,9 +406,10 @@ function ulf_free_course_request_entity_postupdate($entity, $entity_type) {
       global $user;
       $wrapper->field_rfc_latest_editor = $user->uid;
       $wrapper->save();
-      if(!in_array('editor', $user->roles)) {
-        drupal_goto('admin/udgiftsdaekning/ansoegninger/'.$user->uid);
-      } else {
+      if (!in_array('editor', $user->roles)) {
+        drupal_goto('admin/udgiftsdaekning/ansoegninger/' . $user->uid);
+      }
+      else {
         drupal_goto('admin/config/system/free_course_request');
       }
     }
@@ -366,12 +419,11 @@ function ulf_free_course_request_entity_postupdate($entity, $entity_type) {
 /**
  * Implements hook_menu_local_tasks_alter().
  */
-function ulf_free_course_request_menu_local_tasks_alter(&$data, $router_item, $root_path)
-{
+function ulf_free_course_request_menu_local_tasks_alter(&$data, $router_item, $root_path) {
 
-  if($root_path == 'entityform/%/edit') {
+  if ($root_path == 'entityform/%/edit') {
     global $user;
-    if(in_array('skole', $user->roles)) {
+    if (in_array('skole', $user->roles)) {
       $data['tabs'][0]['output'] = [];
       $data['tabs'][0]['count'] = 0;
     }
