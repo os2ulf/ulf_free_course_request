@@ -49,9 +49,11 @@ function ulf_free_course_request_cron() {
       $query = db_select('field_data_field_rfc_date', 'd');
       $query->fields('d', ['entity_id']);
       $query->leftJoin('field_data_field_rfc_follow_up_mail_sent', 'f', 'd.entity_id = f.entity_id AND d.bundle = f.bundle');
+      $query->leftJoin('field_data_field_rfc_status', 's', 'd.entity_id = s.entity_id');
       $query->condition('d.field_rfc_date_value', $from, '>=');
       $query->condition('d.field_rfc_date_value', $to, '<');
       $query->condition('d.bundle', 'free_course_request', '=');
+      $query->condition('s.field_rfc_status_value', ['accepted', 'awaiting_payment' , 'ready_for_payment', 'payment_completed'], 'IN');
       $query->isNull('f.field_rfc_follow_up_mail_sent_value');
       $result = $query->execute()->fetchAllKeyed(0, 0);
 
