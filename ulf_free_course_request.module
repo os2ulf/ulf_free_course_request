@@ -58,8 +58,16 @@ function ulf_free_course_request_cron() {
       $result = $query->execute()->fetchAllKeyed(0, 0);
 
       foreach (entityform_load_multiple($result) as $course_request) {
+        $params = [];
+        $provider = $course_request->wrapper()->field_rfc_provider->value();
+        $course = $course_request->wrapper()->field_rfc_course->value();
+
+        $params['user'] = $provider;
+        $params['node'] = $course;
+        $params['entityform'] = $course_request;
+
         $to = $course_request->wrapper()->field_rfc_mail->value();
-        if (drupal_mail('ulf_free_course_request', 'free_course_request_follow_up_mail', $to, $language->language, [])) {
+        if (drupal_mail('ulf_free_course_request', 'free_course_request_follow_up_mail', $to, $language, $params)) {
 
           $course_request->field_rfc_follow_up_mail_sent[LANGUAGE_NONE][0]['value'] = time();
           field_attach_presave('entityform', $course_request);
