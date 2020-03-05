@@ -62,6 +62,7 @@ function ulf_free_course_request_cron() {
         if (drupal_mail('ulf_free_course_request', 'free_course_request_follow_up_mail', $to, $language->language, [])) {
 
           $course_request->field_rfc_follow_up_mail_sent[LANGUAGE_NONE][0]['value'] = time();
+          $course_request->field_rfc_mails_sent[] = t('Follow up mail sent', array(), array('langcode' => $language->language));
           field_attach_presave('entityform', $course_request);
           field_attach_update('entityform', $course_request);
         }
