@@ -430,7 +430,9 @@ function _rfc_request_form_validate($element, $form_state) {
         form_set_error('field_rfc_course', t('The field %field is required.', array('%field' => $element['field_rfc_course'][LANGUAGE_NONE]['#title'])));
       }
     }
-    if(!empty($form_state['values']['field_rfc_spent_amount'][LANGUAGE_NONE][0]['value']) && $element['#entity']->field_rfc_granted_amount[LANGUAGE_NONE][0]['value'] < $form_state['values']['field_rfc_spent_amount'][LANGUAGE_NONE][0]['value']) {
+
+    $granted_amount = $form_state['values']['field_rfc_granted_amount'][LANGUAGE_NONE][0]['value'] ?? $element['#entity']->field_rfc_granted_amount[LANGUAGE_NONE][0]['value'];
+    if(!empty($form_state['values']['field_rfc_spent_amount'][LANGUAGE_NONE][0]['value']) && $granted_amount < $form_state['values']['field_rfc_spent_amount'][LANGUAGE_NONE][0]['value']) {
       form_set_error('field_rfc_spent_amount', t('%name: the value may be no greater than %max.', array('%name' => $element['field_rfc_spent_amount'][LANGUAGE_NONE]['#title'], '%max' => $element['field_rfc_granted_amount'][LANGUAGE_NONE]['#title'])));
     }
 
