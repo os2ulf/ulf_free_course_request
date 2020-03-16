@@ -52,6 +52,16 @@ function ulf_free_course_request_action_info() {
     'pass rows' => TRUE,
   );
 
+  $actions['_rfc_cancelled'] = array(
+    'type' => 'entityform',
+    'label' => t('Change status to cancelled'),
+    'configurable' => FALSE,
+    'triggers' => array('any'),
+    'behavior' => array('changes_property'),
+    'vbo_configurable' => FALSE,
+    'pass rows' => TRUE,
+  );
+
   $actions['_rfc_ready_for_payment'] = array(
     'type' => 'entityform',
     'label' => t('Change status to Ready for Payment'),
@@ -147,6 +157,16 @@ function _rfc_payment_completed($entity) {
 }
 
 /**
+ * Custom action for bulk operation. (Change status to payment cancelled)
+ *
+ * @param object $entity
+ *   The entity to act on.
+ */
+function _rfc_cancelled($entity) {
+  _rfc_change_entity($entity, 'cancelled');
+}
+
+/**
  * Custom action for bulk operation. (Close)
  *
  * @param object $entity
@@ -211,6 +231,11 @@ function _rfc_change_entity($entity, $action) {
     case 'payment_completed':
       $wrapper->field_rfc_status = 'payment_completed';
       $wrapper->field_rfc_payment_date = time();
+      $wrapper->save();
+      break;
+
+    case 'cancelled':
+      $wrapper->field_rfc_status = 'cancelled';
       $wrapper->save();
       break;
 
