@@ -42,6 +42,7 @@ function ulf_free_course_request_menu() {
 function ulf_free_course_request_cron() {
   global $language;
 
+
   if (variable_get('enable_free_course_follow_up_mails', FALSE)) {
     if (date('G') > 8) {
       $from = strtotime('yesterday 00:00 Europe/Copenhagen');
@@ -58,25 +59,35 @@ function ulf_free_course_request_cron() {
       $result = $query->execute()->fetchAllKeyed(0, 0);
 
       foreach (entityform_load_multiple($result) as $course_request) {
+        parseFormData($course_request);
+
         $params = [];
-        $provider = $course_request->wrapper()->field_rfc_provider->value();
-        $course = $course_request->wrapper()->field_rfc_course->value();
+        $wrapper = $course_request->wrapper();
+        $provider = $wrapper->field_rfc_provider->value();
+        $course = $wrapper->field_rfc_course->value();
 
         $params['user'] = $provider;
         $params['node'] = $course;
         $params['entityform'] = $course_request;
 
-        $to = $course_request->wrapper()->field_rfc_mail->value();
+        $to = $wrapper->field_rfc_mail->value();
         if (drupal_mail('ulf_free_course_request', 'free_course_request_follow_up_mail', $to, $language, $params)) {
-
           $course_request->field_rfc_follow_up_mail_sent[LANGUAGE_NONE][0]['value'] = time();
-          $course_request->field_rfc_mails_sent[] = t('Follow up mail sent', array(), array('langcode' => $language->language));
+          $course_request->field_rfc_mails_sent[LANGUAGE_NONE][] = [
+            'value' => t('Follow up mail sent', array(), array('langcode' => $language->language)),
+            'format' => NULL,
+            'safe_value' => t('Follow up mail sent', array(), array('langcode' => $language->language)),
+          ];
           field_attach_presave('entityform', $course_request);
           field_attach_update('entityform', $course_request);
         }
       }
     }
   }
+}
+
+function parseFormData(&$form_data) {
+  $form_data->field_rfc_date[LANGUAGE_NONE][0]['value'] = format_date($form_data->field_rfc_date[LANGUAGE_NONE][0]['value'], 'custom', 'j. F Y');
 }
 
 /**
