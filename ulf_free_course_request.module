@@ -413,11 +413,9 @@ function ulf_free_course_request_entity_postupdate($entity, $entity_type) {
   // Ensure we are submitting an entityform from form view.
   if ($entity_type == 'entityform' && arg(2) == 'edit') {
     if ($entity->type == 'free_course_request') {
+      $wrapper = entity_metadata_wrapper($entity_type, $entity);
       if ($entity->field_rfc_send_mail[LANGUAGE_NONE][0]['value'] == TRUE) {
-        $wrapper = entity_metadata_wrapper($entity_type, $entity);
-        if ($entity->field_rfc_status[LANGUAGE_NONE][0]['value']
-          == 'accepted'
-        ) {
+        if ($entity->field_rfc_status[LANGUAGE_NONE][0]['value'] == 'accepted') {
           _rfc_notify($wrapper, 'on_change_accepted');
         }
         if ($entity->field_rfc_status[LANGUAGE_NONE][0]['value'] == 'refused') {
