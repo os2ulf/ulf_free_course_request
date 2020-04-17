@@ -59,8 +59,6 @@ function ulf_free_course_request_cron() {
       $result = $query->execute()->fetchAllKeyed(0, 0);
 
       foreach (entityform_load_multiple($result) as $course_request) {
-        parseFormData($course_request);
-
         $params = [];
         $wrapper = $course_request->wrapper();
         $provider = $wrapper->field_rfc_provider->value();
@@ -68,7 +66,7 @@ function ulf_free_course_request_cron() {
 
         $params['user'] = $provider;
         $params['node'] = $course;
-        $params['entityform'] = $course_request;
+        $params['entityform'] = parseFormData($course_request);
 
         $to = $wrapper->field_rfc_mail->value();
         if (drupal_mail('ulf_free_course_request', 'free_course_request_follow_up_mail', $to, $language, $params)) {
@@ -78,16 +76,21 @@ function ulf_free_course_request_cron() {
             'format' => NULL,
             'safe_value' => t('Follow up mail sent', array(), array('langcode' => $language->language)),
           ];
+
           field_attach_presave('entityform', $course_request);
+          error_log('---------- FREE COURSE REQUEST START ----------');
           field_attach_update('entityform', $course_request);
+          error_log('---------- FREE COURSE REQUEST END ----------');
         }
       }
     }
   }
 }
 
-function parseFormData(&$form_data) {
-  $form_data->field_rfc_date[LANGUAGE_NONE][0]['value'] = format_date($form_data->field_rfc_date[LANGUAGE_NONE][0]['value'], 'custom', 'j. F Y');
+function parseFormData($form_data) {
+  $form = clone $form_data;
+  $form->field_rfc_date[LANGUAGE_NONE][0]['value'] = format_date($form_data->field_rfc_date[LANGUAGE_NONE][0]['value'], 'custom', 'j. F Y');
+  return $form;
 }
 
 /**
