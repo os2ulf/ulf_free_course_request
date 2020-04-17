@@ -78,9 +78,7 @@ function ulf_free_course_request_cron() {
           ];
 
           field_attach_presave('entityform', $course_request);
-          error_log('---------- FREE COURSE REQUEST START ----------');
           field_attach_update('entityform', $course_request);
-          error_log('---------- FREE COURSE REQUEST END ----------');
         }
       }
     }
