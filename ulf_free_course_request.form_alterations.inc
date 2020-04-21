@@ -459,6 +459,11 @@ function _rfc_request_form_submit($form, &$form_state) {
   $provider = user_load($provider_id);
   $provider_name = $provider->field_profile_name[LANGUAGE_NONE][0]['safe_value'];
   form_set_value($form['field_rfc_provider_name'], [LANGUAGE_NONE => [['value' => $provider_name]]], $form_state);
+  // Save course name in case the course is deleted in the future
+  $course_id = $form_state['values']['field_rfc_course'][LANGUAGE_NONE][0]['target_id'];
+  $course = node_load($course_id);
+  $course_name = $course->title;
+  form_set_value($form['field_rfc_course_name'], [LANGUAGE_NONE => [['value' => $course_name]]], $form_state);
 
 }
 
