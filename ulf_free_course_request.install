@@ -63,3 +63,33 @@ function ulf_free_course_request_update_7101 () {
   } catch (Exception $e) {
   }
 }
+
+/**
+ * Populate provider name field
+ */
+function ulf_free_course_request_update_7102 () {
+  try {
+    $query = db_select('field_data_field_rfc_course', 'course');
+    $query->fields('course', ['entity_id']);
+    $query->leftJoin('node', 'node', 'course.field_rfc_course_target_id = node.nid');
+    $query->fields('node', ['title']);
+    $query->condition('course.bundle', 'free_course_request', '=');
+    $result = $query->execute();
+    $map = [];
+    foreach ($result as $record) {
+      if($record->title != '') {
+        $map[$record->entity_id] = $record->title;
+      }
+    }
+    $course_requests = entityform_load_multiple(array_keys($map));
+    $check = reset($course_requests);
+    if(property_exists($check, 'field_rfc_course_name')) {
+      foreach ($course_requests as $id => $course_request) {
+        $course_request->field_rfc_course_name[LANGUAGE_NONE][0]['value'] = $map[$id];
+        field_attach_presave('entityform', $course_request);
+        field_attach_update('entityform', $course_request);
+      }
+    }
+  } catch (Exception $e) {
+  }
+}

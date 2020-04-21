@@ -136,6 +136,43 @@ function ulf_free_course_request_field_default_field_instances() {
         'apply_chosen' => '',
       ),
       'type' => 'options_select',
+      'weight' => 31,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'entityform-free_course_request-field_rfc_course_name'.
+  $field_instances['entityform-free_course_request-field_rfc_course_name'] = array(
+    'bundle' => 'free_course_request',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 26,
+      ),
+    ),
+    'entity_type' => 'entityform',
+    'field_name' => 'field_rfc_course_name',
+    'label' => 'Forløb',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'maxlength_js' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
       'weight' => 30,
     ),
   );
@@ -174,7 +211,7 @@ function ulf_free_course_request_field_default_field_instances() {
         'display_label' => 1,
       ),
       'type' => 'options_onoff',
-      'weight' => 31,
+      'weight' => 32,
     ),
   );
 
@@ -223,7 +260,7 @@ function ulf_free_course_request_field_default_field_instances() {
         'year_range' => '-3:+3',
       ),
       'type' => 'date_popup',
-      'weight' => 36,
+      'weight' => 37,
     ),
   );
 
@@ -568,7 +605,7 @@ function ulf_free_course_request_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 33,
+      'weight' => 34,
     ),
   );
 
@@ -605,7 +642,7 @@ function ulf_free_course_request_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 32,
+      'weight' => 33,
     ),
   );
 
@@ -841,7 +878,7 @@ function ulf_free_course_request_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 35,
+      'weight' => 36,
     ),
   );
 
@@ -1028,7 +1065,7 @@ Mail sendes dog kun hvis status er godkendt eller afvist.',
         'apply_chosen' => '',
       ),
       'type' => 'options_select',
-      'weight' => 34,
+      'weight' => 35,
     ),
   );
 

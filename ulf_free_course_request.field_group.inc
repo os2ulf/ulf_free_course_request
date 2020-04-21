@@ -62,6 +62,7 @@ function ulf_free_course_request_field_group_info() {
       6 => 'field_rfc_requested_amount',
       7 => 'field_rfc_subject',
       8 => 'field_rfc_provider_name',
+      9 => 'field_rfc_course_name',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

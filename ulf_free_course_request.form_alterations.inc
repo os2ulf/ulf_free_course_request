@@ -248,6 +248,7 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
 
   if ($form_state['entityform_form_mode'] == 'submit') {
     $form['field_rfc_provider_name']['#access'] = false;
+    $form['field_rfc_course_name']['#access'] = false;
     array_unshift($form['actions']['submit']['#submit'],'_rfc_request_form_submit');
   }
 }
