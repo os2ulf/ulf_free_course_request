@@ -54,7 +54,14 @@ function ulf_free_course_request_cron() {
       $query->condition('d.field_rfc_date_value', $from, '>=');
       $query->condition('d.field_rfc_date_value', $to, '<');
       $query->condition('d.bundle', 'free_course_request', '=');
-      $query->condition('s.field_rfc_status_value', ['accepted', 'awaiting_payment' , 'ready_for_payment', 'payment_completed'], 'IN');
+      $query->condition(
+        's.field_rfc_status_value', [
+        'accepted',
+        'awaiting_payment',
+        'ready_for_payment',
+        'payment_completed',
+      ], 'IN'
+      );
       $query->isNull('f.field_rfc_follow_up_mail_sent_value');
       $result = $query->execute()->fetchAllKeyed(0, 0);
 
@@ -70,11 +77,12 @@ function ulf_free_course_request_cron() {
 
         $to = $wrapper->field_rfc_mail->value();
         if (drupal_mail('ulf_free_course_request', 'free_course_request_follow_up_mail', $to, $language, $params)) {
-          $course_request->field_rfc_follow_up_mail_sent[LANGUAGE_NONE][0]['value'] = time();
+          $course_request->field_rfc_follow_up_mail_sent[LANGUAGE_NONE][0]['value']
+            = time();
           $course_request->field_rfc_mails_sent[LANGUAGE_NONE][] = [
-            'value' => t('Follow up mail sent', array(), array('langcode' => $language->language)),
+            'value' => t('Follow up mail sent', [], ['langcode' => $language->language]),
             'format' => NULL,
-            'safe_value' => t('Follow up mail sent', array(), array('langcode' => $language->language)),
+            'safe_value' => t('Follow up mail sent', [], ['langcode' => $language->language]),
           ];
 
           field_attach_presave('entityform', $course_request);
@@ -87,7 +95,8 @@ function ulf_free_course_request_cron() {
 
 function parseFormData($form_data) {
   $form = clone $form_data;
-  $form->field_rfc_date[LANGUAGE_NONE][0]['value'] = format_date($form_data->field_rfc_date[LANGUAGE_NONE][0]['value'], 'custom', 'j. F Y');
+  $form->field_rfc_date[LANGUAGE_NONE][0]['value']
+    = format_date($form_data->field_rfc_date[LANGUAGE_NONE][0]['value'], 'custom', 'j. F Y');
   return $form;
 }
 
@@ -317,16 +326,19 @@ function ulf_free_course_request_views_query_alter(&$view, &$query) {
 function ulf_free_course_request_views_pre_render(&$view) {
   if ($view->name == 'ulf_free_course_requests') {
     foreach ($view->result as $value) {
-      $time = $value->field_field_rfc_date_1[0]['raw']['value'];
-      $year = date('Y', $time);
-      $month = date('m', $time);
-      if ($month < 7) {
-        $string = '2. halvår ' . ($year - 1) . '/' . $year;
+
+      if (isset($value->field_field_rfc_date_1[0])) {
+        $time = $value->field_field_rfc_date_1[0]['raw']['value'];
+        $year = date('Y', $time);
+        $month = date('m', $time);
+        if ($month < 7) {
+          $string = '2. halvår ' . ($year - 1) . '/' . $year;
+        }
+        else {
+          $string = '1. halvår ' . $year . '/' . ($year + 1);
+        }
+        $value->field_field_rfc_date_1[0]['rendered']['#markup'] = $string;
       }
-      else {
-        $string = '1. halvår ' . $year . '/' . ($year + 1);
-      }
-      $value->field_field_rfc_date_1[0]['rendered']['#markup'] = $string;
     }
   }
 }
@@ -416,7 +428,9 @@ function ulf_free_course_request_entity_postupdate($entity, $entity_type) {
     if ($entity->type == 'free_course_request') {
       $wrapper = entity_metadata_wrapper($entity_type, $entity);
       if ($entity->field_rfc_send_mail[LANGUAGE_NONE][0]['value'] == TRUE) {
-        if ($entity->field_rfc_status[LANGUAGE_NONE][0]['value'] == 'accepted') {
+        if ($entity->field_rfc_status[LANGUAGE_NONE][0]['value']
+          == 'accepted'
+        ) {
           _rfc_notify($wrapper, 'on_change_accepted');
         }
         if ($entity->field_rfc_status[LANGUAGE_NONE][0]['value'] == 'refused') {
