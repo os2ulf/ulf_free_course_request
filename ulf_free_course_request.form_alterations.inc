@@ -32,6 +32,8 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
   global $user;
   drupal_set_title(variable_get('ufcr_title'));
 
+  $form['field_rfc_follow_up_mail_sent']['#access'] = false;
+
   $form['#logged_in_user'] = $user;
   // Set layout of page.
   $intro_text = variable_get('ufcr_intro', array('value' => '', 'format' => NULL))['value'];
@@ -58,7 +60,7 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
 
   // Auto fill send mail checkbox when editing an application.
   if ($form_state['entityform_form_mode'] == 'edit') {
-    $form['field_rfc_send_mail']['und']['#default_value'] = 1;
+    $form['field_rfc_send_mail'][LANGUAGE_NONE]['#default_value'] = 1;
   }
 
   // Hide format options from description field.
@@ -107,6 +109,10 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
     $form['field_rfc_attachment'][LANGUAGE_NONE][0]['#required'] = TRUE;
     $form['field_rfc_payment_date']['#access'] = FALSE;
 
+    $form['field_rfc_granted_amount']['#access'] = TRUE;
+    $form['field_rfc_granted_amount'][LANGUAGE_NONE]['#disabled'] = TRUE;
+    $form['#group_children']['field_rfc_granted_amount'] = 'group_rfc_payment';
+
     array_unshift($form['actions']['save']['#submit'],'_rfc_request_form_submit_payment_details');
     unset($form['actions']['captcha']);
 
@@ -137,7 +143,7 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
 
   // Auto fill send mail checkbox when editing an application.
   if ($form_state['entityform_form_mode'] == 'edit') {
-    $form['field_rfc_send_mail']['und']['#default_value'] = 1;
+    $form['field_rfc_send_mail'][LANGUAGE_NONE]['#default_value'] = 1;
   }
 
 
@@ -167,14 +173,14 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
     // Add option _none for dropdowns if it does not exist. (Due to ajax).
     if (!array_key_exists('_none', $form['field_rfc_course'][LANGUAGE_NONE]['#options'])) {
       $form['field_rfc_course'][LANGUAGE_NONE]['#options'] = array('_none' => t('- Select a course  -')) +
-        $form['field_rfc_course']['und']['#options'];
+        $form['field_rfc_course'][LANGUAGE_NONE]['#options'];
     }
     else {
       $form['field_rfc_course'][LANGUAGE_NONE]['#options']['_none'] = t('- Select a course  -');
     }
     if (!array_key_exists('_none', $form['field_rfc_provider'][LANGUAGE_NONE]['#options'])) {
       $form['field_rfc_provider'][LANGUAGE_NONE]['#options'] = array('_none' => t('- Select a provider -')) +
-        $form['field_rfc_provider']['und']['#options'];
+        $form['field_rfc_provider'][LANGUAGE_NONE]['#options'];
     }
     else {
       $form['field_rfc_provider'][LANGUAGE_NONE]['#options']['_none'] = t('- Select a provider  -');
@@ -185,13 +191,19 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
     $form['field_rfc_school'][LANGUAGE_NONE]['#options']['_none'] = t('- Select a school  -');
   }
 
-  // Get new courses for dropdown if provider is set.
-  if (isset($form_state['values']['field_rfc_provider'][LANGUAGE_NONE]['0'])) {
-    $field_value = $form_state['values']['field_rfc_provider'][LANGUAGE_NONE]['0'];
-    $form['field_rfc_course'][LANGUAGE_NONE]['#options'] = _rfc_get_courses(
-      isset($field_value['target_id']) ? $field_value['target_id'] : $field_value,
-      $form['field_rfc_course'][LANGUAGE_NONE]['#options']
-    );
+  if (!property_exists($form['#entity'], 'is_new') || $form['#entity']->is_new != true) {
+    $form['field_rfc_course'][LANGUAGE_NONE]['#options'] = _rfc_get_hacked_course_options($user, $form['#entity']->field_rfc_course[LANGUAGE_NONE][0]['target_id']);
+    $form['field_rfc_course'][LANGUAGE_NONE]['#default_value'] = $form['#entity']->field_rfc_course[LANGUAGE_NONE][0]['target_id'];
+    array_unshift($form['actions']['save']['#submit'],'_rfc_request_form_submit_handle_course');
+  } else {
+    // Get new courses for dropdown if provider is set.
+    if (isset($form_state['values']['field_rfc_provider'][LANGUAGE_NONE]['0'])) {
+      $field_value = $form_state['values']['field_rfc_provider'][LANGUAGE_NONE]['0'];
+      $form['field_rfc_course'][LANGUAGE_NONE]['#options'] = _rfc_get_courses(
+        isset($field_value['target_id']) ? $field_value['target_id'] : $field_value,
+        $form['field_rfc_course'][LANGUAGE_NONE]['#options']
+      );
+    }
   }
 
   // Set required and hide fields based on field_rfc_course_not_found checkbox.
@@ -224,8 +236,8 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
   $form['#validate'][] = '_rfc_request_form_validate';
 
   // Get price info if course is selected.
-  if (isset($form_state['values']['field_rfc_course']['und']['0']['target_id'])) {
-    $price_info = _rfc_get_course_price_info($form_state['values']['field_rfc_course']['und']['0']['target_id']);
+  if (isset($form_state['values']['field_rfc_course'][LANGUAGE_NONE]['0']['target_id'])) {
+    $price_info = _rfc_get_course_price_info($form_state['values']['field_rfc_course'][LANGUAGE_NONE]['0']['target_id']);
     $form['field_rfc_requested_amount']['#prefix'] ='<div id="course-price-wrapper">' . $price_info;
   }
 
@@ -235,9 +247,58 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
 
 
   if ($form_state['entityform_form_mode'] == 'submit') {
+    $form['field_rfc_provider_name']['#access'] = false;
+    $form['field_rfc_course_name']['#access'] = false;
     array_unshift($form['actions']['submit']['#submit'],'_rfc_request_form_submit');
   }
 }
+
+/**
+ * Implements hook_form_FORMID_alter().
+ */
+function ulf_free_course_request_form_views_exposed_form_alter(&$form, $form_state) {
+
+  if($form['#id'] == 'views-exposed-form-ulf-free-course-requests-free-course-requests-table' || $form['#id'] == 'views-exposed-form-ulf-free-course-requests-free-course-requests-user') {
+    $form['#attached']['css'][] = drupal_get_path('module', 'ulf_free_course_request') . '/css/styling.css';
+
+    $query = db_select('field_data_field_rfc_date');
+    // exclude results older than 2019, since they must be a mistake
+    $query->condition('field_rfc_date_value', '1546297200', '>');
+    $query->addExpression('MIN(field_rfc_date_value)', 'min');
+    $query->addExpression('MAX(field_rfc_date_value)', 'max');
+
+    $result = $query->execute()->fetchAll();
+    $result = reset($result);
+    $min = $result->min;
+    $max = $result->max;
+
+    $options = [];
+    while ($min < $max) {
+      $month = date('n', $min);
+      $year = date('Y', $min);
+
+      if($month > 6) {
+        $options[$year.'_2'] = '1. halvår '.$year.'/'.($year+1);
+        $min = strtotime(($year+1).'-01-01');
+      } else {
+        $options[$year.'_1'] = '2. halvår '.($year-1).'/'.($year);
+        $min = strtotime($year.'-07-01');
+      }
+    }
+
+    $form['field_rfc_date_value_2']['semester'] = [
+//      '#type' => 'checkboxes',
+      '#type' => 'select',
+      '#multiple' => true,
+      '#options' => $options,
+    ];
+    $form['field_rfc_date_value_2']['min']['#disabled'] = true;
+    $form['field_rfc_date_value_2']['max']['#disabled'] = true;
+  }
+
+}
+
+
 
 /**
  * Change the course dropdown.
@@ -311,13 +372,13 @@ function _rfc_get_course_price_info($nid) {
     foreach ($price_ref as $price_line) {
       $text .= '<li>';
       if(!empty($price_line->field_price)) {
-        $text .= '<span>' . str_replace('.', ',',$price_line->field_price['und']['0']['value']) . '</span>';
+        $text .= '<span>' . str_replace('.', ',',$price_line->field_price[LANGUAGE_NONE]['0']['value']) . '</span>';
       }
       if(!empty($price_line->field_unit_price)) {
-        $text .= '<span>' . $field_unit_info[$price_line->field_unit_price['und']['0']['value']] . '</span>';
+        $text .= '<span>' . $field_unit_info[$price_line->field_unit_price[LANGUAGE_NONE]['0']['value']] . '</span>';
       }
       if(!empty($price_line->field_moms)) {
-        $text .= '<span>(' . $field_vat_info[$price_line->field_moms['und']['0']['value']] . ')</span>';
+        $text .= '<span>(' . $field_vat_info[$price_line->field_moms[LANGUAGE_NONE]['0']['value']] . ')</span>';
       }
       $text .= '</li>';
     }
@@ -363,9 +424,17 @@ function _rfc_request_form_validate($element, $form_state) {
       }
     }
     else {
-      if (empty($form_state['values']['field_rfc_course'][LANGUAGE_NONE][0]['target_id'])) {
+      if ((!property_exists($element['#entity'], 'is_new') || $element['#entity']->is_new != true)) {
+        //dont validate field, if we are editing existing entityform
+      }
+      else if (empty($form_state['values']['field_rfc_course'][LANGUAGE_NONE][0]['target_id'])) {
         form_set_error('field_rfc_course', t('The field %field is required.', array('%field' => $element['field_rfc_course'][LANGUAGE_NONE]['#title'])));
       }
+    }
+
+    $granted_amount = $form_state['values']['field_rfc_granted_amount'][LANGUAGE_NONE][0]['value'] ?? $element['#entity']->field_rfc_granted_amount[LANGUAGE_NONE][0]['value'];
+    if(!empty($form_state['values']['field_rfc_spent_amount'][LANGUAGE_NONE][0]['value']) && $granted_amount < $form_state['values']['field_rfc_spent_amount'][LANGUAGE_NONE][0]['value']) {
+      form_set_error('field_rfc_spent_amount', t('%name: the value may be no greater than %max.', array('%name' => $element['field_rfc_spent_amount'][LANGUAGE_NONE]['#title'], '%max' => $element['field_rfc_granted_amount'][LANGUAGE_NONE]['#title'])));
     }
 
     // Validate on no acceptance without amount.
@@ -385,6 +454,16 @@ function _rfc_request_form_submit($form, &$form_state) {
   // Add 3 hours to date timestamp to ensure correct date (Timezones and summertime)
   // We don't care about the exact time.
   $form_state['values']['field_rfc_date'][LANGUAGE_NONE][0]['value'] = $form_state['values']['field_rfc_date'][LANGUAGE_NONE][0]['value'] + 10800;
+  // Save provider name in case the provider is deleted in the future
+  $provider_id = $form_state['values']['field_rfc_provider'][LANGUAGE_NONE][0]['target_id'];
+  $provider = user_load($provider_id);
+  $provider_name = $provider->field_profile_name[LANGUAGE_NONE][0]['safe_value'];
+  form_set_value($form['field_rfc_provider_name'], [LANGUAGE_NONE => [['value' => $provider_name]]], $form_state);
+  // Save course name in case the course is deleted in the future
+  $course_id = $form_state['values']['field_rfc_course'][LANGUAGE_NONE][0]['target_id'];
+  $course = node_load($course_id);
+  $course_name = $course->title;
+  form_set_value($form['field_rfc_course_name'], [LANGUAGE_NONE => [['value' => $course_name]]], $form_state);
 
 }
 
@@ -394,11 +473,26 @@ function _rfc_request_form_submit($form, &$form_state) {
  * @param $form
  * @param $form_state
  */
+function _rfc_request_form_submit_handle_course($form, &$form_state) {
+  $entity = $form['#entity'];
+  if ((!property_exists($entity, 'is_new') || $entity->is_new != true) && empty($form_state['values']['field_rfc_course'][LANGUAGE_NONE][0]['target_id'])) {
+    form_set_value($form['field_rfc_course'], $entity->field_rfc_course, $form_state);
+  }
+}
+/**
+ * Custom submit to alter submission values.
+ *
+ * @param $form
+ * @param $form_state
+ */
 function _rfc_request_form_submit_handle_status_change($form, &$form_state) {
-
-  if ($form['field_rfc_status'][LANGUAGE_NONE]['#default_value'] != 'payment_completed' && $form_state['values']['field_rfc_status'][LANGUAGE_NONE][0]['value'] == 'payment_completed') {
+  if ($form['#entity']->wrapper()->field_rfc_status->value() != 'ready_for_payment' && $form_state['values']['field_rfc_status'][LANGUAGE_NONE][0]['value'] == 'ready_for_payment') {
     //if status is being changed to "ready_for_payment" set payment date
-    form_set_value($form['field_rfc_payment_date'], ['und' => [['value' => time()]]], $form_state);
+    form_set_value($form['field_rfc_payment_date'], [LANGUAGE_NONE => [['value' => null]]], $form_state);
+  }
+  if ($form['#entity']->wrapper()->field_rfc_status->value() != 'payment_completed' && $form_state['values']['field_rfc_status'][LANGUAGE_NONE][0]['value'] == 'payment_completed') {
+    //if status is being changed to "payment_completed" set payment date
+    form_set_value($form['field_rfc_payment_date'], [LANGUAGE_NONE => [['value' => time()]]], $form_state);
   }
 
 }
@@ -411,7 +505,7 @@ function _rfc_request_form_submit_handle_status_change($form, &$form_state) {
  */
 function _rfc_request_form_submit_payment_details($form, &$form_state) {
 
-  form_set_value($form['field_rfc_status'], ['und' => [['value' => 'awaiting_payment']]], $form_state);
+  form_set_value($form['field_rfc_status'], [LANGUAGE_NONE => [['value' => 'awaiting_payment']]], $form_state);
 
 }
 
@@ -461,6 +555,26 @@ function _rfc_get_courses($uid, $current_options) {
   }
 
   return $current_options;
+}
+
+/**
+ * Get all middle school courses by user.
+ *
+ * @return array
+ */
+function _rfc_get_hacked_course_options($user, $target_id) {
+  $options = [];
+  $query = db_select('node', 'n');
+  $query->condition('n.type', 'course', '=');
+  if (!in_array('editor', $user->roles) && in_array('skole', $user->roles)) {
+    $query->condition('n.nid', $target_id, '=');
+  }
+  $query->fields('n', ['nid', 'title']);
+  $result = $query->execute();
+  foreach ($result as $record) {
+    $options[$record->nid] = $record->title;
+  }
+  return $options;
 }
 
 /**

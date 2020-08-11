@@ -230,6 +230,12 @@ function _rfc_change_entity($entity, $action) {
 
     case 'payment_completed':
       $wrapper->field_rfc_status = 'payment_completed';
+      $wrapper->field_rfc_payment_date = time();
+      $wrapper->save();
+      break;
+
+    case 'cancelled':
+      $wrapper->field_rfc_status = 'cancelled';
       $wrapper->save();
       break;
 

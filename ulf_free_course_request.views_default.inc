@@ -264,6 +264,7 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
   $handler->display->display_options['filter_groups']['groups'] = array(
     1 => 'AND',
+    3 => 'AND',
     2 => 'AND',
   );
   /* Filterkriterie: Global: Kombinér felter filter */
@@ -350,6 +351,22 @@ function ulf_free_course_request_views_default_views() {
     2 => '2',
   );
   $handler->display->display_options['filters']['field_rfc_date_value_1']['form_type'] = 'date_popup';
+  /* Filterkriterie: Entityform Submission: Afviklingsdato (field_rfc_date) */
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['id'] = 'field_rfc_date_value_2';
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['table'] = 'field_data_field_rfc_date';
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['field'] = 'field_rfc_date_value';
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['operator'] = 'between';
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['group'] = 3;
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['expose']['operator_id'] = 'field_rfc_date_value_2_op';
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['expose']['label'] = 'Semester';
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['expose']['operator'] = 'field_rfc_date_value_2_op';
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['expose']['identifier'] = 'field_rfc_date_value_2';
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['expose']['remember_roles'] = array(
+    2 => '2',
+  );
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['granularity'] = 'month';
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['form_type'] = 'date_text';
 
   /* Display: All applications */
   $handler = $view->new_display('page', 'All applications', 'free_course_requests_table');
@@ -472,14 +489,24 @@ function ulf_free_course_request_views_default_views() {
     'bypass_access' => 0,
     'link' => 0,
   );
+  /* Felt: Entityform Submission: Klasse */
+  $handler->display->display_options['fields']['field_rfc_grade']['id'] = 'field_rfc_grade';
+  $handler->display->display_options['fields']['field_rfc_grade']['table'] = 'field_data_field_rfc_grade';
+  $handler->display->display_options['fields']['field_rfc_grade']['field'] = 'field_rfc_grade';
   /* Felt: Entityform Submission: Navn */
   $handler->display->display_options['fields']['field_rfc_name']['id'] = 'field_rfc_name';
   $handler->display->display_options['fields']['field_rfc_name']['table'] = 'field_data_field_rfc_name';
   $handler->display->display_options['fields']['field_rfc_name']['field'] = 'field_rfc_name';
+  /* Felt: Entityform Submission: Udbyder navn */
+  $handler->display->display_options['fields']['field_rfc_provider_name']['id'] = 'field_rfc_provider_name';
+  $handler->display->display_options['fields']['field_rfc_provider_name']['table'] = 'field_data_field_rfc_provider_name';
+  $handler->display->display_options['fields']['field_rfc_provider_name']['field'] = 'field_rfc_provider_name';
+  $handler->display->display_options['fields']['field_rfc_provider_name']['exclude'] = TRUE;
   /* Felt: Entityform Submission: Udbyder */
   $handler->display->display_options['fields']['field_rfc_provider']['id'] = 'field_rfc_provider';
   $handler->display->display_options['fields']['field_rfc_provider']['table'] = 'field_data_field_rfc_provider';
   $handler->display->display_options['fields']['field_rfc_provider']['field'] = 'field_rfc_provider';
+  $handler->display->display_options['fields']['field_rfc_provider']['empty'] = '[field_rfc_provider_name] <i>(slettet)</i>';
   $handler->display->display_options['fields']['field_rfc_provider']['settings'] = array(
     'bypass_access' => 0,
     'link' => 0,
@@ -490,10 +517,16 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['fields']['field_rfc_new_course_name']['field'] = 'field_rfc_new_course_name';
   $handler->display->display_options['fields']['field_rfc_new_course_name']['exclude'] = TRUE;
   /* Felt: Entityform Submission: Forløb */
+  $handler->display->display_options['fields']['field_rfc_course_name']['id'] = 'field_rfc_course_name';
+  $handler->display->display_options['fields']['field_rfc_course_name']['table'] = 'field_data_field_rfc_course_name';
+  $handler->display->display_options['fields']['field_rfc_course_name']['field'] = 'field_rfc_course_name';
+  $handler->display->display_options['fields']['field_rfc_course_name']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_rfc_course_name']['empty'] = '[field_rfc_new_course_name] ';
+  /* Felt: Entityform Submission: Forløb */
   $handler->display->display_options['fields']['field_rfc_course']['id'] = 'field_rfc_course';
   $handler->display->display_options['fields']['field_rfc_course']['table'] = 'field_data_field_rfc_course';
   $handler->display->display_options['fields']['field_rfc_course']['field'] = 'field_rfc_course';
-  $handler->display->display_options['fields']['field_rfc_course']['empty'] = '[field_rfc_new_course_name] ';
+  $handler->display->display_options['fields']['field_rfc_course']['empty'] = '[field_rfc_course_name] ';
   $handler->display->display_options['fields']['field_rfc_course']['settings'] = array(
     'bypass_access' => 0,
     'link' => 1,
@@ -700,7 +733,7 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['fields']['field_rfc_course']['field'] = 'field_rfc_course';
   $handler->display->display_options['fields']['field_rfc_course']['empty'] = '[field_rfc_new_course_name] ';
   $handler->display->display_options['fields']['field_rfc_course']['settings'] = array(
-    'bypass_access' => 0,
+    'bypass_access' => 1,
     'link' => 1,
   );
   /* Felt: Entityform Submission: Vælg emneområde */
@@ -822,6 +855,7 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['filter_groups']['groups'] = array(
     1 => 'AND',
+    3 => 'AND',
     2 => 'AND',
   );
   $handler->display->display_options['defaults']['filters'] = FALSE;
@@ -908,6 +942,22 @@ function ulf_free_course_request_views_default_views() {
     2 => '2',
   );
   $handler->display->display_options['filters']['field_rfc_date_value_1']['form_type'] = 'date_popup';
+  /* Filterkriterie: Entityform Submission: Afviklingsdato (field_rfc_date) */
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['id'] = 'field_rfc_date_value_2';
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['table'] = 'field_data_field_rfc_date';
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['field'] = 'field_rfc_date_value';
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['operator'] = 'between';
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['group'] = 3;
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['expose']['operator_id'] = 'field_rfc_date_value_2_op';
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['expose']['label'] = 'Semester';
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['expose']['operator'] = 'field_rfc_date_value_2_op';
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['expose']['identifier'] = 'field_rfc_date_value_2';
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['expose']['remember_roles'] = array(
+    2 => '2',
+  );
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['granularity'] = 'month';
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['form_type'] = 'date_text';
   $handler->display->display_options['path'] = 'admin/udgiftsdaekning/ansoegninger';
   $handler->display->display_options['menu']['title'] = 'Financing requests';
   $handler->display->display_options['menu']['description'] = 'Financing requests';
@@ -1124,15 +1174,20 @@ function ulf_free_course_request_views_default_views() {
     t('Afviklingsdato fra'),
     t('Afviklingsdato (field_rfc_date)'),
     t('Afviklingsdato til'),
+    t('Semester'),
     t('All applications'),
     t('ID'),
     t('.'),
     t('Skole'),
+    t('Klasse'),
     t('Navn'),
+    t('Udbyder navn'),
     t('Udbyder'),
+    t('[field_rfc_provider_name] <i>(slettet)</i>'),
     t('Forløbets navn'),
     t('Forløb'),
     t('[field_rfc_new_course_name] '),
+    t('[field_rfc_course_name] '),
     t('Emneområde'),
     t('Afviklingsdato'),
     t('Skoleår'),
@@ -1148,7 +1203,6 @@ function ulf_free_course_request_views_default_views() {
     t('Titel'),
     t('User applications'),
     t('Skolens ansøgninger'),
-    t('Klasse'),
     t('Handlinger'),
     t('Rediger'),
     t('Søg på person, forløb, udbyder eller id'),

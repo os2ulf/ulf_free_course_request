@@ -71,6 +71,11 @@
   display: inline-block;
 }
 
+.fcr-form .field-name-field-rfc-granted-amount input {
+  width: 50%;
+  display: inline-block;
+}
+
 .fcr-form .field-name-field-rfc-spent-amount input {
   width: 50%;
   display: inline-block;
@@ -116,4 +121,9 @@
 .field-name-field-rfc-send-mail > div,
 .field-name-field-rfc-send-mail > div label {
   display: inline-block;
+}
+
+#edit-field-rfc-date-value-min-wrapper,
+#edit-field-rfc-date-value-max-wrapper {
+  display: none;
 }
