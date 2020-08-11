@@ -426,6 +426,11 @@ function _rfc_request_form_submit_payment_details($form, &$form_state) {
  * @return mixed
  */
 function _rfc_get_courses($uid, $current_options) {
+
+  if ($uid === '_none') {
+    return $current_options;
+  }
+
   // Set target group pre school and middle school.
   $term_ids = array('148');
 
@@ -438,8 +443,9 @@ function _rfc_get_courses($uid, $current_options) {
     ->propertyCondition('uid', $uid)
     ->fieldCondition('field_target_group', 'tid', $term_ids, 'IN')
     ->execute();
+
   if(empty($result['node'])) {
-    return $current_options;
+    return ['_none' => t('No courses found')];
   }
 
   $nids = array_keys($result['node']);
