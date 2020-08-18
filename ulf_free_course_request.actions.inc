@@ -239,6 +239,11 @@ function _rfc_change_entity($entity, $action) {
       $wrapper->save();
       break;
 
+    case 'cancelled':
+      $wrapper->field_rfc_status = 'cancelled';
+      $wrapper->save();
+      break;
+
     case 'closed':
       $wrapper->field_rfc_status = 'closed';
       $wrapper->save();
