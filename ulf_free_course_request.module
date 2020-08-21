@@ -339,6 +339,15 @@ function ulf_free_course_request_views_pre_render(&$view) {
         }
         $value->field_field_rfc_date_1[0]['rendered']['#markup'] = $string;
       }
+
+      if (isset($value->field_field_rfc_new_course_name[0], $value->field_field_rfc_course_not_found[0]) &&
+        $value->field_field_rfc_course_not_found[0]['raw']['value'] == 1) {
+        $value->field_field_rfc_course = [
+          0 => [
+            'rendered' => ['#markup' => $value->field_field_rfc_new_course_name[0]['rendered']['#markup']]
+          ]
+        ];
+      }
     }
   }
 }
