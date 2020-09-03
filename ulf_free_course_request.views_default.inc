@@ -646,14 +646,14 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['fields']['edit_entityform']['field'] = 'edit_entityform';
   $handler->display->display_options['fields']['edit_entityform']['label'] = '';
   $handler->display->display_options['fields']['edit_entityform']['element_label_colon'] = FALSE;
-  /* Felt: User: Navn */
+  /* Felt: Bruger: Navn */
   $handler->display->display_options['fields']['field_profile_name']['id'] = 'field_profile_name';
   $handler->display->display_options['fields']['field_profile_name']['table'] = 'field_data_field_profile_name';
   $handler->display->display_options['fields']['field_profile_name']['field'] = 'field_profile_name';
   $handler->display->display_options['fields']['field_profile_name']['relationship'] = 'field_rfc_school_target_id';
   $handler->display->display_options['fields']['field_profile_name']['label'] = 'Skole';
   $handler->display->display_options['fields']['field_profile_name']['exclude'] = TRUE;
-  /* Felt: User: Navn */
+  /* Felt: Bruger: Navn */
   $handler->display->display_options['fields']['field_profile_name_1']['id'] = 'field_profile_name_1';
   $handler->display->display_options['fields']['field_profile_name_1']['table'] = 'field_data_field_profile_name';
   $handler->display->display_options['fields']['field_profile_name_1']['field'] = 'field_profile_name';
@@ -667,6 +667,11 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['fields']['title']['relationship'] = 'field_rfc_course_target_id';
   $handler->display->display_options['fields']['title']['exclude'] = TRUE;
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
+  /* Felt: Entityform Submission: Forløb findes ikke på listen */
+  $handler->display->display_options['fields']['field_rfc_course_not_found']['id'] = 'field_rfc_course_not_found';
+  $handler->display->display_options['fields']['field_rfc_course_not_found']['table'] = 'field_data_field_rfc_course_not_found';
+  $handler->display->display_options['fields']['field_rfc_course_not_found']['field'] = 'field_rfc_course_not_found';
+  $handler->display->display_options['fields']['field_rfc_course_not_found']['exclude'] = TRUE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   $handler->display->display_options['path'] = 'admin/config/system/free_course_request';
   $handler->display->display_options['menu']['type'] = 'normal';
@@ -831,7 +836,7 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['fields']['field_rfc_remarks']['id'] = 'field_rfc_remarks';
   $handler->display->display_options['fields']['field_rfc_remarks']['table'] = 'field_data_field_rfc_remarks';
   $handler->display->display_options['fields']['field_rfc_remarks']['field'] = 'field_rfc_remarks';
-  /* Felt: User: Navn */
+  /* Felt: Bruger: Navn */
   $handler->display->display_options['fields']['field_profile_name']['id'] = 'field_profile_name';
   $handler->display->display_options['fields']['field_profile_name']['table'] = 'field_data_field_profile_name';
   $handler->display->display_options['fields']['field_profile_name']['field'] = 'field_profile_name';
@@ -1157,9 +1162,9 @@ function ulf_free_course_request_views_default_views() {
     t('‹ forrige'),
     t('næste ›'),
     t('sidste »'),
-    t('User entity refereret fra field_rfc_school'),
-    t('User entity refereret fra field_rfc_provider'),
-    t('Node entity refereret fra field_rfc_course'),
+    t('Bruger entity refereret fra field_rfc_school'),
+    t('Bruger entity refereret fra field_rfc_provider'),
+    t('Indhold entity refereret fra field_rfc_course'),
     t('forfatter'),
     t('- Vælg en handling -'),
     t('Delete Submissions'),
@@ -1201,6 +1206,7 @@ function ulf_free_course_request_views_default_views() {
     t('Senest ændret af'),
     t('Sendte mails'),
     t('Titel'),
+    t('Forløb findes ikke på listen'),
     t('User applications'),
     t('Skolens ansøgninger'),
     t('Handlinger'),
@@ -1277,7 +1283,7 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'course' => 'course',
   );
-  /* Filterkriterie: Node: Overordnet målgruppe (field_target_group) */
+  /* Filterkriterie: Indhold: Overordnet målgruppe (field_target_group) */
   $handler->display->display_options['filters']['field_target_group_tid']['id'] = 'field_target_group_tid';
   $handler->display->display_options['filters']['field_target_group_tid']['table'] = 'field_data_field_target_group';
   $handler->display->display_options['filters']['field_target_group_tid']['field'] = 'field_target_group_tid';
@@ -1362,7 +1368,7 @@ function ulf_free_course_request_views_default_views() {
     ),
   );
   $handler->display->display_options['row_plugin'] = 'fields';
-  /* Felt: User: Navn */
+  /* Felt: Bruger: Navn */
   $handler->display->display_options['fields']['field_profile_name']['id'] = 'field_profile_name';
   $handler->display->display_options['fields']['field_profile_name']['table'] = 'field_data_field_profile_name';
   $handler->display->display_options['fields']['field_profile_name']['field'] = 'field_profile_name';
