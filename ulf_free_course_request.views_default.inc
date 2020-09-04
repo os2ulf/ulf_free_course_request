@@ -723,6 +723,15 @@ function ulf_free_course_request_views_default_views() {
     'bypass_access' => 0,
     'link' => 0,
   );
+  /* Felt: Bruger: CVR */
+  $handler->display->display_options['fields']['field_profile_cvr']['id'] = 'field_profile_cvr';
+  $handler->display->display_options['fields']['field_profile_cvr']['table'] = 'field_data_field_profile_cvr';
+  $handler->display->display_options['fields']['field_profile_cvr']['field'] = 'field_profile_cvr';
+  $handler->display->display_options['fields']['field_profile_cvr']['relationship'] = 'field_rfc_provider_target_id';
+  $handler->display->display_options['fields']['field_profile_cvr']['settings'] = array(
+    'thousand_separator' => '',
+    'prefix_suffix' => 1,
+  );
   /* Felt: Entityform Submission: Klasse */
   $handler->display->display_options['fields']['field_rfc_grade']['id'] = 'field_rfc_grade';
   $handler->display->display_options['fields']['field_rfc_grade']['table'] = 'field_data_field_rfc_grade';
@@ -1209,6 +1218,7 @@ function ulf_free_course_request_views_default_views() {
     t('Forløb findes ikke på listen'),
     t('User applications'),
     t('Skolens ansøgninger'),
+    t('CVR'),
     t('Handlinger'),
     t('Rediger'),
     t('Søg på person, forløb, udbyder eller id'),

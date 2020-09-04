@@ -13,6 +13,7 @@ function ulf_free_course_request_field_default_field_bases() {
 
   // Exported field_base: 'field_rfc_attachment'.
   $field_bases['field_rfc_attachment'] = array(
+    0 => 'ield_collectionentityinc',
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
