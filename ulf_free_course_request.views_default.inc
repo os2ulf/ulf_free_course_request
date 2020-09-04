@@ -866,6 +866,11 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['fields']['edit_entityform']['label'] = 'Handlinger';
   $handler->display->display_options['fields']['edit_entityform']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['edit_entityform']['text'] = 'Rediger';
+  /* Felt: Entityform Submission: Forløb findes ikke på listen */
+  $handler->display->display_options['fields']['field_rfc_course_not_found']['id'] = 'field_rfc_course_not_found';
+  $handler->display->display_options['fields']['field_rfc_course_not_found']['table'] = 'field_data_field_rfc_course_not_found';
+  $handler->display->display_options['fields']['field_rfc_course_not_found']['field'] = 'field_rfc_course_not_found';
+  $handler->display->display_options['fields']['field_rfc_course_not_found']['exclude'] = TRUE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['filter_groups']['groups'] = array(
     1 => 'AND',
