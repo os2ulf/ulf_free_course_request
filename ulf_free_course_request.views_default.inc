@@ -667,6 +667,11 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['fields']['title']['relationship'] = 'field_rfc_course_target_id';
   $handler->display->display_options['fields']['title']['exclude'] = TRUE;
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
+  /* Felt: Entityform Submission: Forløb findes ikke på listen */
+  $handler->display->display_options['fields']['field_rfc_course_not_found']['id'] = 'field_rfc_course_not_found';
+  $handler->display->display_options['fields']['field_rfc_course_not_found']['table'] = 'field_data_field_rfc_course_not_found';
+  $handler->display->display_options['fields']['field_rfc_course_not_found']['field'] = 'field_rfc_course_not_found';
+  $handler->display->display_options['fields']['field_rfc_course_not_found']['exclude'] = TRUE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   $handler->display->display_options['path'] = 'admin/config/system/free_course_request';
   $handler->display->display_options['menu']['type'] = 'normal';
@@ -717,6 +722,15 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['fields']['field_rfc_provider']['settings'] = array(
     'bypass_access' => 0,
     'link' => 0,
+  );
+  /* Felt: User: CVR */
+  $handler->display->display_options['fields']['field_profile_cvr']['id'] = 'field_profile_cvr';
+  $handler->display->display_options['fields']['field_profile_cvr']['table'] = 'field_data_field_profile_cvr';
+  $handler->display->display_options['fields']['field_profile_cvr']['field'] = 'field_profile_cvr';
+  $handler->display->display_options['fields']['field_profile_cvr']['relationship'] = 'field_rfc_provider_target_id';
+  $handler->display->display_options['fields']['field_profile_cvr']['settings'] = array(
+    'thousand_separator' => '',
+    'prefix_suffix' => 1,
   );
   /* Felt: Entityform Submission: Klasse */
   $handler->display->display_options['fields']['field_rfc_grade']['id'] = 'field_rfc_grade';
@@ -852,6 +866,11 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['fields']['edit_entityform']['label'] = 'Handlinger';
   $handler->display->display_options['fields']['edit_entityform']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['edit_entityform']['text'] = 'Rediger';
+  /* Felt: Entityform Submission: Forløb findes ikke på listen */
+  $handler->display->display_options['fields']['field_rfc_course_not_found']['id'] = 'field_rfc_course_not_found';
+  $handler->display->display_options['fields']['field_rfc_course_not_found']['table'] = 'field_data_field_rfc_course_not_found';
+  $handler->display->display_options['fields']['field_rfc_course_not_found']['field'] = 'field_rfc_course_not_found';
+  $handler->display->display_options['fields']['field_rfc_course_not_found']['exclude'] = TRUE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['filter_groups']['groups'] = array(
     1 => 'AND',
@@ -1201,8 +1220,10 @@ function ulf_free_course_request_views_default_views() {
     t('Senest ændret af'),
     t('Sendte mails'),
     t('Titel'),
+    t('Forløb findes ikke på listen'),
     t('User applications'),
     t('Skolens ansøgninger'),
+    t('CVR'),
     t('Handlinger'),
     t('Rediger'),
     t('Søg på person, forløb, udbyder eller id'),

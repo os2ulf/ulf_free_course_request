@@ -245,8 +245,7 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
   $form['field_rfc_conditions']['#prefix'] = variable_get('ufcr_cancellation', array('value' => '', 'format' => NULL))['value'];
   $form['field_rfc_gdpr']['#prefix'] = variable_get('ufcr_gdpr', array('value' => '', 'format' => NULL))['value'];
 
-
-  if ($form_state['entityform_form_mode'] == 'submit') {
+  if ($form_state['entityform_form_mode'] == 'submit' || $form_state['entityform_form_mode'] == 'edit') {
     $form['field_rfc_provider_name']['#access'] = false;
     $form['field_rfc_course_name']['#access'] = false;
     array_unshift($form['actions']['submit']['#submit'],'_rfc_request_form_submit');
