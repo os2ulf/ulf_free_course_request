@@ -435,6 +435,10 @@ function ulf_free_course_request_entity_postupdate($entity, $entity_type) {
   // Ensure we are submitting an entityform from form view.
   if ($entity_type == 'entityform' && arg(2) == 'edit') {
     if ($entity->type == 'free_course_request') {
+      // Set author to choice of school.
+      $entity->uid = $entity->field_rfc_school['und'][0]['target_id'];
+      entityform_save($entity);
+
       $wrapper = entity_metadata_wrapper($entity_type, $entity);
       if ($entity->field_rfc_send_mail[LANGUAGE_NONE][0]['value'] == TRUE) {
         if ($entity->field_rfc_status[LANGUAGE_NONE][0]['value']
