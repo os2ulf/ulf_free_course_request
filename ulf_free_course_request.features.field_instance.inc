@@ -607,7 +607,7 @@ function ulf_free_course_request_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 33,
+      'weight' => 34,
     ),
   );
 
@@ -644,7 +644,7 @@ function ulf_free_course_request_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 34,
+      'weight' => 33,
     ),
   );
 
