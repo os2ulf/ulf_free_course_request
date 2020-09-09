@@ -164,7 +164,7 @@ function _rfc_build_mail_confirmation(EntityMetadataWrapper $wrapper) {
   $application .= '<strong>';
   $application .= t('Email', array(), $translation_lang);
   $application .= ':</strong> ';
-  $application .= $wrapper->field_rfc_mail->value();
+  $application .= _reverseMailEncrypt($wrapper->field_rfc_mail->value());
   $application .= '</p>';
 
   $application .= '<p>';
@@ -304,3 +304,4 @@ function _rfc_build_mail_followup(EntityMetadataWrapper $wrapper) {
 
   return $application;
 }
+
