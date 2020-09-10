@@ -209,7 +209,7 @@ function ulf_free_course_request_block_view($delta = '') {
       && $params['field_rfc_status_value'] != 'All'
     ) {
       $query->leftJoin('field_data_field_rfc_status', 's', 'e.entityform_id = s.entity_id');
-      $query->condition('s.field_rfc_status_value', $params['field_rfc_status_value'], '=');
+      $query->condition('s.field_rfc_status_value', $params['field_rfc_status_value'], 'IN');
     }
     $uid = arg(3);
     if ($uid && $uid > 0) {
