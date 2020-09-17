@@ -161,6 +161,7 @@ function ulf_free_course_request_field_group_info() {
       2 => 'field_rfc_name',
       3 => 'field_rfc_phone',
       4 => 'field_rfc_school',
+      5 => 'field_receiving_class',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

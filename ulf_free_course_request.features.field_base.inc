@@ -11,6 +11,31 @@
 function ulf_free_course_request_field_default_field_bases() {
   $field_bases = array();
 
+  // Exported field_base: 'field_receiving_class'.
+  $field_bases['field_receiving_class'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_receiving_class',
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        0 => '',
+        1 => '',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_boolean',
+  );
+
   // Exported field_base: 'field_rfc_attachment'.
   $field_bases['field_rfc_attachment'] = array(
     0 => 'ield_collectionentityinc',

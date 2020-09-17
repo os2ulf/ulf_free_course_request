@@ -722,14 +722,14 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['fields']['edit_entityform']['field'] = 'edit_entityform';
   $handler->display->display_options['fields']['edit_entityform']['label'] = '';
   $handler->display->display_options['fields']['edit_entityform']['element_label_colon'] = FALSE;
-  /* Felt: User: Navn */
+  /* Felt: Bruger: Navn */
   $handler->display->display_options['fields']['field_profile_name']['id'] = 'field_profile_name';
   $handler->display->display_options['fields']['field_profile_name']['table'] = 'field_data_field_profile_name';
   $handler->display->display_options['fields']['field_profile_name']['field'] = 'field_profile_name';
   $handler->display->display_options['fields']['field_profile_name']['relationship'] = 'field_rfc_school_target_id';
   $handler->display->display_options['fields']['field_profile_name']['label'] = 'Skole';
   $handler->display->display_options['fields']['field_profile_name']['exclude'] = TRUE;
-  /* Felt: User: Navn */
+  /* Felt: Bruger: Navn */
   $handler->display->display_options['fields']['field_profile_name_1']['id'] = 'field_profile_name_1';
   $handler->display->display_options['fields']['field_profile_name_1']['table'] = 'field_data_field_profile_name';
   $handler->display->display_options['fields']['field_profile_name_1']['field'] = 'field_profile_name';
@@ -799,7 +799,7 @@ function ulf_free_course_request_views_default_views() {
     'bypass_access' => 0,
     'link' => 0,
   );
-  /* Felt: User: CVR */
+  /* Felt: Bruger: CVR */
   $handler->display->display_options['fields']['field_profile_cvr']['id'] = 'field_profile_cvr';
   $handler->display->display_options['fields']['field_profile_cvr']['table'] = 'field_data_field_profile_cvr';
   $handler->display->display_options['fields']['field_profile_cvr']['field'] = 'field_profile_cvr';
@@ -921,7 +921,7 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['fields']['field_rfc_remarks']['id'] = 'field_rfc_remarks';
   $handler->display->display_options['fields']['field_rfc_remarks']['table'] = 'field_data_field_rfc_remarks';
   $handler->display->display_options['fields']['field_rfc_remarks']['field'] = 'field_rfc_remarks';
-  /* Felt: User: Navn */
+  /* Felt: Bruger: Navn */
   $handler->display->display_options['fields']['field_profile_name']['id'] = 'field_profile_name';
   $handler->display->display_options['fields']['field_profile_name']['table'] = 'field_data_field_profile_name';
   $handler->display->display_options['fields']['field_profile_name']['field'] = 'field_profile_name';
@@ -1094,6 +1094,10 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['fields']['field_rfc_grade']['id'] = 'field_rfc_grade';
   $handler->display->display_options['fields']['field_rfc_grade']['table'] = 'field_data_field_rfc_grade';
   $handler->display->display_options['fields']['field_rfc_grade']['field'] = 'field_rfc_grade';
+  /* Felt: Entityform Submission: Modtageklasse */
+  $handler->display->display_options['fields']['field_receiving_class']['id'] = 'field_receiving_class';
+  $handler->display->display_options['fields']['field_receiving_class']['table'] = 'field_data_field_receiving_class';
+  $handler->display->display_options['fields']['field_receiving_class']['field'] = 'field_receiving_class';
   /* Felt: Entityform Submission: Navn */
   $handler->display->display_options['fields']['field_rfc_name']['id'] = 'field_rfc_name';
   $handler->display->display_options['fields']['field_rfc_name']['table'] = 'field_data_field_rfc_name';
@@ -1252,9 +1256,9 @@ function ulf_free_course_request_views_default_views() {
     t('‹ forrige'),
     t('næste ›'),
     t('sidste »'),
-    t('User entity refereret fra field_rfc_school'),
-    t('User entity refereret fra field_rfc_provider'),
-    t('Node entity refereret fra field_rfc_course'),
+    t('Bruger entity refereret fra field_rfc_school'),
+    t('Bruger entity refereret fra field_rfc_provider'),
+    t('Indhold entity refereret fra field_rfc_course'),
     t('forfatter'),
     t('- Vælg en handling -'),
     t('Delete Submissions'),
@@ -1304,6 +1308,7 @@ function ulf_free_course_request_views_default_views() {
     t('Rediger'),
     t('Søg på person, forløb, udbyder eller id'),
     t('Data export'),
+    t('Modtageklasse'),
     t('Mailadresse'),
     t('Telefonnr'),
     t('Beskrivelse af forløbet'),
@@ -1374,7 +1379,7 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'course' => 'course',
   );
-  /* Filterkriterie: Node: Overordnet målgruppe (field_target_group) */
+  /* Filterkriterie: Indhold: Overordnet målgruppe (field_target_group) */
   $handler->display->display_options['filters']['field_target_group_tid']['id'] = 'field_target_group_tid';
   $handler->display->display_options['filters']['field_target_group_tid']['table'] = 'field_data_field_target_group';
   $handler->display->display_options['filters']['field_target_group_tid']['field'] = 'field_target_group_tid';
@@ -1459,7 +1464,7 @@ function ulf_free_course_request_views_default_views() {
     ),
   );
   $handler->display->display_options['row_plugin'] = 'fields';
-  /* Felt: User: Navn */
+  /* Felt: Bruger: Navn */
   $handler->display->display_options['fields']['field_profile_name']['id'] = 'field_profile_name';
   $handler->display->display_options['fields']['field_profile_name']['table'] = 'field_data_field_profile_name';
   $handler->display->display_options['fields']['field_profile_name']['field'] = 'field_profile_name';
