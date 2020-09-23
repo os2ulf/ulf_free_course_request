@@ -119,7 +119,9 @@
 }
 
 .field-name-field-rfc-send-mail > div,
-.field-name-field-rfc-send-mail > div label {
+.field-name-field-rfc-send-mail > div label,
+.field-name-field-receiving-class > div,
+.field-name-field-receiving-class > div label {
   display: inline-block;
 }
 

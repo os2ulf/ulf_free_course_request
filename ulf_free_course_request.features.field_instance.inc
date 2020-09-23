@@ -12,6 +12,44 @@ function ulf_free_course_request_field_default_field_instances() {
   $field_instances = array();
 
   // Exported field_instance:
+  // 'entityform-free_course_request-field_receiving_class'.
+  $field_instances['entityform-free_course_request-field_receiving_class'] = array(
+    'bundle' => 'free_course_request',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => 'Sæt kryds her, hvis klassen er en modtageklasse',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 28,
+      ),
+    ),
+    'entity_type' => 'entityform',
+    'field_name' => 'field_receiving_class',
+    'label' => 'Modtageklasse',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 1,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 19,
+    ),
+  );
+
+  // Exported field_instance:
   // 'entityform-free_course_request-field_rfc_attachment'.
   $field_instances['entityform-free_course_request-field_rfc_attachment'] = array(
     'bundle' => 'free_course_request',
@@ -568,7 +606,7 @@ function ulf_free_course_request_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 19,
+      'weight' => 20,
     ),
   );
 
@@ -1088,6 +1126,7 @@ Mail sendes dog kun hvis status er godkendt eller afvist.',
   t('Jeg giver samtykke');
   t('Klasse');
   t('Mailadresse');
+  t('Modtageklasse');
   t('Navn');
   t('Opfølgningsmail sendt');
   t('Send mail til brugeren om status på ansøgningen når formularen gemmes. 
@@ -1099,6 +1138,7 @@ Mail sendes dog kun hvis status er godkendt eller afvist.');
   t('Skriv forløbets totale pris i hele tal - eks. \'400\'. Det er den pris, der er aftalt med udbyderen af forløbet og som ULF i Aarhus skal betale totalt. Hvis du ansøger for flere klasser, så skriv den samlede pris for alle forløb.');
   t('Skriv hvilken klasse, der deltager i forløbet - sådan her: 7.B eller 7.ABC)');
   t('Status');
+  t('Sæt kryds her, hvis klassen er en modtageklasse');
   t('Telefonnr');
   t('Udbetalingsdato');
   t('Udbyder');
