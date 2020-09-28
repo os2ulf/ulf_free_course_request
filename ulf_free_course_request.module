@@ -349,12 +349,9 @@ function ulf_free_course_request_views_pre_render(&$view) {
         ];
       }
 
-      if (!empty($value->field_receiving_class)) {
-        if ($value->field_receiving_class[0]['rendered']['#markup'] == 1) {
-          $value->field_receiving_class[0]['rendered']['#markup'] = t('Yes');
-        }
-        else {
-          $value->field_receiving_class[0]['rendered']['#markup'] = t('No');
+      if (!empty($value->field_field_receiving_class)) {
+        if ($value->field_field_receiving_class[0]['rendered']['#markup'] == 1) {
+          $value->field_field_receiving_class[0]['rendered']['#markup'] = t('Yes');
         }
       }
     }
