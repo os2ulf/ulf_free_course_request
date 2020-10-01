@@ -1098,6 +1098,7 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['fields']['field_receiving_class']['id'] = 'field_receiving_class';
   $handler->display->display_options['fields']['field_receiving_class']['table'] = 'field_data_field_receiving_class';
   $handler->display->display_options['fields']['field_receiving_class']['field'] = 'field_receiving_class';
+  $handler->display->display_options['fields']['field_receiving_class']['type'] = 'list_key';
   /* Felt: Entityform Submission: Navn */
   $handler->display->display_options['fields']['field_rfc_name']['id'] = 'field_rfc_name';
   $handler->display->display_options['fields']['field_rfc_name']['table'] = 'field_data_field_rfc_name';
