@@ -140,8 +140,7 @@ function ulf_free_course_request_block_info() {
 function ulf_free_course_request_block_view($delta = '') {
   if ($delta == 'free_course_request_summary') {
     $block['subject'] = NULL;
-    $block['content']
-      = '<style>#block-ulf-free-course-request-free-course-request-summary{float:right;}</style>';
+    $block['content'] = '<style>#block-ulf-free-course-request-free-course-request-summary{float:right;}</style>';
 
     $requested_amount = 0;
     $granted_amount = 0;
@@ -364,9 +363,7 @@ function ulf_free_course_request_views_pre_render(&$view) {
 function ulf_free_course_request_entityform_access_alter(&$access, $op, $context) {
   $account = $context['account'];
   $entityform = $context['entityform'];
-  if (!$access && $op == 'edit' && isset($entityform->uid)
-    && $account->uid == $entityform->uid
-  ) {
+  if ($entityform->type === 'free_course_request' && !$access && $op == 'edit' && isset($entityform->uid) && $account->uid == $entityform->uid) {
     $status = $entityform->field_rfc_status[LANGUAGE_NONE][0]['value'];
     if ($status == 'accepted' || $status == 'awaiting_payment') {
       $access = TRUE;
