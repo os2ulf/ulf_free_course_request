@@ -23,7 +23,7 @@ function ulf_free_course_request_views_default_views() {
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Alle ansoegninger';
+  $handler->display->display_options['title'] = 'Gratis undervisningsforløb (grundskole)';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['use_more_text'] = 'mere';
   $handler->display->display_options['access']['type'] = 'perm';
@@ -1243,7 +1243,7 @@ function ulf_free_course_request_views_default_views() {
   );
   $translatables['ulf_free_course_requests'] = array(
     t('Master'),
-    t('Alle ansoegninger'),
+    t('Gratis undervisningsforløb (grundskole)'),
     t('mere'),
     t('Udfør'),
     t('Gendan'),
