@@ -48,8 +48,7 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
   $form['#suffix'] = '</div>';
 
   // Add js and css to form.
-  $form['#attached']['css'][]
-    = drupal_get_path('module', 'ulf_free_course_request') . '/css/styling.css';
+  $form['#attached']['css'][] = drupal_get_path('module', 'ulf_free_course_request') . '/css/styling.css';
   $form['#attached']['library'] = [
     ['system', 'ui.datepicker'],
   ];

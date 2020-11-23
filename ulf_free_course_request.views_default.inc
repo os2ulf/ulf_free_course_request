@@ -23,7 +23,7 @@ function ulf_free_course_request_views_default_views() {
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Alle ansoegninger';
+  $handler->display->display_options['title'] = 'Alle ansøgninger';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['use_more_text'] = 'mere';
   $handler->display->display_options['access']['type'] = 'perm';
@@ -751,8 +751,8 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   $handler->display->display_options['path'] = 'admin/config/system/free_course_request';
   $handler->display->display_options['menu']['type'] = 'normal';
-  $handler->display->display_options['menu']['title'] = 'Financing requests';
-  $handler->display->display_options['menu']['description'] = 'Financing requests';
+  $handler->display->display_options['menu']['title'] = 'Financing requests (school)';
+  $handler->display->display_options['menu']['description'] = 'Financing requests (school)';
   $handler->display->display_options['menu']['weight'] = '10';
   $handler->display->display_options['menu']['name'] = 'management';
   $handler->display->display_options['menu']['context'] = 0;
@@ -1243,7 +1243,7 @@ function ulf_free_course_request_views_default_views() {
   );
   $translatables['ulf_free_course_requests'] = array(
     t('Master'),
-    t('Alle ansoegninger'),
+    t('Alle ansøgninger'),
     t('mere'),
     t('Udfør'),
     t('Gendan'),
