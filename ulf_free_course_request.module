@@ -204,11 +204,11 @@ function ulf_free_course_request_block_view($delta = '') {
         $query->condition($condition_group);
       }
     }
-    if (isset($params['field_rfc_status_value'])
-      && $params['field_rfc_status_value'] != 'All'
+    if (isset($params['field_rfc_status_value']) && $params['field_rfc_status_value'] != 'All'
     ) {
+      $status = is_array($params['field_rfc_status_value']) ? $params['field_rfc_status_value'] : [$params['field_rfc_status_value']];
       $query->leftJoin('field_data_field_rfc_status', 's', 'e.entityform_id = s.entity_id');
-      $query->condition('s.field_rfc_status_value', $params['field_rfc_status_value'], 'IN');
+      $query->condition('s.field_rfc_status_value', $status, 'IN');
     }
     $uid = arg(3);
     if ($uid && $uid > 0) {
@@ -252,6 +252,7 @@ function ulf_free_course_request_block_view($delta = '') {
       $query->addExpression('SUM(field_rfc_requested_amount_value)', 'requested_amount');
       $query->addExpression('SUM(field_rfc_granted_amount_value)', 'granted_amount');
       $query->addExpression('SUM(field_rfc_spent_amount_value)', 'spent_amount');
+
       $result = $query->execute()->fetchAll();
       $result = reset($result);
       $requested_amount = $result->requested_amount;
