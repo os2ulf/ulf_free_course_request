@@ -130,6 +130,11 @@ function _rfc_build_mail_confirmation(EntityMetadataWrapper $wrapper) {
   $provider_id = $wrapper->field_rfc_provider->value();
   $provider_wrapper = entity_metadata_wrapper('user', $provider_id);
 
+  $course_name = $wrapper->field_rfc_course_name->value();
+  if ($wrapper->field_rfc_new_course_name->value() && $wrapper->field_rfc_course_not_found->value() == TRUE) {
+    $course_name = $wrapper->field_rfc_new_course_name->value();
+  }
+
   $application .= '<h3>';
   $application .= t('Financing application details', array(), $translation_lang);
   $application .= ':</h3>';
@@ -176,7 +181,7 @@ function _rfc_build_mail_confirmation(EntityMetadataWrapper $wrapper) {
   $application .= '<strong>';
   $application .= t('Course', array(), $translation_lang);
   $application .= ':</strong> ';
-  $application .= $wrapper->field_rfc_course->label();
+  $application .= $course_name;
   $application .= '<br/>';
   $application .= '<strong>';
   $application .= t('Requested amount', array(), $translation_lang);
@@ -222,6 +227,10 @@ function _rfc_build_mail_followup(EntityMetadataWrapper $wrapper) {
   $provider_id = $wrapper->field_rfc_provider->value();
   $provider_wrapper = entity_metadata_wrapper('user', $provider_id);
 
+  $course_name = $wrapper->field_rfc_course_name->value() ?: NULL ;
+  if ($wrapper->field_rfc_new_course_name->value() && $wrapper->field_rfc_course_not_found->value() == TRUE) {
+    $course_name = $wrapper->field_rfc_new_course_name->value();
+  }
 
   $application .= '<h3>';
   $application .= t('Financing application details', array(), $translation_lang);
@@ -289,7 +298,7 @@ function _rfc_build_mail_followup(EntityMetadataWrapper $wrapper) {
   $application .= '<strong>';
   $application .= t('Course', array(), $translation_lang);
   $application .= ':</strong> ';
-  $application .= $wrapper->field_rfc_course->label();
+  $application .= $course_name;
   $application .= '<br/>';
   $application .= '<strong>';
   $application .= t('Requested amount', array(), $translation_lang);
