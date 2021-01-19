@@ -295,12 +295,17 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
   ]
   )['value'];
 
-  if ($form_state['entityform_form_mode'] == 'submit'
-    || $form_state['entityform_form_mode'] == 'edit'
-  ) {
+
+  if ($form_state['entityform_form_mode'] == 'submit') {
     $form['field_rfc_provider_name']['#access'] = FALSE;
     $form['field_rfc_course_name']['#access'] = FALSE;
     array_unshift($form['actions']['submit']['#submit'], '_rfc_request_form_submit');
+  }
+
+  if ($form_state['entityform_form_mode'] == 'edit') {
+    $form['field_rfc_provider_name']['#access'] = FALSE;
+    $form['field_rfc_course_name']['#access'] = FALSE;
+    array_unshift($form['actions']['save']['#submit'], '_rfc_request_form_submit');
   }
 
   if (isset($_GET['course']) && is_numeric($_GET['course'])) {
@@ -533,8 +538,7 @@ function _rfc_request_form_validate($element, $form_state) {
 
     // Validate on no acceptance without amount.
     if (empty($form_state['values']['field_rfc_granted_amount'][LANGUAGE_NONE][0]['value'])
-      && $form_state['values']['field_rfc_status'][LANGUAGE_NONE][0]['value']
-      == 'accepted'
+      && $form_state['values']['field_rfc_status'][LANGUAGE_NONE][0]['value'] == 'accepted'
     ) {
       form_set_error('field_rfc_granted_amount', t('The field %field is required to accept an application.', ['%field' => $element['field_rfc_granted_amount'][LANGUAGE_NONE]['#title']]));
     }
@@ -554,17 +558,17 @@ function _rfc_request_form_submit($form, &$form_state) {
     = $form_state['values']['field_rfc_date'][LANGUAGE_NONE][0]['value']
     + 10800;
   // Save provider name in case the provider is deleted in the future
-  $provider_id
-    = $form_state['values']['field_rfc_provider'][LANGUAGE_NONE][0]['target_id'];
+  $provider_id = $form_state['values']['field_rfc_provider'][LANGUAGE_NONE][0]['target_id'];
   $provider = user_load($provider_id);
-  $provider_name
-    = $provider->field_profile_name[LANGUAGE_NONE][0]['safe_value'];
+  $provider_name = $provider->field_profile_name[LANGUAGE_NONE][0]['safe_value'];
   form_set_value($form['field_rfc_provider_name'], [LANGUAGE_NONE => [['value' => $provider_name]]], $form_state);
   // Save course name in case the course is deleted in the future
-  $course_id
-    = $form_state['values']['field_rfc_course'][LANGUAGE_NONE][0]['target_id'];
+  $course_id = $form_state['values']['field_rfc_course'][LANGUAGE_NONE][0]['target_id'];
   $course = node_load($course_id);
   $course_name = $course->title;
+
+  error_log($course_name);
+
   form_set_value($form['field_rfc_course_name'], [LANGUAGE_NONE => [['value' => $course_name]]], $form_state);
 
 }
