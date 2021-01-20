@@ -567,8 +567,6 @@ function _rfc_request_form_submit($form, &$form_state) {
   $course = node_load($course_id);
   $course_name = $course->title;
 
-  error_log($course_name);
-
   form_set_value($form['field_rfc_course_name'], [LANGUAGE_NONE => [['value' => $course_name]]], $form_state);
 
 }
