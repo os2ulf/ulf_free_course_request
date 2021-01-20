@@ -5,7 +5,6 @@
  * Holds alterations for forms related to ulf_free_course_request module.
  */
 
-
 /**
  * Implements hook_form_FORMID_alter().
  */
@@ -38,9 +37,9 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
   // Set layout of page.
   $intro_text = variable_get(
     'ufcr_intro', [
-    'value' => '',
-    'format' => NULL,
-  ]
+      'value' => '',
+      'format' => NULL,
+    ]
   )['value'];
   $form['#prefix']
     = '<div class="fcr-form"><div class="user-message--wrapper"><div class="user-message">'
@@ -284,15 +283,15 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
   $form['field_rfc_conditions']['#prefix']
     = variable_get(
     'ufcr_cancellation', [
-    'value' => '',
-    'format' => NULL,
-  ]
+      'value' => '',
+      'format' => NULL,
+    ]
   )['value'];
   $form['field_rfc_gdpr']['#prefix'] = variable_get(
     'ufcr_gdpr', [
-    'value' => '',
-    'format' => NULL,
-  ]
+      'value' => '',
+      'format' => NULL,
+    ]
   )['value'];
 
 
@@ -357,18 +356,17 @@ function ulf_free_course_request_form_views_exposed_form_alter(&$form, $form_sta
       }
     }
 
-//    $form['field_rfc_date_value_2']['semester'] = [
-//      //      '#type' => 'checkboxes',
-//      '#type' => 'select',
-//      '#multiple' => TRUE,
-//      '#options' => $options,
-//    ];
-//    $form['field_rfc_date_value_2']['min']['#disabled'] = TRUE;
-//    $form['field_rfc_date_value_2']['max']['#disabled'] = TRUE;
+    //    $form['field_rfc_date_value_2']['semester'] = [
+    //      //      '#type' => 'checkboxes',
+    //      '#type' => 'select',
+    //      '#multiple' => TRUE,
+    //      '#options' => $options,
+    //    ];
+    //    $form['field_rfc_date_value_2']['min']['#disabled'] = TRUE;
+    //    $form['field_rfc_date_value_2']['max']['#disabled'] = TRUE;
   }
 
 }
-
 
 /**
  * Change the course dropdown.
@@ -528,11 +526,11 @@ function _rfc_request_form_validate($element, $form_state) {
     ) {
       form_set_error(
         'field_rfc_spent_amount', t(
-        '%name: the value may be no greater than %max.', [
-        '%name' => $element['field_rfc_spent_amount'][LANGUAGE_NONE]['#title'],
-        '%max' => $element['field_rfc_granted_amount'][LANGUAGE_NONE]['#title'],
-      ]
-      )
+          '%name: the value may be no greater than %max.', [
+            '%name' => $element['field_rfc_spent_amount'][LANGUAGE_NONE]['#title'],
+            '%max' => $element['field_rfc_granted_amount'][LANGUAGE_NONE]['#title'],
+          ]
+        )
       );
     }
 
@@ -623,7 +621,6 @@ function _rfc_request_form_submit_payment_details($form, &$form_state) {
   form_set_value($form['field_rfc_status'], [LANGUAGE_NONE => [['value' => 'awaiting_payment']]], $form_state);
 
 }
-
 
 /**
  * Get all middle school courses by user.
