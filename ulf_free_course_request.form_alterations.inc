@@ -326,44 +326,25 @@ function ulf_free_course_request_form_views_exposed_form_alter(&$form, $form_sta
     || $form['#id']
     == 'views-exposed-form-ulf-free-course-requests-free-course-requests-user'
   ) {
-    $form['#attached']['css'][]
-      = drupal_get_path('module', 'ulf_free_course_request')
-      . '/css/styling.css';
+    $form['#attached']['css'][] = drupal_get_path('module', 'ulf_free_course_request') . '/css/styling.css';
 
-    $query = db_select('field_data_field_rfc_date');
-    // exclude results older than 2019, since they must be a mistake
-    $query->condition('field_rfc_date_value', '1546297200', '>');
-    $query->addExpression('MIN(field_rfc_date_value)', 'min');
-    $query->addExpression('MAX(field_rfc_date_value)', 'max');
-
-    $result = $query->execute()->fetchAll();
-    $result = reset($result);
-    $min = $result->min;
-    $max = $result->max;
-
-    $options = [];
-    while ($min < $max) {
-      $month = date('n', $min);
-      $year = date('Y', $min);
-
-      if ($month > 6) {
-        $options[$year . '_2'] = '1. halvår ' . $year . '/' . ($year + 1);
-        $min = strtotime(($year + 1) . '-01-01');
-      }
-      else {
-        $options[$year . '_1'] = '2. halvår ' . ($year - 1) . '/' . ($year);
-        $min = strtotime($year . '-07-01');
-      }
+    // Find the course names for request_daycare courses, to display in a
+    // select element.
+    $query = db_select('field_data_field_rfc_course', 'course');
+    $query->innerJoin('node', 'n', 'course.field_rfc_course_target_id=n.nid');
+    $query->fields('n', ['nid', 'title']);
+    $query->condition('course.bundle', 'free_course_request');
+    $query->orderBy('nid', 'DESC');
+    $result = $query->execute()->fetchAllKeyed();
+    foreach ($result as $nid => $title) {
+      $result[$nid] = $title . ' (' . $nid . ')';
     }
 
-    //    $form['field_rfc_date_value_2']['semester'] = [
-    //      //      '#type' => 'checkboxes',
-    //      '#type' => 'select',
-    //      '#multiple' => TRUE,
-    //      '#options' => $options,
-    //    ];
-    //    $form['field_rfc_date_value_2']['min']['#disabled'] = TRUE;
-    //    $form['field_rfc_date_value_2']['max']['#disabled'] = TRUE;
+    // Replace the view textfield, with a select list.
+    $form['field_rfc_course_target_id'] = [
+      '#type' => 'select',
+      '#options' => ['' => 'Vælg forløb'] + (empty($result) ? [] : $result)
+    ];
   }
 
 }

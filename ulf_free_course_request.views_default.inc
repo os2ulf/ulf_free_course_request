@@ -733,6 +733,110 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['fields']['field_rfc_course_not_found']['field'] = 'field_rfc_course_not_found';
   $handler->display->display_options['fields']['field_rfc_course_not_found']['exclude'] = TRUE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['filter_groups']['groups'] = array(
+    1 => 'AND',
+    3 => 'AND',
+    2 => 'AND',
+  );
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Global: Combine fields filter */
+  $handler->display->display_options['filters']['combine']['id'] = 'combine';
+  $handler->display->display_options['filters']['combine']['table'] = 'views';
+  $handler->display->display_options['filters']['combine']['field'] = 'combine';
+  $handler->display->display_options['filters']['combine']['operator'] = 'contains';
+  $handler->display->display_options['filters']['combine']['group'] = 1;
+  $handler->display->display_options['filters']['combine']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['combine']['expose']['operator_id'] = 'combine_op';
+  $handler->display->display_options['filters']['combine']['expose']['label'] = 'Søg på skole, person, forløb, udbyder eller id';
+  $handler->display->display_options['filters']['combine']['expose']['operator'] = 'combine_op';
+  $handler->display->display_options['filters']['combine']['expose']['identifier'] = 'combine';
+  $handler->display->display_options['filters']['combine']['expose']['remember_roles'] = array(
+    2 => '2',
+  );
+  $handler->display->display_options['filters']['combine']['fields'] = array(
+    'entityform_id' => 'entityform_id',
+    'field_rfc_school' => 'field_rfc_school',
+    'field_rfc_name' => 'field_rfc_name',
+    'field_rfc_provider' => 'field_rfc_provider',
+    'field_rfc_new_course_name' => 'field_rfc_new_course_name',
+    'field_rfc_course' => 'field_rfc_course',
+    'field_profile_name' => 'field_profile_name',
+    'field_profile_name_1' => 'field_profile_name_1',
+    'title' => 'title',
+  );
+  /* Filter criterion: Entityform Submission: Entityform Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'entityform';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'free_course_request' => 'free_course_request',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: Entityform Submission: Status (field_rfc_status) */
+  $handler->display->display_options['filters']['field_rfc_status_value']['id'] = 'field_rfc_status_value';
+  $handler->display->display_options['filters']['field_rfc_status_value']['table'] = 'field_data_field_rfc_status';
+  $handler->display->display_options['filters']['field_rfc_status_value']['field'] = 'field_rfc_status_value';
+  $handler->display->display_options['filters']['field_rfc_status_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_rfc_status_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_rfc_status_value']['expose']['operator_id'] = 'field_rfc_status_value_op';
+  $handler->display->display_options['filters']['field_rfc_status_value']['expose']['label'] = 'Status';
+  $handler->display->display_options['filters']['field_rfc_status_value']['expose']['operator'] = 'field_rfc_status_value_op';
+  $handler->display->display_options['filters']['field_rfc_status_value']['expose']['identifier'] = 'field_rfc_status_value';
+  $handler->display->display_options['filters']['field_rfc_status_value']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_rfc_status_value']['expose']['remember_roles'] = array(
+    2 => '2',
+  );
+  /* Filter criterion: Entityform Submission: Afviklingsdato (field_rfc_date) */
+  $handler->display->display_options['filters']['field_rfc_date_value']['id'] = 'field_rfc_date_value';
+  $handler->display->display_options['filters']['field_rfc_date_value']['table'] = 'field_data_field_rfc_date';
+  $handler->display->display_options['filters']['field_rfc_date_value']['field'] = 'field_rfc_date_value';
+  $handler->display->display_options['filters']['field_rfc_date_value']['operator'] = '>=';
+  $handler->display->display_options['filters']['field_rfc_date_value']['group'] = 2;
+  $handler->display->display_options['filters']['field_rfc_date_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_rfc_date_value']['expose']['operator_id'] = 'field_rfc_date_value_op';
+  $handler->display->display_options['filters']['field_rfc_date_value']['expose']['label'] = 'Afviklingsdato fra';
+  $handler->display->display_options['filters']['field_rfc_date_value']['expose']['operator'] = 'field_rfc_date_value_op';
+  $handler->display->display_options['filters']['field_rfc_date_value']['expose']['identifier'] = 'field_rfc_date_value';
+  $handler->display->display_options['filters']['field_rfc_date_value']['expose']['remember_roles'] = array(
+    2 => '2',
+  );
+  $handler->display->display_options['filters']['field_rfc_date_value']['group_info']['label'] = 'Afviklingsdato (field_rfc_date)';
+  $handler->display->display_options['filters']['field_rfc_date_value']['group_info']['identifier'] = 'field_rfc_date_value';
+  $handler->display->display_options['filters']['field_rfc_date_value']['group_info']['remember'] = FALSE;
+  $handler->display->display_options['filters']['field_rfc_date_value']['group_info']['group_items'] = array(
+    1 => array(),
+    2 => array(),
+    3 => array(),
+  );
+  $handler->display->display_options['filters']['field_rfc_date_value']['form_type'] = 'date_popup';
+  /* Filter criterion: Entityform Submission: Afviklingsdato (field_rfc_date) */
+  $handler->display->display_options['filters']['field_rfc_date_value_1']['id'] = 'field_rfc_date_value_1';
+  $handler->display->display_options['filters']['field_rfc_date_value_1']['table'] = 'field_data_field_rfc_date';
+  $handler->display->display_options['filters']['field_rfc_date_value_1']['field'] = 'field_rfc_date_value';
+  $handler->display->display_options['filters']['field_rfc_date_value_1']['operator'] = '<=';
+  $handler->display->display_options['filters']['field_rfc_date_value_1']['group'] = 2;
+  $handler->display->display_options['filters']['field_rfc_date_value_1']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_rfc_date_value_1']['expose']['operator_id'] = 'field_rfc_date_value_1_op';
+  $handler->display->display_options['filters']['field_rfc_date_value_1']['expose']['label'] = 'Afviklingsdato til';
+  $handler->display->display_options['filters']['field_rfc_date_value_1']['expose']['operator'] = 'field_rfc_date_value_1_op';
+  $handler->display->display_options['filters']['field_rfc_date_value_1']['expose']['identifier'] = 'field_rfc_date_value_1';
+  $handler->display->display_options['filters']['field_rfc_date_value_1']['expose']['remember_roles'] = array(
+    2 => '2',
+  );
+  $handler->display->display_options['filters']['field_rfc_date_value_1']['form_type'] = 'date_popup';
+  /* Filter criterion: Entityform Submission: Forløb (field_rfc_course) */
+  $handler->display->display_options['filters']['field_rfc_course_target_id']['id'] = 'field_rfc_course_target_id';
+  $handler->display->display_options['filters']['field_rfc_course_target_id']['table'] = 'field_data_field_rfc_course';
+  $handler->display->display_options['filters']['field_rfc_course_target_id']['field'] = 'field_rfc_course_target_id';
+  $handler->display->display_options['filters']['field_rfc_course_target_id']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_rfc_course_target_id']['expose']['operator_id'] = 'field_rfc_course_target_id_op';
+  $handler->display->display_options['filters']['field_rfc_course_target_id']['expose']['label'] = 'Forløb';
+  $handler->display->display_options['filters']['field_rfc_course_target_id']['expose']['operator'] = 'field_rfc_course_target_id_op';
+  $handler->display->display_options['filters']['field_rfc_course_target_id']['expose']['identifier'] = 'field_rfc_course_target_id';
+  $handler->display->display_options['filters']['field_rfc_course_target_id']['expose']['remember_roles'] = array(
+    2 => '2',
+  );
   $handler->display->display_options['path'] = 'admin/config/system/free_course_request';
   $handler->display->display_options['menu']['type'] = 'normal';
   $handler->display->display_options['menu']['title'] = 'Financing requests (school)';
