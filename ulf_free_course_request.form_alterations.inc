@@ -359,7 +359,6 @@ function ulf_free_course_request_form_views_exposed_form_alter(&$form, $form_sta
     $form['field_rfc_date_value_2']['min']['#disabled'] = TRUE;
     $form['field_rfc_date_value_2']['max']['#disabled'] = TRUE;
     $form['submit']['#weight'] = 100;
-    dpm($form);
   }
 }
 
