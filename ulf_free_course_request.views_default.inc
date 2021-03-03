@@ -535,7 +535,7 @@ function ulf_free_course_request_views_default_views() {
       ),
     ),
   );
-  /* Field: Entityform Submission: Entityform submission id */
+  /* Field: Entityform Submission: Entityform submission ID */
   $handler->display->display_options['fields']['entityform_id']['id'] = 'entityform_id';
   $handler->display->display_options['fields']['entityform_id']['table'] = 'entityform';
   $handler->display->display_options['fields']['entityform_id']['field'] = 'entityform_id';
@@ -857,7 +857,7 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['relationships']['user']['field'] = 'user';
   $handler->display->display_options['relationships']['user']['label'] = 'forfatter';
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Entityform Submission: Entityform submission id */
+  /* Field: Entityform Submission: Entityform submission ID */
   $handler->display->display_options['fields']['entityform_id']['id'] = 'entityform_id';
   $handler->display->display_options['fields']['entityform_id']['table'] = 'entityform';
   $handler->display->display_options['fields']['entityform_id']['field'] = 'entityform_id';
@@ -1152,7 +1152,7 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['relationships']['field_rfc_course_target_id']['table'] = 'field_data_field_rfc_course';
   $handler->display->display_options['relationships']['field_rfc_course_target_id']['field'] = 'field_rfc_course_target_id';
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Entityform Submission: Entityform submission id */
+  /* Field: Entityform Submission: Entityform submission ID */
   $handler->display->display_options['fields']['entityform_id']['id'] = 'entityform_id';
   $handler->display->display_options['fields']['entityform_id']['table'] = 'entityform';
   $handler->display->display_options['fields']['entityform_id']['field'] = 'entityform_id';
@@ -1463,10 +1463,16 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['filters']['field_target_group_tid']['field'] = 'field_target_group_tid';
   $handler->display->display_options['filters']['field_target_group_tid']['value'] = array(
     148 => '148',
-    149 => '149',
   );
   $handler->display->display_options['filters']['field_target_group_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_target_group_tid']['vocabulary'] = 'target_group';
+  /* Filter criterion: Content: Request buttons (field_practical_info_buttons) */
+  $handler->display->display_options['filters']['field_practical_info_buttons_value']['id'] = 'field_practical_info_buttons_value';
+  $handler->display->display_options['filters']['field_practical_info_buttons_value']['table'] = 'field_data_field_practical_info_buttons';
+  $handler->display->display_options['filters']['field_practical_info_buttons_value']['field'] = 'field_practical_info_buttons_value';
+  $handler->display->display_options['filters']['field_practical_info_buttons_value']['value'] = array(
+    'show_free_course_request' => 'show_free_course_request',
+  );
 
   /* Display: Entity Reference */
   $handler = $view->new_display('entityreference', 'Entity Reference', 'entityreference_1');
