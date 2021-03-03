@@ -42,7 +42,6 @@ function ulf_free_course_request_menu() {
 function ulf_free_course_request_cron() {
   global $language;
 
-
   if (variable_get('enable_free_course_follow_up_mails', FALSE)) {
     if (date('G') > 8) {
       $from = strtotime('yesterday 00:00 Europe/Copenhagen');

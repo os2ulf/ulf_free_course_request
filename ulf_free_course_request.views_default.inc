@@ -427,6 +427,23 @@ function ulf_free_course_request_views_default_views() {
     2 => '2',
   );
   $handler->display->display_options['filters']['field_rfc_date_value_1']['form_type'] = 'date_popup';
+  /* Filterkriterie: Entityform Submission: Afviklingsdato (field_rfc_date) */
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['id'] = 'field_rfc_date_value_2';
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['table'] = 'field_data_field_rfc_date';
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['field'] = 'field_rfc_date_value';
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['operator'] = 'between';
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['group'] = 3;
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['expose']['operator_id'] = 'field_rfc_date_value_2_op';
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['expose']['label'] = 'Semester';
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['expose']['operator'] = 'field_rfc_date_value_2_op';
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['expose']['identifier'] = 'field_rfc_date_value_2';
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['expose']['remember_roles'] = array(
+    2 => '2',
+  );
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['granularity'] = 'month';
+  $handler->display->display_options['filters']['field_rfc_date_value_2']['form_type'] = 'date_text';
+
 
   /* Display: All applications */
   $handler = $view->new_display('page', 'All applications', 'free_course_requests_table');
@@ -810,6 +827,18 @@ function ulf_free_course_request_views_default_views() {
     3 => array(),
   );
   $handler->display->display_options['filters']['field_rfc_date_value']['form_type'] = 'date_popup';
+  /* Filter criterion: Entityform Submission: Forløb (field_rfc_course) */
+  $handler->display->display_options['filters']['field_rfc_course_target_id']['id'] = 'field_rfc_course_target_id';
+  $handler->display->display_options['filters']['field_rfc_course_target_id']['table'] = 'field_data_field_rfc_course';
+  $handler->display->display_options['filters']['field_rfc_course_target_id']['field'] = 'field_rfc_course_target_id';
+  $handler->display->display_options['filters']['field_rfc_course_target_id']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_rfc_course_target_id']['expose']['operator_id'] = 'field_rfc_course_target_id_op';
+  $handler->display->display_options['filters']['field_rfc_course_target_id']['expose']['label'] = 'Forløb';
+  $handler->display->display_options['filters']['field_rfc_course_target_id']['expose']['operator'] = 'field_rfc_course_target_id_op';
+  $handler->display->display_options['filters']['field_rfc_course_target_id']['expose']['identifier'] = 'field_rfc_course_target_id';
+  $handler->display->display_options['filters']['field_rfc_course_target_id']['expose']['remember_roles'] = array(
+    2 => '2',
+  );
   /* Filter criterion: Entityform Submission: Afviklingsdato (field_rfc_date) */
   $handler->display->display_options['filters']['field_rfc_date_value_1']['id'] = 'field_rfc_date_value_1';
   $handler->display->display_options['filters']['field_rfc_date_value_1']['table'] = 'field_data_field_rfc_date';

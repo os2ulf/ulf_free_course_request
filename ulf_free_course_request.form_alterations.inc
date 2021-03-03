@@ -320,6 +320,46 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
  * Implements hook_form_FORMID_alter().
  */
 function ulf_free_course_request_form_views_exposed_form_alter(&$form, $form_state) {
+  if (
+    $form['#id'] === 'views-exposed-form-ulf-free-course-requests-free-course-requests-table' ||
+    $form['#id'] === 'views-exposed-form-ulf-free-course-requests-free-course-requests-user'
+  ) {
+    $form['#attached']['css'][]
+      = drupal_get_path('module', 'ulf_free_course_request')
+      . '/css/styling.css';
+    $query = db_select('field_data_field_rfc_date');
+    // exclude results older than 2019, since they must be a mistake
+    $query->condition('field_rfc_date_value', '1546297200', '>');
+    $query->addExpression('MIN(field_rfc_date_value)', 'min');
+    $query->addExpression('MAX(field_rfc_date_value)', 'max');
+    $result = $query->execute()->fetchAll();
+    $result = reset($result);
+    $min = $result->min;
+    $max = $result->max;
+    $options = [];
+    while ($min < $max) {
+      $month = date('n', $min);
+      $year = date('Y', $min);
+      if ($month > 6) {
+        $options[$year . '_2'] = '1. halvår ' . $year . '/' . ($year + 1);
+        $min = strtotime(($year + 1) . '-01-01');
+      }
+      else {
+        $options[$year . '_1'] = '2. halvår ' . ($year - 1) . '/' . ($year);
+        $min = strtotime($year . '-07-01');
+      }
+    }
+
+    $form['field_rfc_date_value_2'] = [
+      '#title' => 'Semester',
+      '#type' => 'select',
+      '#multiple' => TRUE,
+      '#options' => $options,
+    ];
+    $form['field_rfc_date_value_2']['min']['#disabled'] = TRUE;
+    $form['field_rfc_date_value_2']['max']['#disabled'] = TRUE;
+    $form['submit']['#weight'] = 100;
+  }
 }
 
 /**
