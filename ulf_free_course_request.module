@@ -283,12 +283,12 @@ function ulf_free_course_request_views_query_alter(&$view, &$query) {
   ) {
     //    kint($query);die;
     $params = drupal_get_query_parameters();
-    if (isset($params['field_rfc_date_value_2']['semester'])
-      && !empty($params['field_rfc_date_value_2']['semester'])
+    if (isset($params['field_rfc_date_value_2'])
+      && !empty($params['field_rfc_date_value_2'])
     ) {
       $snippet = '';
       $args = [];
-      foreach ($params['field_rfc_date_value_2']['semester'] as $semester) {
+      foreach ($params['field_rfc_date_value_2'] as $semester) {
         $exp = explode('_', $semester);
         if (count($exp) == 2) {
           if ($snippet != '') {
