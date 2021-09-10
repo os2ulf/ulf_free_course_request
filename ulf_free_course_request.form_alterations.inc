@@ -658,7 +658,6 @@ function _rfc_get_courses($uid, $current_options) {
       }
     }
   }
-
   return $current_options;
 }
 
@@ -675,6 +674,7 @@ function _rfc_get_hacked_course_options($user, $target_id) {
     $query->condition('n.nid', $target_id, '=');
   }
   $query->fields('n', ['nid', 'title']);
+  $query->orderBy('title', 'ASC');
   $result = $query->execute();
   foreach ($result as $record) {
     $options[$record->nid] = $record->title;
