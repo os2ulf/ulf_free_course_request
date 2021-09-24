@@ -220,13 +220,14 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
       = t('- Select a school  -');
   }
 
-  if (!property_exists($form['#entity'], 'is_new')
-    || $form['#entity']->is_new != TRUE
-  ) {
-    $form['field_rfc_course'][LANGUAGE_NONE]['#options']
-      = _rfc_get_hacked_course_options($user, $form['#entity']->field_rfc_course[LANGUAGE_NONE][0]['target_id']);
-    $form['field_rfc_course'][LANGUAGE_NONE]['#default_value']
-      = $form['#entity']->field_rfc_course[LANGUAGE_NONE][0]['target_id'];
+  if (!property_exists($form['#entity'], 'is_new') || $form['#entity']->is_new != TRUE) {
+    if ($form['#entity']->field_rfc_course_not_found[LANGUAGE_NONE][0]['value'] && !empty($form['#entity']->field_rfc_new_course_name[LANGUAGE_NONE][0]['value'])) {
+      $form['field_rfc_course'][LANGUAGE_NONE]['#options'] = _rfc_get_hacked_course_options($user, '');
+      $form['field_rfc_course'][LANGUAGE_NONE]['#default_value'] = '';
+    } else {
+      $form['field_rfc_course'][LANGUAGE_NONE]['#options'] = _rfc_get_hacked_course_options($user, $form['#entity']->field_rfc_course[LANGUAGE_NONE][0]['target_id']);
+      $form['field_rfc_course'][LANGUAGE_NONE]['#default_value'] = $form['#entity']->field_rfc_course[LANGUAGE_NONE][0]['target_id'];
+    }
     array_unshift($form['actions']['save']['#submit'], '_rfc_request_form_submit_handle_course');
   }
   else {
@@ -555,9 +556,13 @@ function _rfc_request_form_submit($form, &$form_state) {
   $provider_name = $provider->field_profile_name[LANGUAGE_NONE][0]['safe_value'];
   form_set_value($form['field_rfc_provider_name'], [LANGUAGE_NONE => [['value' => $provider_name]]], $form_state);
   // Save course name in case the course is deleted in the future
-  $course_id = $form_state['values']['field_rfc_course'][LANGUAGE_NONE][0]['target_id'];
-  $course = node_load($course_id);
-  $course_name = $course->title;
+  if ($form_state['values']['field_rfc_course_not_found'][LANGUAGE_NONE][0]['value'] && !empty($form_state['values']['field_rfc_new_course_name'][LANGUAGE_NONE][0]['value'])) {
+    $course_name = $form_state['values']['field_rfc_new_course_name'][LANGUAGE_NONE][0]['value'];
+  } else {
+    $course_id = $form_state['values']['field_rfc_course'][LANGUAGE_NONE][0]['target_id'];
+    $course = node_load($course_id);
+    $course_name = $course->title;
+  }
 
   form_set_value($form['field_rfc_course_name'], [LANGUAGE_NONE => [['value' => $course_name]]], $form_state);
 
