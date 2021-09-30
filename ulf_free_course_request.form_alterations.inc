@@ -62,6 +62,7 @@ function ulf_free_course_request_form_free_course_request_entityform_edit_form_a
   // Always hide mails sent field. Set in code, and only used for display.
   $form['field_rfc_mails_sent']['#access'] = FALSE;
   $form['field_rfc_latest_editor']['#access'] = FALSE;
+  $form['field_rfc_date'][LANGUAGE_NONE][0]['#required'] = TRUE;
 
 
   // Auto fill send mail checkbox when editing an application.
