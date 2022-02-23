@@ -1244,6 +1244,7 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['fields']['field_rfc_new_course_description']['id'] = 'field_rfc_new_course_description';
   $handler->display->display_options['fields']['field_rfc_new_course_description']['table'] = 'field_data_field_rfc_new_course_description';
   $handler->display->display_options['fields']['field_rfc_new_course_description']['field'] = 'field_rfc_new_course_description';
+  $handler->display->display_options['fields']['field_rfc_new_course_description']['exclude'] = TRUE;
   /* Field: Entityform Submission: Vælg emneområde */
   $handler->display->display_options['fields']['field_rfc_subject']['id'] = 'field_rfc_subject';
   $handler->display->display_options['fields']['field_rfc_subject']['table'] = 'field_data_field_rfc_subject';
@@ -1316,6 +1317,7 @@ function ulf_free_course_request_views_default_views() {
   $handler->display->display_options['fields']['field_rfc_remarks']['id'] = 'field_rfc_remarks';
   $handler->display->display_options['fields']['field_rfc_remarks']['table'] = 'field_data_field_rfc_remarks';
   $handler->display->display_options['fields']['field_rfc_remarks']['field'] = 'field_rfc_remarks';
+  $handler->display->display_options['fields']['field_rfc_remarks']['exclude'] = TRUE;
   /* Field: Entityform Submission: Sendte mails */
   $handler->display->display_options['fields']['field_rfc_mails_sent']['id'] = 'field_rfc_mails_sent';
   $handler->display->display_options['fields']['field_rfc_mails_sent']['table'] = 'field_data_field_rfc_mails_sent';
